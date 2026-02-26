@@ -1,196 +1,282 @@
-import { DollarSign, TrendingUp, TrendingDown, AlertCircle, CreditCard, FileText, Download, Plus, Search } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
-
-const monthlyData = [
-  { month: "Jan", collected: 12500000, target: 14000000, outstanding: 1500000 },
-  { month: "Feb", collected: 13200000, target: 14000000, outstanding: 800000 },
-  { month: "Mar", collected: 14800000, target: 14000000, outstanding: 200000 },
-  { month: "Apr", collected: 11900000, target: 14000000, outstanding: 2100000 },
-  { month: "Mei", collected: 15200000, target: 14000000, outstanding: 0 },
-  { month: "Jun", collected: 16100000, target: 14000000, outstanding: 0 },
-];
-
-const recentPayments = [
-  { student: "Amina Hassan", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed" },
-  { student: "Baraka Juma", class: "Form 3B", amount: 450000, date: "24 Jun 2024", method: "Benki", status: "confirmed" },
-  { student: "Fatuma Ali", class: "Form 2A", amount: 850000, date: "24 Jun 2024", method: "M-Pesa", status: "confirmed" },
-  { student: "David Kamau", class: "Form 1C", amount: 200000, date: "23 Jun 2024", method: "Pesa Taslimu", status: "pending" },
-  { student: "Zainab Omar", class: "Form 4B", amount: 850000, date: "22 Jun 2024", method: "M-Pesa", status: "confirmed" },
-  { student: "Grace Ndugu", class: "Form 2C", amount: 350000, date: "21 Jun 2024", method: "Benki", status: "confirmed" },
-];
-
-const feeStructure = [
-  { class: "Form 1", tuition: 650000, activity: 80000, exam: 50000, total: 780000 },
-  { class: "Form 2", tuition: 700000, activity: 80000, exam: 55000, total: 835000 },
-  { class: "Form 3", tuition: 750000, activity: 80000, exam: 60000, total: 890000 },
-  { class: "Form 4", tuition: 800000, activity: 80000, exam: 70000, total: 950000 },
-];
-
-const outstanding = [
-  { student: "Khalid Ibrahim", class: "Form 1A", balance: 650000, dueDate: "01 Jul 2024", days: 5 },
-  { student: "Amos Tarimo", class: "Form 3C", balance: 890000, dueDate: "15 Jun 2024", days: 15 },
-  { student: "Neema Grace", class: "Form 2C", balance: 420000, dueDate: "01 Jul 2024", days: 5 },
-  { student: "Rehema Paul", class: "Form 4C", balance: 200000, dueDate: "25 Jun 2024", days: 1 },
-];
-
-function fmt(n: number) {
-  return `TSh ${(n / 1000000).toFixed(1)}M`;
-}
-function fmtK(n: number) {
-  return `TSh ${n.toLocaleString()}`;
-}
+import { useState } from "react";
+import { DollarSign, TrendingUp, TrendingDown, AlertCircle, CreditCard, FileText, Download, Plus, Search, Filter, Printer, MoreVertical, CheckCircle2, Wallet, ArrowUpRight, ArrowDownRight, Clock, MessageSquare, ShieldCheck, Landmark } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Cell } from "recharts";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Finance() {
+  const { t, language } = useLanguage();
+
+  const initialPayments = [
+    { id: "TXN-001", student: "Amina Hassan", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed", reference: "RF892JK9L", isNew: false },
+    { id: "TXN-002", student: "Baraka Juma", class: "Form 3B", amount: 450000, date: "24 Jun 2024", method: t('bank'), status: "confirmed", reference: "BK9120LL1", isNew: false },
+    { id: "TXN-003", student: "Fatuma Ali", class: "Form 2A", amount: 850000, date: "24 Jun 2024", method: "M-Pesa", status: "confirmed", reference: "RF112MM2A", isNew: false },
+    { id: "TXN-004", student: "David Kamau", class: "Form 1C", amount: 200000, date: "23 Jun 2024", method: t('cash'), status: "pending", reference: "--", isNew: false },
+    { id: "TXN-005", student: "Zainab Omar", class: "Form 4B", amount: 850000, date: "22 Jun 2024", method: "M-Pesa", status: "confirmed", reference: "RF002PP3Q", isNew: false },
+    { id: "TXN-006", student: "Grace Ndugu", class: "Form 2C", amount: 350000, date: "21 Jun 2024", method: t('bank'), status: "confirmed", reference: "BK882XX2Y", isNew: false },
+  ];
+
+  const feeStructure = [
+    { class: "Form 1", tuition: 650000, activity: 80000, exam: 50000, total: 780000, students: 320 },
+    { class: "Form 2", tuition: 700000, activity: 80000, exam: 55000, total: 835000, students: 280 },
+    { class: "Form 3", tuition: 750000, activity: 80000, exam: 60000, total: 890000, students: 310 },
+    { class: "Form 4", tuition: 800000, activity: 80000, exam: 70000, total: 950000, students: 338 },
+  ];
+
+  const outstanding = [
+    { student: "Khalid Ibrahim", class: "Form 1A", balance: 650000, dueDate: "01 Jul 2024", days: 5, urgency: "medium" },
+    { student: "Amos Tarimo", class: "Form 3C", balance: 890000, dueDate: "15 Jun 2024", days: 15, urgency: "high" },
+    { student: "Neema Grace", class: "Form 2C", balance: 420000, dueDate: "01 Jul 2024", days: 5, urgency: "medium" },
+    { student: "Rehema Paul", class: "Form 4C", balance: 200000, dueDate: "25 Jun 2024", days: 1, urgency: "low" },
+  ];
+
+  const [payments, setPayments] = useState(initialPayments);
+  const [txnSearch, setTxnSearch] = useState("");
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [newPayment, setNewPayment] = useState({
+    student: "", class: "Form 1A", amount: "", method: "M-Pesa", date: new Date().toLocaleDateString('en-GB')
+  });
+
+  const monthlyData = [
+    { month: "Jan", collected: 12500000, target: 14000000, outstanding: 1500000 },
+    { month: "Feb", collected: 13200000, target: 14000000, outstanding: 800000 },
+    { month: "Mar", collected: 14800000, target: 14000000, outstanding: 200000 },
+    { month: "Apr", collected: 11900000, target: 14000000, outstanding: 2100000 },
+    { month: language === 'sw' ? "Mei" : "May", collected: 15200000, target: 14000000, outstanding: 0 },
+    { month: "Jun", collected: 16100000, target: 14000000, outstanding: 0 },
+  ];
+
+  const handlePaymentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const entry = {
+      id: `TXN-${Math.floor(Math.random() * 900) + 100}`,
+      ...newPayment,
+      amount: parseInt(newPayment.amount),
+      status: "confirmed" as const,
+      reference: Math.random().toString(36).substring(7).toUpperCase(),
+      isNew: true
+    };
+    setPayments([entry, ...payments as any]);
+    setIsAddOpen(false);
+    toast.success(`${t('paidStudents')} ${newPayment.student} ${t('paymentReceived')}`);
+    setNewPayment({ student: "", class: "Form 1A", amount: "", method: "M-Pesa", date: new Date().toLocaleDateString('en-GB') });
+
+    // Remove highlight after 3 seconds
+    setTimeout(() => {
+      setPayments(current => current.map(p => p.id === entry.id ? { ...p, isNew: false } : p));
+    }, 3000);
+  };
+
+  const filteredPayments = payments.filter(p =>
+    p.student.toLowerCase().includes(txnSearch.toLowerCase()) ||
+    p.id.toLowerCase().includes(txnSearch.toLowerCase())
+  );
+
+  function fmtK(n: number) {
+    return `TSh ${n.toLocaleString()}`;
+  }
+
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Stats */}
+    <div className="space-y-6 animate-fade-in pb-12">
+      {/* Stats Board */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { icon: DollarSign, label: "Mapato Juni", value: "TSh 16.1M", sub: "+8.7% kuliko mwezi jana", gradient: "bg-gradient-card-blue", color: "text-primary" },
-          { icon: TrendingUp, label: "Waliolipa Kamili", value: "1,181", sub: "Kati ya wanafunzi 1,248", gradient: "bg-gradient-card-green", color: "text-accent" },
-          { icon: AlertCircle, label: "Deni Linalosalia", value: "TSh 4.2M", sub: "Kutoka kwa wanafunzi 67", gradient: "bg-gradient-card-rose", color: "text-destructive" },
-          { icon: TrendingDown, label: "Mapato Mwaka", value: "TSh 83.7M", sub: "Lengo: TSh 90M", gradient: "bg-gradient-card-amber", color: "text-warning" },
-        ].map(s => (
-          <div key={s.label} className="stat-card">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.gradient} mb-3 shadow-md`}>
+          { label: `${t('revenueMonth')} Jun`, value: "TSh 16.1M", sub: `+8.7% ${t('vsLastMonth')}`, gradient: "bg-gradient-card-blue", icon: DollarSign },
+          { label: t('paidStudents'), value: "1,181", sub: `94.6% ${t('ofStudents')}`, gradient: "bg-gradient-card-green", icon: CheckCircle2 },
+          { label: t('outstandingFees'), value: "TSh 4.2M", sub: t('outstandingFees'), gradient: "bg-gradient-card-rose", icon: AlertCircle },
+          { label: t('annualTarget'), value: "TSh 83.7M", sub: `93% ${language === 'sw' ? 'Ishatimia' : 'Completed'}`, gradient: "bg-gradient-card-amber", icon: TrendingUp },
+        ].map((s, i) => (
+          <div key={i} onClick={() => toast.info(`${t('loadingReport')} ${s.label.toLowerCase()}...`)} className="stat-card hover:shadow-xl transition-all cursor-pointer group">
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.gradient} mb-3 group-hover:scale-110 transition-transform`}>
               <s.icon className="w-5 h-5 text-white" />
             </div>
-            <p className={`text-2xl font-bold font-heading ${s.color}`}>{s.value}</p>
-            <p className="text-xs font-semibold text-foreground/80 mt-1">{s.label}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5">{s.sub}</p>
+            <p className="text-2xl font-bold font-heading text-foreground">{s.value}</p>
+            <p className="text-xs text-muted-foreground mt-1">{s.label}</p>
           </div>
         ))}
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="chart-wrapper">
-          <div className="flex items-center justify-between mb-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Analytics Card */}
+        <div className="lg:col-span-2 rounded-2xl border border-border bg-card shadow-card overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20">
             <div>
-              <h3 className="font-bold text-foreground font-heading">Makusanyo ya Kila Mwezi</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">TSh – Mwaka 2024</p>
+              <h3 className="text-lg font-bold font-heading text-foreground">{t('feeCollections')}</h3>
+              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{t('monthlyRevenueTrend')}</p>
             </div>
-            <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground border border-border px-3 py-1.5 rounded-lg">
-              <Download className="w-3 h-3" /> Pakua
-            </button>
+            <div className="flex gap-2">
+              <button onClick={() => toast.info(t('printingStats'))} className="p-2 rounded-lg bg-background border border-border hover:bg-muted text-muted-foreground transition-all">
+                <Printer className="w-4 h-4" />
+              </button>
+              <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                <DialogTrigger asChild>
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all">
+                    <Plus className="w-4 h-4" /> {t('recordPayment')}
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md rounded-3xl p-8 text-foreground">
+                  <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold font-heading">{t('newFeeRecord')}</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handlePaymentSubmit} className="space-y-4 mt-4">
+                    <div>
+                      <label className="text-xs font-bold uppercase text-muted-foreground mb-1 block">{t('studentName')}</label>
+                      <Input required value={newPayment.student} onChange={e => setNewPayment({ ...newPayment, student: e.target.value })} placeholder={t('fullName')} className="rounded-xl border-border bg-background" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-xs font-bold uppercase text-muted-foreground mb-1 block">{t('amountTSh')}</label>
+                        <Input type="number" required value={newPayment.amount} onChange={e => setNewPayment({ ...newPayment, amount: e.target.value })} className="rounded-xl border-border bg-background" />
+                      </div>
+                      <div>
+                        <label className="text-xs font-bold uppercase text-muted-foreground mb-1 block">{t('paymentMethod')}</label>
+                        <select value={newPayment.method} onChange={e => setNewPayment({ ...newPayment, method: e.target.value })} className="w-full h-10 px-3 rounded-xl border border-input bg-background text-sm text-foreground">
+                          <option value="M-Pesa">{t('mpesa')}</option>
+                          <option value="Benki">{t('bank')}</option>
+                          <option value="Pesa Taslimu">{t('cash')}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <DialogFooter className="mt-6">
+                      <button type="submit" className="w-full py-3 rounded-2xl bg-gradient-primary text-white font-bold shadow-md-blue hover:shadow-lg-blue transition-all">
+                        {t('addPayment')}
+                      </button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={monthlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `${(v/1000000).toFixed(0)}M`} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }} formatter={(v: any) => [fmt(v), ""]} />
-              <Bar dataKey="collected" name="Zilizokusanywa" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="outstanding" name="Zinazosalia" fill="hsl(var(--destructive))" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+
+          <div className="p-6 h-[320px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={monthlyData}>
+                <defs>
+                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
+                <XAxis dataKey="month" tick={{ fontSize: 11, fontWeight: 600, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} dy={10} />
+                <YAxis tick={{ fontSize: 11, fontWeight: 600, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000000).toFixed(0)}M`} dx={-10} />
+                <Tooltip
+                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }}
+                />
+                <Area type="monotone" dataKey="collected" stroke="hsl(var(--primary))" strokeWidth={3} fill="url(#areaGradient)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Fee Structure */}
         <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h3 className="font-bold text-foreground font-heading">Muundo wa Ada</h3>
-            <span className="badge-primary">2024/2025</span>
+          <div className="px-6 py-4 border-b border-border bg-muted/20">
+            <h3 className="text-lg font-bold font-heading text-foreground">{t('feeStructure')}</h3>
+            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{t('academicYear')} 2024/2025</p>
+          </div>
+          <div className="p-4 space-y-3">
+            {feeStructure.map((f, i) => (
+              <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-border/50 hover:bg-muted/30 transition-colors">
+                <div>
+                  <p className="text-sm font-bold text-foreground">{language === 'sw' ? f.class.replace('Form', 'Darasa la') : f.class}</p>
+                  <p className="text-[10px] text-muted-foreground">{f.students} {t('studentsCountLabel')}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-primary">{fmtK(f.total)}</p>
+                  <p className="text-[9px] text-muted-foreground uppercase font-semibold">{t('perTerm')}</p>
+                </div>
+              </div>
+            ))}
+            <button className="w-full py-2.5 mt-2 rounded-xl border border-dashed border-border text-xs font-bold text-muted-foreground hover:bg-muted transition-colors">
+              {t('editStructure')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Transactions Table */}
+        <div className="lg:col-span-2 rounded-2xl border border-border bg-card shadow-card overflow-hidden">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20">
+            <h3 className="text-lg font-bold font-heading text-foreground">{t('recentTransactions')}</h3>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background border border-border">
+              <Search className="w-3.5 h-3.5 text-muted-foreground" />
+              <input
+                value={txnSearch}
+                onChange={e => setTxnSearch(e.target.value)}
+                placeholder={t('search')}
+                className="bg-transparent outline-none text-xs w-32"
+              />
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="sis-table">
               <thead>
                 <tr>
-                  <th>Darasa</th>
-                  <th>Masomo</th>
-                  <th>Shughuli</th>
-                  <th>Mtihani</th>
-                  <th>Jumla</th>
+                  <th>{t('transactionID')}</th>
+                  <th>{t('studentName')}</th>
+                  <th>{t('amountLabel')}</th>
+                  <th>{t('method')}</th>
+                  <th>{t('date')}</th>
+                  <th>{t('status')}</th>
                 </tr>
               </thead>
               <tbody>
-                {feeStructure.map(f => (
-                  <tr key={f.class}>
-                    <td><span className="font-semibold text-foreground">{f.class}</span></td>
-                    <td className="text-muted-foreground text-xs">{fmtK(f.tuition)}</td>
-                    <td className="text-muted-foreground text-xs">{fmtK(f.activity)}</td>
-                    <td className="text-muted-foreground text-xs">{fmtK(f.exam)}</td>
-                    <td><span className="font-bold text-primary">{fmtK(f.total)}</span></td>
+                {filteredPayments.map(p => (
+                  <tr key={p.id} className="hover:bg-muted/30">
+                    <td><span className="text-[10px] font-bold text-primary bg-primary-light px-2 py-1 rounded-lg">{p.id}</span></td>
+                    <td><span className="text-sm font-semibold">{p.student}</span></td>
+                    <td><span className="text-sm font-bold text-success">{fmtK(p.amount)}</span></td>
+                    <td><span className="text-xs text-muted-foreground">{p.method}</span></td>
+                    <td><span className="text-xs text-muted-foreground">{p.date}</span></td>
+                    <td>
+                      <span className={p.status === 'confirmed' ? 'badge-success' : 'badge-warning'}>
+                        {p.status === 'confirmed' ? t('confirmed') : t('pending')}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
-      </div>
 
-      {/* Recent Payments & Outstanding */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent */}
+        {/* Debtors List */}
         <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h3 className="font-bold text-foreground font-heading">Malipo ya Hivi Karibuni</h3>
-            <div className="flex items-center gap-2">
-              <button className="p-2 rounded-lg hover:bg-muted transition-colors">
-                <Search className="w-3.5 h-3.5 text-muted-foreground" />
-              </button>
-              <button className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gradient-primary text-white text-xs font-semibold shadow-md-blue">
-                <Plus className="w-3 h-3" /> Rekodi Malipo
-              </button>
-            </div>
-          </div>
-          <div className="divide-y divide-border/50">
-            {recentPayments.map((p, i) => (
-              <div key={i} className="flex items-center gap-4 px-6 py-3.5 hover:bg-muted/30 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-gradient-card-green flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                  {p.student.split(" ").slice(0, 2).map(n => n[0]).join("")}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground truncate">{p.student}</p>
-                  <p className="text-[11px] text-muted-foreground">{p.class} • {p.date} • {p.method}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-accent">{fmtK(p.amount)}</p>
-                  <span className={p.status === "confirmed" ? "badge-success" : "badge-warning"} style={{ fontSize: "10px" }}>
-                    {p.status === "confirmed" ? "✓ Imethibitishwa" : "⏳ Inasubiri"}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Outstanding */}
-        <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h3 className="font-bold text-foreground font-heading">Madeni Yanayosalia</h3>
-            <span className="badge-danger">67 wanafunzi</span>
-          </div>
-          <div className="divide-y divide-border/50">
-            {outstanding.map((o, i) => (
-              <div key={i} className="flex items-center gap-4 px-6 py-3.5 hover:bg-muted/30 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-destructive-light flex items-center justify-center text-destructive text-xs font-bold flex-shrink-0">
-                  {o.student.split(" ").slice(0, 2).map(n => n[0]).join("")}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground truncate">{o.student}</p>
-                  <p className="text-[11px] text-muted-foreground">{o.class} • Inaisha: {o.dueDate}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-destructive">{fmtK(o.balance)}</p>
-                  <div className="flex items-center gap-1 justify-end mt-1">
-                    <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md ${o.days <= 3 ? "bg-destructive-light text-destructive" : "bg-warning-light text-warning"}`}>
-                      Siku {o.days}
-                    </span>
-                    <button className="text-[10px] text-primary hover:underline font-medium">Ukumbusho</button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="px-6 py-3 border-t border-border">
-            <button className="w-full py-2.5 rounded-xl border border-destructive/30 text-destructive text-sm font-semibold hover:bg-destructive-light transition-colors flex items-center justify-center gap-2">
-              <FileText className="w-4 h-4" />
-              Toa Ripoti ya Madeni
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20">
+            <h3 className="text-lg font-bold font-heading text-rose-500 uppercase tracking-tight">{t('debtors')}</h3>
+            <button onClick={() => toast.success(t('remindersSent'))} className="text-[10px] font-bold bg-rose-500 text-white px-3 py-1.5 rounded-lg hover:bg-rose-600 transition-colors">
+              {t('remindAll')}
             </button>
+          </div>
+          <div className="p-4 space-y-3">
+            {outstanding.map((o, i) => (
+              <div key={i} className="flex items-center justify-between p-3 rounded-xl border-l-4 border-l-rose-500 bg-muted/20 hover:bg-muted/30 transition-colors">
+                <div>
+                  <p className="text-sm font-bold text-foreground">{o.student}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">{o.class} • -{o.days} {t('days')}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-rose-600">{fmtK(o.balance)}</p>
+                  <button onClick={() => toast.info(`SMS inatumwa kwa ${o.student.split(" ")[0]}...`)} className="text-[9px] font-black text-white bg-foreground px-2 py-1 rounded-md mt-1">
+                    {t('remindSMS')}
+                  </button>
+                </div>
+              </div>
+            ))}
+            <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white text-center">
+              <p className="text-[10px] font-bold uppercase opacity-80">{t('totalDebt')}</p>
+              <h4 className="text-xl font-bold">TSh 4.2M</h4>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+

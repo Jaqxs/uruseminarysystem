@@ -6,49 +6,7 @@ import {
   Settings, ChevronDown, GraduationCap, Bell, Search, Menu, X,
   LogOut, User, Shield, BarChart3
 } from "lucide-react";
-
-const navGroups = [
-  {
-    label: "Overview",
-    items: [
-      { icon: LayoutDashboard, label: "Dashboard", path: "/" },
-      { icon: BarChart3, label: "Analytics", path: "/analytics" },
-    ]
-  },
-  {
-    label: "Academic",
-    items: [
-      { icon: Users, label: "Students", path: "/students" },
-      { icon: BookOpen, label: "Academics", path: "/academics" },
-      { icon: ClipboardCheck, label: "Attendance", path: "/attendance" },
-      { icon: TrendingUp, label: "Grades & Reports", path: "/grades" },
-      { icon: Clock, label: "Timetable", path: "/timetable" },
-    ]
-  },
-  {
-    label: "Administration",
-    items: [
-      { icon: Briefcase, label: "Staff", path: "/staff" },
-      { icon: DollarSign, label: "Finance & Fees", path: "/finance" },
-      { icon: Package, label: "Inventory", path: "/inventory" },
-      { icon: Library, label: "Library", path: "/library" },
-    ]
-  },
-  {
-    label: "Communication",
-    items: [
-      { icon: MessageSquare, label: "Messages", path: "/communication" },
-      { icon: Bell, label: "Announcements", path: "/announcements" },
-    ]
-  },
-  {
-    label: "System",
-    items: [
-      { icon: Shield, label: "Users & Roles", path: "/users" },
-      { icon: Settings, label: "Settings", path: "/settings" },
-    ]
-  }
-];
+import { useLanguage } from "../context/LanguageContext";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -58,8 +16,53 @@ interface SidebarProps {
 }
 
 export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {
+  const { t } = useLanguage();
   const location = useLocation();
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(["Overview", "Academic", "Administration", "Communication", "System"]);
+
+  const navGroups = [
+    {
+      label: t('overview'),
+      items: [
+        { icon: LayoutDashboard, label: t('dashboard'), path: "/" },
+        { icon: BarChart3, label: t('analytics'), path: "/analytics" },
+      ]
+    },
+    {
+      label: t('academic'),
+      items: [
+        { icon: Users, label: t('students'), path: "/students" },
+        { icon: BookOpen, label: t('academics'), path: "/academics" },
+        { icon: ClipboardCheck, label: t('attendance'), path: "/attendance" },
+        { icon: TrendingUp, label: t('gradesReports'), path: "/grades" },
+        { icon: Clock, label: t('timetable'), path: "/timetable" },
+      ]
+    },
+    {
+      label: t('administration'),
+      items: [
+        { icon: Briefcase, label: t('staff'), path: "/staff" },
+        { icon: DollarSign, label: t('finance'), path: "/finance" },
+        { icon: Package, label: t('inventory'), path: "/inventory" },
+        { icon: Library, label: t('library'), path: "/library" },
+      ]
+    },
+    {
+      label: t('communication'),
+      items: [
+        { icon: MessageSquare, label: t('messages'), path: "/communication" },
+        { icon: Bell, label: t('announcements'), path: "/announcements" },
+      ]
+    },
+    {
+      label: t('system'),
+      items: [
+        { icon: Shield, label: t('usersRoles'), path: "/users" },
+        { icon: Settings, label: t('settings'), path: "/settings" },
+      ]
+    }
+  ];
+
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(navGroups.map(g => g.label));
 
   const toggleGroup = (label: string) => {
     setExpandedGroups(prev =>
@@ -71,12 +74,12 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
     <div className="flex flex-col h-full" style={{ background: "var(--gradient-sidebar)" }}>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border">
-        <div className="w-10 h-10 rounded-2xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow">
-          <GraduationCap className="w-6 h-6 text-white" />
+        <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center flex-shrink-0 shadow-glow overflow-hidden p-1">
+          <img src="/logo.jpg" alt="Logo" className="w-full h-full object-contain" />
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
-            <p className="font-bold text-sm text-white leading-tight">Bender School</p>
+            <p className="font-bold text-sm text-white leading-tight">Bendel Schools</p>
             <p className="text-[10px] font-medium" style={{ color: "hsl(var(--sidebar-muted))" }}>Information System</p>
           </div>
         )}
@@ -94,14 +97,14 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
         <div className="px-4 py-3">
           <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs" style={{ background: "hsl(var(--sidebar-accent))", color: "hsl(var(--sidebar-muted))" }}>
             <Search className="w-3.5 h-3.5" />
-            <span>Quick search...</span>
-            <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded border" style={{ borderColor: "hsl(var(--sidebar-border))" }}>⌘K</span>
+            <span>{t('quickSearch')}</span>
+            <kbd className="ml-auto text-[10px] px-1.5 py-0.5 rounded border border-sidebar-border">⌘K</kbd>
           </div>
         </div>
       )}
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1">
+      <nav className="flex-1 overflow-y-auto px-3 py-2 space-y-1 sis-scrollbar">
         {navGroups.map(group => (
           <div key={group.label} className="mb-2">
             {!collapsed && (
@@ -149,22 +152,30 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
 
       {/* Profile */}
       <div className="p-4 border-t border-sidebar-border">
-        <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
-          <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
+        <NavLink
+          to="/profile"
+          className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""} hover:bg-sidebar-accent p-2 rounded-xl transition-colors group ${location.pathname === "/profile" ? "bg-sidebar-accent" : ""}`}
+        >
+          <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-all">
             <User className="w-4 h-4 text-white" />
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">Admin Mkuu</p>
-              <p className="text-[10px] truncate" style={{ color: "hsl(var(--sidebar-muted))" }}>Super Admin</p>
+              <p className="text-xs font-semibold text-white truncate">{t('adminName')}</p>
+              <p className="text-[10px] truncate" style={{ color: "hsl(var(--sidebar-muted))" }}>{t('superAdmin')}</p>
             </div>
           )}
-          {!collapsed && (
-            <button style={{ color: "hsl(var(--sidebar-muted))" }} className="hover:text-white transition-colors">
-              <LogOut className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
+        </NavLink>
+        {!collapsed && (
+          <NavLink
+            to="/login"
+            style={{ color: "hsl(var(--sidebar-muted))" }}
+            className="flex items-center gap-2 mt-4 px-2 hover:text-white transition-colors text-xs font-medium"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{t('logout')}</span>
+          </NavLink>
+        )}
       </div>
     </div>
   );

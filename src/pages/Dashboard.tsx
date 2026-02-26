@@ -1,292 +1,331 @@
-import { Users, GraduationCap, DollarSign, ClipboardCheck, TrendingUp, Briefcase, AlertTriangle, BookOpen, ArrowUpRight, ArrowDownRight } from "lucide-react";
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from "recharts";
+import { useState } from "react";
+import { Users, GraduationCap, DollarSign, ClipboardCheck, TrendingUp, Briefcase, AlertTriangle, BookOpen, ArrowUpRight, ArrowDownRight, Search, Plus, Send, Download, ExternalLink, Calendar, Bell } from "lucide-react";
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from "recharts";
+import { toast } from "sonner";
 
-const attendanceData = [
-  { day: "Jum", present: 420, absent: 32 },
-  { day: "Isi", present: 405, absent: 47 },
-  { day: "Jua", present: 430, absent: 22 },
-  { day: "Maz", present: 418, absent: 34 },
-  { day: "Ham", present: 422, absent: 30 },
-];
-
-const revenueData = [
-  { month: "Jan", revenue: 12500000, target: 14000000 },
-  { month: "Feb", revenue: 13200000, target: 14000000 },
-  { month: "Mar", revenue: 14800000, target: 14000000 },
-  { month: "Apr", revenue: 11900000, target: 14000000 },
-  { month: "Mei", revenue: 15200000, target: 14000000 },
-  { month: "Jun", revenue: 16100000, target: 14000000 },
-];
-
-const gradeDistribution = [
-  { name: "A", value: 28, color: "hsl(160 84% 39%)" },
-  { name: "B", value: 35, color: "hsl(225 73% 45%)" },
-  { name: "C", value: 22, color: "hsl(199 89% 48%)" },
-  { name: "D", value: 10, color: "hsl(38 92% 50%)" },
-  { name: "F", value: 5, color: "hsl(0 84% 60%)" },
-];
-
-const performanceTrend = [
-  { term: "Term 1 '23", avg: 68 },
-  { term: "Term 2 '23", avg: 71 },
-  { term: "Term 3 '23", avg: 74 },
-  { term: "Term 1 '24", avg: 72 },
-  { term: "Term 2 '24", avg: 76 },
-  { term: "Term 3 '24", avg: 79 },
-];
-
-const recentStudents = [
-  { id: "BS-2024-001", name: "Amina Hassan Mwangi", class: "Form 4A", status: "active", avatar: "AH" },
-  { id: "BS-2024-002", name: "Juma Salim Kiprotich", class: "Form 3B", status: "active", avatar: "JS" },
-  { id: "BS-2024-003", name: "Fatuma Ali Odhiambo", class: "Form 2A", status: "active", avatar: "FA" },
-  { id: "BS-2024-004", name: "David Mwenda Kamau", class: "Form 1C", status: "new", avatar: "DM" },
-  { id: "BS-2024-005", name: "Zainab Omar Njoroge", class: "Form 4B", status: "active", avatar: "ZO" },
-];
-
-const pendingFees = [
-  { student: "Kalila Mgeni", class: "Form 3A", amount: "TSh 450,000", days: 15 },
-  { student: "Baraka Ndugu", class: "Form 2B", amount: "TSh 320,000", days: 8 },
-  { student: "Neema Juma", class: "Form 4C", amount: "TSh 280,000", days: 22 },
-  { student: "Hassan Ally", class: "Form 1A", amount: "TSh 180,000", days: 5 },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 function StatCard({ icon: Icon, label, value, sub, gradient, change, positive }: any) {
+  const { t, language } = useLanguage();
   return (
-    <div className="stat-card group">
-      <div className="flex items-start justify-between mb-4">
-        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${gradient} shadow-md`}>
-          <Icon className="w-6 h-6 text-white" />
+    <div onClick={() => toast.info(`${t('loadingReport')} ${label.toLowerCase()}...`)} className="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 hover:shadow-2xl hover:shadow-primary/5 transition-all hover:-translate-y-1 cursor-pointer">
+      <div className="flex items-start justify-between mb-6">
+        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${gradient} shadow-lg shadow-primary/10 group-hover:scale-110 transition-transform`}>
+          <Icon className="w-7 h-7 text-white" />
         </div>
-        <div className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg ${positive ? "bg-accent-light text-accent" : "bg-destructive-light text-destructive"}`}>
+        <div className={`flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full ${positive ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>
           {positive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
           {change}
         </div>
       </div>
-      <p className="text-3xl font-bold font-heading text-foreground mb-1">{value}</p>
-      <p className="text-sm font-semibold text-foreground/80">{label}</p>
-      <p className="text-xs text-muted-foreground mt-1">{sub}</p>
+      <p className="text-3xl font-black font-heading text-foreground tracking-tight mb-1">{value}</p>
+      <p className="text-xs font-bold text-foreground/70 uppercase tracking-widest">{label}</p>
+      <p className="text-[11px] font-medium text-muted-foreground/60 mt-1">{sub}</p>
+
+      {/* Decorative background element */}
+      <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors" />
     </div>
   );
 }
 
 export default function Dashboard() {
+  const { t, language } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const attendanceData = [
+    { day: t('Monday'), present: 420, absent: 32 },
+    { day: t('Tuesday'), present: 405, absent: 47 },
+    { day: t('Wednesday'), present: 430, absent: 22 },
+    { day: t('Thursday'), present: 418, absent: 34 },
+    { day: t('Friday'), present: 422, absent: 30 },
+  ];
+
+  const revenueData = [
+    { month: "Jan", revenue: 12500000, target: 14000000 },
+    { month: "Feb", revenue: 13200000, target: 14000000 },
+    { month: "Mar", revenue: 14800000, target: 14000000 },
+    { month: "Apr", revenue: 11900000, target: 14000000 },
+    { month: t('may'), revenue: 15200000, target: 14000000 },
+    { month: "Jun", revenue: 16100000, target: 14000000 },
+  ];
+
+  const gradeDistribution = [
+    { name: "A", value: 28, color: "hsl(var(--primary))" },
+    { name: "B", value: 35, color: "hsl(var(--accent))" },
+    { name: "C", value: 22, color: "hsl(var(--warning))" },
+    { name: "D", value: 10, color: "hsl(var(--muted-foreground))" },
+    { name: "F", value: 5, color: "hsl(var(--destructive))" },
+  ];
+
+  const performanceTrend = [
+    { term: "Term 1 '23", avg: 68 },
+    { term: "Term 2 '23", avg: 71 },
+    { term: "Term 3 '23", avg: 74 },
+    { term: "Term 1 '24", avg: 72 },
+    { term: "Term 2 '24", avg: 76 },
+    { term: "Term 3 '24", avg: 79 },
+  ];
+
+  const recentStudents = [
+    { id: "BS-2024-001", name: "Amina Hassan Mwangi", class: "Form 4A", status: "active", avatar: "AH" },
+    { id: "BS-2024-002", name: "Juma Salim Kiprotich", class: "Form 3B", status: "active", avatar: "JS" },
+    { id: "BS-2024-003", name: "Fatuma Ali Odhiambo", class: "Form 2A", status: "active", avatar: "FA" },
+    { id: "BS-2024-004", name: "David Mwenda Kamau", class: "Form 1C", status: "new", avatar: "DM" },
+    { id: "BS-2024-005", name: "Zainab Omar Njoroge", class: "Form 4B", status: "active", avatar: "ZO" },
+  ];
+
+  const pendingFees = [
+    { student: "Kalila Mgeni", class: "Form 3A", amount: "TSh 450,000", days: 15 },
+    { student: "Baraka Ndugu", class: "Form 2B", amount: "TSh 320,000", days: 8 },
+    { student: "Neema Juma", class: "Form 4C", amount: "TSh 280,000", days: 22 },
+    { student: "Hassan Ally", class: "Form 1A", amount: "TSh 180,000", days: 5 },
+  ];
+
+  const sendReminder = (student: string) => {
+    toast.promise(new Promise((resolve) => setTimeout(resolve, 1200)), {
+      loading: `${t('sendingReminder')} ${student}...`,
+      success: t('reminderSent'),
+      error: t('failedToSendMessage'),
+    });
+  };
+
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Welcome banner */}
-      <div className="relative rounded-3xl overflow-hidden p-6 md:p-8 text-white" style={{ background: "var(--gradient-hero)" }}>
-        <div className="absolute inset-0 opacity-10">
-          {[...Array(8)].map((_, i) => (
-            <div key={i} className="absolute rounded-full border border-white/30"
-              style={{ width: `${60 + i * 40}px`, height: `${60 + i * 40}px`, top: `${-20 + i * 5}px`, right: `${-20 + i * 10}px` }} />
+    <div className="space-y-8 animate-fade-in pb-12">
+      {/* Premium Welcome Banner */}
+      <div className="relative rounded-[3rem] overflow-hidden p-10 md:p-12 text-white shadow-2xl shadow-primary/20" style={{ background: "var(--gradient-hero)" }}>
+        <div className="absolute inset-0 opacity-15 overflow-hidden">
+          {[...Array(10)].map((_, i) => (
+            <div key={i} className="absolute rounded-full border border-white/40 ring-1 ring-white/10"
+              style={{
+                width: `${100 + i * 60}px`,
+                height: `${100 + i * 60}px`,
+                top: `${-40 + i * 10}px`,
+                right: `${-40 + i * 15}px`,
+                transform: `rotate(${i * 10}deg)`
+              }} />
           ))}
         </div>
-        <div className="relative flex items-start justify-between flex-wrap gap-4">
-          <div>
-            <p className="text-white/70 text-sm font-medium mb-1">Karibu, Admin Mkuu 👋</p>
-            <h1 className="text-3xl font-bold font-heading mb-2">Bender School SIS</h1>
-            <p className="text-white/80 text-sm max-w-lg">Mwaka wa Masomo 2024/2025 • Term 2 • Dar es Salaam, Tanzania</p>
-            <div className="flex items-center gap-3 mt-4 flex-wrap">
-              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium">
-                <span className="pulse-dot" style={{ background: "hsl(160 84% 60%)" }} />
-                Mfumo Unafanya Kazi
-              </div>
-              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium">
-                <ClipboardCheck className="w-3 h-3" />
-                Mahudhurio ya Leo: 93%
-              </div>
-              <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium">
-                <DollarSign className="w-3 h-3" />
-                TSh 16.1M ya Mwezi
-              </div>
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-[10px] font-bold uppercase tracking-widest">
+              <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+              {t('systemWorking')}
+            </div>
+
+            <div>
+              <p className="text-white/80 font-bold mb-1 ml-1 text-lg">{t('greeting')}</p>
+              <h1 className="text-2xl md:text-3xl font-black font-heading tracking-tight leading-tight">Bendel Schools <span className="text-white/60 font-medium text-xl md:text-2xl">SIS</span></h1>
+            </div>
+
+            <p className="text-white/80 font-medium max-w-xl text-lg leading-relaxed">
+              {t('welcomeHub')}{' '}
+              <span className="text-white font-black underline underline-offset-4 decoration-white/30">
+                {new Date().toLocaleDateString(language === 'sw' ? "sw-TZ" : "en-US", { weekday: "long", day: "numeric", month: "long" })}
+              </span>.
+            </p>
+
+            <div className="flex items-center gap-4 pt-2">
+              <button onClick={() => toast.info(t('registerStudent'))} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white text-primary text-sm font-black shadow-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95">
+                <Plus className="w-4 h-4" /> {t('registerStudent')}
+              </button>
+              <button onClick={() => toast.promise(new Promise(r => setTimeout(r, 1000)), { loading: t('preparingReport'), success: t('reportTodayDownloaded'), error: "Error" })} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/20 backdrop-blur-md border border-white/20 text-white text-sm font-black hover:bg-white/30 transition-all">
+                {t('dailyReport')} <Download className="w-4 h-4" />
+              </button>
             </div>
           </div>
-          <div className="text-right hidden sm:block">
-            <p className="text-white/60 text-xs">Leo</p>
-            <p className="text-2xl font-bold font-heading">
-              {new Date().toLocaleDateString("sw-TZ", { weekday: "long" })}
-            </p>
-            <p className="text-white/80 text-sm">
-              {new Date().toLocaleDateString("sw-TZ", { day: "numeric", month: "long", year: "numeric" })}
-            </p>
+
+          <div className="grid grid-cols-2 gap-4 lg:w-[400px]">
+            {[
+              { label: t('attendance'), value: "93%", icon: ClipboardCheck },
+              { label: t('academicPass'), value: "88%", icon: TrendingUp },
+              { label: t('revenueMonth'), value: "16.1M", icon: DollarSign },
+              { label: t('teachers'), value: "89", icon: Briefcase },
+            ].map((item, i) => (
+              <div key={i} onClick={() => toast.info(`${t('loadingReport')} ${item.label.toLowerCase()}...`)} className="bg-white/10 backdrop-blur-md border border-white/10 p-5 rounded-[2rem] hover:bg-white/15 transition-colors cursor-pointer group">
+                <item.icon className="w-5 h-5 mb-3 text-white/60 group-hover:scale-110 transition-transform" />
+                <p className="text-2xl font-black">{item.value}</p>
+                <p className="text-[10px] uppercase font-bold text-white/60 tracking-widest">{item.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={GraduationCap} label="Wanafunzi Wote" value="1,248" sub="Wanafunzi walioandikishwa" gradient="bg-gradient-card-blue" change="+12" positive />
-        <StatCard icon={ClipboardCheck} label="Mahudhurio Leo" value="93.2%" sub="452 kati ya 485 wamefika" gradient="bg-gradient-card-green" change="+2.1%" positive />
-        <StatCard icon={DollarSign} label="Mapato Juni" value="16.1M" sub="TSh zilizokusanywa" gradient="bg-gradient-card-amber" change="+8.7%" positive />
-        <StatCard icon={AlertTriangle} label="Ada Zinasubiri" value="TSh 4.2M" sub="Kutoka kwa wanafunzi 67" gradient="bg-gradient-card-rose" change="-3" positive={false} />
+      {/* Quick Search & Actions */}
+      <div className="flex flex-col md:flex-row gap-6 items-center">
+        <div className="flex-1 w-full relative">
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder={t('searchPlaceholder')}
+            className="w-full h-16 pl-14 pr-6 rounded-3xl border border-border bg-card shadow-sm text-foreground placeholder:text-muted-foreground focus:ring-4 focus:ring-primary/10 outline-none transition-all text-lg font-medium"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-3">
+          <button onClick={() => toast.info(language === 'sw' ? "Una taarifa 3 mpya kutoka kwa walimu." : "You have 3 new notifications from teachers.")} className="h-16 w-16 flex items-center justify-center rounded-3xl bg-card border border-border shadow-sm text-foreground hover:bg-muted transition-all relative">
+            <Bell className="w-6 h-6" />
+            <span className="absolute top-4 right-4 w-3 h-3 rounded-full bg-destructive border-2 border-card" />
+          </button>
+          <button onClick={() => toast.success(t('settingsTitle'))} className="h-16 px-8 rounded-3xl bg-gradient-primary text-white font-black shadow-lg shadow-primary/20 hover:shadow-xl transition-all">
+            {language === 'sw' ? 'Hatua za Haraka' : 'Quick Actions'}
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={Briefcase} label="Wafanyakazi" value="89" sub="Walimu na watumishi" gradient="bg-gradient-card-purple" change="+3" positive />
-        <StatCard icon={BookOpen} label="Masomo" value="28" sub="Masomo yaliyofunzwa" gradient="bg-gradient-card-teal" change="0" positive />
-        <StatCard icon={Users} label="Madarasa" value="24" sub="Madarasa yanayofanya kazi" gradient="bg-gradient-card-blue" change="+2" positive />
-        <StatCard icon={TrendingUp} label="Wastani wa Alama" value="79.2%" sub="Kuongezeka kwa 3.2%" gradient="bg-gradient-card-green" change="+3.2%" positive />
+      {/* Main Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard icon={GraduationCap} label={t('students')} value="1,248" sub={language === 'sw' ? "Sajili mpya 45 mwezi huu" : "45 new registrations this month"} gradient="bg-gradient-card-blue" change="+12" positive />
+        <StatCard icon={ClipboardCheck} label={t('attendance')} value="93.2%" sub={t('weeklyTrend')} gradient="bg-gradient-card-green" change="+2.1%" positive />
+        <StatCard icon={DollarSign} label={t('totalFees')} value="TSh 16.1M" sub={t('revenueThisMonth')} gradient="bg-gradient-card-amber" change="+8.7%" positive />
+        <StatCard icon={AlertTriangle} label={t('debt')} value="TSh 4.2M" sub={t('outstandingFees')} gradient="bg-gradient-card-rose" change="-3" positive={false} />
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Attendance Chart */}
-        <div className="lg:col-span-2 chart-wrapper">
-          <div className="flex items-center justify-between mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Attendance Main Chart */}
+        <div className="lg:col-span-2 chart-wrapper p-10 rounded-[2.5rem]">
+          <div className="flex items-center justify-between mb-10">
             <div>
-              <h3 className="font-bold text-foreground font-heading">Mahudhurio ya Wiki</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Wanafunzi waliofika dhidi ya waliokosekana</p>
+              <h3 className="text-xl font-black font-heading text-foreground">{t('weeklyAttendance')}</h3>
+              <p className="text-sm text-muted-foreground font-medium">{t('weeklyAttendanceSub')}</p>
             </div>
-            <span className="badge-primary">Wiki hii</span>
+            <div className="flex bg-muted/40 p-1 rounded-2xl">
+              <button className="px-5 py-2 rounded-xl bg-card shadow-sm text-[10px] font-black uppercase text-primary border border-border/40">{t('daily')}</button>
+              <button className="px-5 py-2 rounded-xl text-[10px] font-black uppercase text-muted-foreground">{t('weekly')}</button>
+            </div>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={attendanceData} barGap={4}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-              <XAxis dataKey="day" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
+
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={attendanceData} barGap={8} margin={{ bottom: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.4} />
+              <XAxis dataKey="day" tick={{ fontSize: 11, fontWeight: 700, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} dy={10} />
+              <YAxis tick={{ fontSize: 11, fontWeight: 700, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} dx={-10} />
               <Tooltip
-                contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px", boxShadow: "var(--shadow-md)" }}
-                cursor={{ fill: "hsl(var(--muted))" }}
+                contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "20px", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.1)", padding: "16px" }}
+                cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }}
               />
-              <Bar dataKey="present" name="Waliofika" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="absent" name="Hawakufika" fill="hsl(var(--destructive))" radius={[6, 6, 0, 0]} />
+              <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ paddingBottom: '30px', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase' }} />
+              <Bar dataKey="present" name={language === 'sw' ? 'Waliofika' : 'Present'} fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="absent" name={language === 'sw' ? 'Wasiofika' : 'Absent'} fill="hsl(var(--destructive))" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Grade Distribution */}
-        <div className="chart-wrapper">
-          <div className="mb-6">
-            <h3 className="font-bold text-foreground font-heading">Usambazaji wa Alama</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">Term 2, 2024</p>
+        <div className="chart-wrapper p-10 rounded-[2.5rem]">
+          <div className="mb-10">
+            <h3 className="text-xl font-black font-heading text-foreground">{t('academicPass')}</h3>
+            <p className="text-sm text-muted-foreground font-medium">{t('gradeDistribution')}, Term 2</p>
           </div>
-          <ResponsiveContainer width="100%" height={160}>
-            <PieChart>
-              <Pie data={gradeDistribution} cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} dataKey="value">
-                {gradeDistribution.map((entry, index) => (
-                  <Cell key={index} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }} />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="grid grid-cols-5 gap-1 mt-3">
+          <div className="h-[200px] relative">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={gradeDistribution} cx="50%" cy="50%" innerRadius={60} outerRadius={85} paddingAngle={8} dataKey="value">
+                  {gradeDistribution.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} strokeWidth={0} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{ borderRadius: "16px", border: "none", boxShadow: "var(--shadow-lg)" }} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <span className="text-3xl font-black text-foreground">79.2%</span>
+              <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">{language === 'sw' ? 'Wastani' : 'Average'}</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3 mt-10">
             {gradeDistribution.map(g => (
-              <div key={g.name} className="text-center">
-                <div className="w-3 h-3 rounded-full mx-auto mb-1" style={{ background: g.color }} />
-                <p className="text-xs font-bold" style={{ color: g.color }}>{g.name}</p>
-                <p className="text-[10px] text-muted-foreground">{g.value}%</p>
+              <div key={g.name} className="flex items-center justify-between p-3 rounded-2xl bg-muted/30 border border-border/40">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: g.color }} />
+                  <span className="text-xs font-bold text-foreground">{g.name}</span>
+                </div>
+                <span className="text-xs font-black text-muted-foreground">{g.value}%</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Revenue & Performance */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Revenue Chart */}
-        <div className="chart-wrapper">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="font-bold text-foreground font-heading">Mapato ya Mwaka</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">TSh – Mwaka 2024</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Recent Students Table */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <Users className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading text-foreground">{t('newStudents')}</h3>
             </div>
-            <span className="badge-success">+18% mwaka huu</span>
+            <button onClick={() => toast.info(`${t('loadingReport')} ${t('students').toLowerCase()}...`)} className="text-[10px] font-black uppercase text-primary hover:underline flex items-center gap-1">
+              {t('viewAll')} <ExternalLink className="w-3 h-3" />
+            </button>
           </div>
-          <ResponsiveContainer width="100%" height={200}>
-            <AreaChart data={revenueData}>
-              <defs>
-                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `${(v/1000000).toFixed(0)}M`} />
-              <Tooltip
-                contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }}
-                formatter={(v: any) => [`TSh ${(v/1000000).toFixed(1)}M`, ""]}
-              />
-              <Area type="monotone" dataKey="revenue" name="Mapato" stroke="hsl(var(--primary))" strokeWidth={2.5} fill="url(#colorRevenue)" />
-              <Line type="monotone" dataKey="target" name="Lengo" stroke="hsl(var(--accent))" strokeWidth={1.5} strokeDasharray="5 5" dot={false} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Performance Trend */}
-        <div className="chart-wrapper">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="font-bold text-foreground font-heading">Mwenendo wa Utendaji</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Wastani wa alama kwa term</p>
-            </div>
-            <span className="badge-info">Inaongezeka</span>
-          </div>
-          <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={performanceTrend}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-              <XAxis dataKey="term" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-              <YAxis domain={[60, 85]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
-              <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }} formatter={(v: any) => [`${v}%`, "Wastani"]} />
-              <Line type="monotone" dataKey="avg" stroke="hsl(var(--accent))" strokeWidth={3} dot={{ fill: "hsl(var(--accent))", r: 5, strokeWidth: 2, stroke: "white" }} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Tables Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Students */}
-        <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h3 className="font-bold text-foreground font-heading">Wanafunzi Wapya</h3>
-            <button className="text-xs font-semibold text-primary hover:underline">Ona Wote</button>
-          </div>
-          <div className="divide-y divide-border/50">
+          <div className="space-y-1">
             {recentStudents.map(s => (
-              <div key={s.id} className="flex items-center gap-4 px-6 py-3.5 hover:bg-muted/30 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              <div key={s.id} className="flex items-center gap-4 px-8 py-4 hover:bg-muted/40 transition-all rounded-[1.5rem] group mx-2">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-primary flex items-center justify-center text-white text-sm font-black shadow-lg shadow-primary/10 group-hover:scale-105 transition-transform">
                   {s.avatar}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground truncate">{s.name}</p>
-                  <p className="text-xs text-muted-foreground">{s.id} • {s.class}</p>
+                  <p className="text-sm font-black text-foreground truncate">{s.name}</p>
+                  <p className="text-xs font-bold text-muted-foreground/60">{s.id} • {s.class}</p>
                 </div>
-                <span className={s.status === "new" ? "badge-warning" : "badge-success"}>
-                  {s.status === "new" ? "Mpya" : "Hai"}
-                </span>
+                <div className="flex flex-col items-end gap-2">
+                  <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${s.status === "new" ? "bg-warning/10 text-warning" : "bg-success/10 text-success"}`}>
+                    {s.status === "new" ? t('newOnes') : t('active')}
+                  </span>
+                  <p className="text-[10px] font-bold text-muted-foreground/40">{language === 'sw' ? 'Leo' : 'Today'}, 9:24 AM</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Pending Fees */}
-        <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-            <h3 className="font-bold text-foreground font-heading">Ada Zinasubiri</h3>
-            <span className="badge-danger">67 wanafunzi</span>
+        {/* Pending Fees Table */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center text-destructive">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading text-foreground">{t('pendingFees')}</h3>
+            </div>
+            <span className="px-3 py-1 rounded-lg bg-destructive/10 text-destructive text-[10px] font-black uppercase tracking-widest">
+              67 {t('studentsCountLabel')}
+            </span>
           </div>
-          <div className="divide-y divide-border/50">
+          <div className="space-y-1">
             {pendingFees.map((f, i) => (
-              <div key={i} className="flex items-center gap-4 px-6 py-3.5 hover:bg-muted/30 transition-colors">
-                <div className="w-9 h-9 rounded-xl bg-warning-light flex items-center justify-center text-warning text-xs font-bold flex-shrink-0">
+              <div key={i} className="flex items-center gap-4 px-8 py-4 hover:bg-muted/40 transition-all rounded-[1.5rem] group mx-2">
+                <div className="w-12 h-12 rounded-2xl bg-destructive/10 flex items-center justify-center text-destructive text-sm font-black">
                   {f.student.split(" ").map(n => n[0]).join("")}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-foreground truncate">{f.student}</p>
-                  <p className="text-xs text-muted-foreground">{f.class} • Siku {f.days} zilizopita</p>
+                  <p className="text-sm font-black text-foreground truncate">{f.student}</p>
+                  <p className="text-xs font-bold text-muted-foreground/60">{f.class} • {language === 'sw' ? 'Deni tangu siku' : 'Debt since days'} {f.days}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-destructive">{f.amount}</p>
-                  <button className="text-[10px] text-primary hover:underline font-medium mt-0.5">Tuma ukumbusho</button>
+                <div className="text-right space-y-2">
+                  <p className="text-sm font-black text-destructive">{f.amount}</p>
+                  <button
+                    onClick={() => sendReminder(f.student)}
+                    className="flex items-center gap-1.5 ml-auto px-3 py-1.5 rounded-xl bg-primary/10 text-primary text-[10px] font-black uppercase hover:bg-primary hover:text-white transition-all"
+                  >
+                    <Send className="w-3 h-3" /> {t('reminder')}
+                  </button>
                 </div>
               </div>
             ))}
           </div>
-          <div className="px-6 py-3 border-t border-border bg-muted/20">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground font-medium">Jumla ya deni</span>
-              <span className="font-bold text-destructive">TSh 4,218,500</span>
+          <div className="m-4 p-6 rounded-[2rem] bg-muted/30 border border-border/40">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{language === 'sw' ? 'Jumla ya Madeni' : 'Total Debt'}</span>
+              <span className="text-lg font-black text-destructive">TSh 4,218,500</span>
+            </div>
+            <div className="w-full h-2 bg-muted/60 rounded-full overflow-hidden">
+              <div className="h-full bg-destructive w-[65%] rounded-full" />
             </div>
           </div>
         </div>
@@ -294,3 +333,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

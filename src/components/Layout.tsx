@@ -2,30 +2,34 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
-
-const pageTitles: Record<string, { title: string; subtitle: string }> = {
-  "/": { title: "Dashibodi", subtitle: "Karibu kwenye Bender School Information System" },
-  "/analytics": { title: "Takwimu & Uchambuzi", subtitle: "Ripoti za kina za shule" },
-  "/students": { title: "Wanafunzi", subtitle: "Usimamizi wa wanafunzi wote" },
-  "/academics": { title: "Masomo", subtitle: "Muundo wa masomo na mitaala" },
-  "/attendance": { title: "Mahudhurio", subtitle: "Ufuatiliaji wa mahudhurio ya kila siku" },
-  "/grades": { title: "Alama & Ripoti", subtitle: "Matokeo na kadi za ripoti" },
-  "/timetable": { title: "Ratiba", subtitle: "Ratiba za masomo na walimu" },
-  "/staff": { title: "Wafanyakazi", subtitle: "Usimamizi wa walimu na wafanyakazi" },
-  "/finance": { title: "Fedha & Ada", subtitle: "Usimamizi wa malipo na fedha" },
-  "/inventory": { title: "Mali & Bidhaa", subtitle: "Ufuatiliaji wa mali ya shule" },
-  "/library": { title: "Maktaba", subtitle: "Usimamizi wa vitabu na mikopo" },
-  "/communication": { title: "Mawasiliano", subtitle: "Ujumbe na mawasiliano" },
-  "/announcements": { title: "Matangazo", subtitle: "Tangazo na habari za shule" },
-  "/users": { title: "Watumiaji & Majukumu", subtitle: "Udhibiti wa usalama na ruhusa" },
-  "/settings": { title: "Mipangilio", subtitle: "Usanidi wa mfumo" },
-};
+import { useLanguage } from "../context/LanguageContext";
 
 export function Layout() {
+  const { t } = useLanguage();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const page = pageTitles[location.pathname] || { title: "Bender SIS", subtitle: "" };
+
+  const pageTitles: Record<string, { title: string; subtitle: string }> = {
+    "/": { title: t('dashboardTitle'), subtitle: t('dashboardSubtitle') },
+    "/analytics": { title: t('analyticsTitle'), subtitle: t('analyticsSubtitle') },
+    "/students": { title: t('studentsTitle'), subtitle: t('studentsSubtitle') },
+    "/academics": { title: t('academicsTitle'), subtitle: t('academicsSubtitle') },
+    "/attendance": { title: t('attendanceTitle'), subtitle: t('attendanceSubtitle') },
+    "/grades": { title: t('gradesTitle'), subtitle: t('gradesSubtitle') },
+    "/timetable": { title: t('timetableTitle'), subtitle: t('timetableSubtitle') },
+    "/staff": { title: t('staffTitle'), subtitle: t('staffSubtitle') },
+    "/finance": { title: t('financeTitle'), subtitle: t('financeSubtitle') },
+    "/inventory": { title: t('inventoryTitle'), subtitle: t('inventorySubtitle') },
+    "/library": { title: t('libraryTitle'), subtitle: t('librarySubtitle') },
+    "/communication": { title: t('communicationTitle'), subtitle: t('communicationSubtitle') },
+    "/announcements": { title: t('announcementsTitle'), subtitle: t('announcementsSubtitle') },
+    "/users": { title: t('usersTitle'), subtitle: t('usersSubtitle') },
+    "/settings": { title: t('settingsTitle'), subtitle: t('settingsSubtitle') },
+    "/profile": { title: t('profile'), subtitle: t('viewProfile') },
+  };
+
+  const page = pageTitles[location.pathname] || { title: "Bendel SIS", subtitle: "" };
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
