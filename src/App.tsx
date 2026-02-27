@@ -16,12 +16,14 @@ import Announcements from "./pages/Announcements";
 import Inventory from "./pages/Inventory";
 import Library from "./pages/Library";
 import Grades from "./pages/Grades";
+import Examinations from "./pages/Examinations";
 import Analytics from "./pages/Analytics";
 import UsersRoles from "./pages/UsersRoles";
 import SystemSettings from "./pages/SystemSettings";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
+import TeacherDashboard from "./pages/TeacherDashboard";
 import { LanguageProvider } from "./context/LanguageContext";
 
 const queryClient = new QueryClient();
@@ -37,10 +39,12 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route element={<Layout />}>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/teacher" element={<TeacherDashboard />} />
               <Route path="/students" element={<Students />} />
               <Route path="/academics" element={<Academics />} />
               <Route path="/attendance" element={<Attendance />} />
               <Route path="/grades" element={<Grades />} />
+              <Route path="/exams" element={<Examinations />} />
               <Route path="/timetable" element={<Timetable />} />
               <Route path="/staff" element={<Staff />} />
               <Route path="/finance" element={<Finance />} />

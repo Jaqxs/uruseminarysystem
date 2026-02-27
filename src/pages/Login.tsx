@@ -26,7 +26,7 @@ export default function Login() {
             <div className="w-full max-w-[400px] animate-fade-in relative z-10">
                 <div className="text-center mb-10">
                     <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto mb-6 shadow-glow overflow-hidden p-2">
-                        <img src="/logo.jpg" alt="Logo" className="w-full h-full object-contain" />
+                        <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     <h1 className="text-3xl font-bold font-heading mb-2">{t('welcomeBack')}</h1>
                     <p className="text-muted-foreground">{t('schoolSystem')}</p>

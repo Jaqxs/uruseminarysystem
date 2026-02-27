@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Users, BookOpen, ClipboardCheck, TrendingUp,
   DollarSign, Briefcase, Package, Clock, Library, MessageSquare,
   Settings, ChevronDown, GraduationCap, Bell, Search, Menu, X,
-  LogOut, User, Shield, BarChart3
+  LogOut, User, Shield, BarChart3, FileText, Star
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -24,6 +24,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
       label: t('overview'),
       items: [
         { icon: LayoutDashboard, label: t('dashboard'), path: "/" },
+        { icon: Star, label: t('teacherDashboard'), path: "/teacher" },
         { icon: BarChart3, label: t('analytics'), path: "/analytics" },
       ]
     },
@@ -33,6 +34,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
         { icon: Users, label: t('students'), path: "/students" },
         { icon: BookOpen, label: t('academics'), path: "/academics" },
         { icon: ClipboardCheck, label: t('attendance'), path: "/attendance" },
+        { icon: FileText, label: t('exams'), path: "/exams" },
         { icon: TrendingUp, label: t('gradesReports'), path: "/grades" },
         { icon: Clock, label: t('timetable'), path: "/timetable" },
       ]
@@ -74,13 +76,13 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
     <div className="flex flex-col h-full" style={{ background: "var(--gradient-sidebar)" }}>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border">
-        <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center flex-shrink-0 shadow-glow overflow-hidden p-1">
-          <img src="/logo.jpg" alt="Logo" className="w-full h-full object-contain" />
+        <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto mb-6 shadow-glow overflow-hidden p-2">
+          <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
             <p className="font-bold text-sm text-white leading-tight">Bendel Schools</p>
-            <p className="text-[10px] font-medium" style={{ color: "hsl(var(--sidebar-muted))" }}>Information System</p>
+            <p className="text-[10px] font-medium" style={{ color: "hsl(var(--sidebar-muted))" }}>Management System</p>
           </div>
         )}
         <button

@@ -40,7 +40,7 @@ export default function Settings() {
           </div>
           <div className="flex flex-col items-center mb-6 p-4 rounded-2xl bg-muted/30 border border-dashed border-border">
             <div className="w-24 h-24 rounded-2xl bg-white shadow-sm flex items-center justify-center overflow-hidden p-2 mb-3">
-              <img src="/logo.jpg" alt="School Logo" className="w-full h-full object-contain" />
+              <img src="/logo.png" alt="School Logo" className="w-full h-full object-contain" />
             </div>
             <button onClick={() => toast.info(t('openingFileManager'))} className="text-[10px] font-bold uppercase text-primary hover:underline transition-all">
               {t('changeLogo')}

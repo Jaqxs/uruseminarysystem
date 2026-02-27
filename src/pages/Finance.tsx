@@ -1,278 +1,379 @@
 import { useState } from "react";
-import { DollarSign, TrendingUp, TrendingDown, AlertCircle, CreditCard, FileText, Download, Plus, Search, Filter, Printer, MoreVertical, CheckCircle2, Wallet, ArrowUpRight, ArrowDownRight, Clock, MessageSquare, ShieldCheck, Landmark } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Cell } from "recharts";
+import {
+  DollarSign, TrendingUp, TrendingDown, AlertCircle, CreditCard, FileText,
+  Download, Plus, Search, Filter, Printer, MoreVertical, CheckCircle2,
+  Wallet, ArrowUpRight, ArrowDownRight, Clock, MessageSquare, ShieldCheck,
+  Landmark, PieChart as PieChartIcon, Activity, Receipt, CreditCard as CardIcon, Target
+} from "lucide-react";
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  AreaChart, Area, Cell, PieChart, Pie, Legend, LineChart, Line
+} from "recharts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "../context/LanguageContext";
 
 export default function Finance() {
   const { t, language } = useLanguage();
 
   const initialPayments = [
-    { id: "TXN-001", student: "Amina Hassan", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed", reference: "RF892JK9L", isNew: false },
-    { id: "TXN-002", student: "Baraka Juma", class: "Form 3B", amount: 450000, date: "24 Jun 2024", method: t('bank'), status: "confirmed", reference: "BK9120LL1", isNew: false },
-    { id: "TXN-003", student: "Fatuma Ali", class: "Form 2A", amount: 850000, date: "24 Jun 2024", method: "M-Pesa", status: "confirmed", reference: "RF112MM2A", isNew: false },
-    { id: "TXN-004", student: "David Kamau", class: "Form 1C", amount: 200000, date: "23 Jun 2024", method: t('cash'), status: "pending", reference: "--", isNew: false },
-    { id: "TXN-005", student: "Zainab Omar", class: "Form 4B", amount: 850000, date: "22 Jun 2024", method: "M-Pesa", status: "confirmed", reference: "RF002PP3Q", isNew: false },
-    { id: "TXN-006", student: "Grace Ndugu", class: "Form 2C", amount: 350000, date: "21 Jun 2024", method: t('bank'), status: "confirmed", reference: "BK882XX2Y", isNew: false },
+    { id: "TXN-001", student: "Amina Hassan", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Bursar Jane" },
+    { id: "TXN-002", student: "Baraka Juma", class: "Form 3B", amount: 450000, date: "24 Jun 2024", method: "Bank", status: "confirmed", recorder: "Bursar Jane" },
+    { id: "TXN-003", student: "Fatuma Ali", class: "Form 2A", amount: 850000, date: "24 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Admin Ali" },
+    { id: "TXN-004", student: "David Kamau", class: "Form 1C", amount: 200000, date: "23 Jun 2024", method: "Cash", status: "pending", recorder: "Bursar Jane" },
   ];
 
-  const feeStructure = [
-    { class: "Form 1", tuition: 650000, activity: 80000, exam: 50000, total: 780000, students: 320 },
-    { class: "Form 2", tuition: 700000, activity: 80000, exam: 55000, total: 835000, students: 280 },
-    { class: "Form 3", tuition: 750000, activity: 80000, exam: 60000, total: 890000, students: 310 },
-    { class: "Form 4", tuition: 800000, activity: 80000, exam: 70000, total: 950000, students: 338 },
+  const classRevenue = [
+    { name: "Form 1", actual: 12500000, expected: 15000000 },
+    { name: "Form 2", actual: 11000000, expected: 14000000 },
+    { name: "Form 3", actual: 15800000, expected: 16000000 },
+    { name: "Form 4", actual: 16100000, expected: 16500000 },
   ];
 
-  const outstanding = [
-    { student: "Khalid Ibrahim", class: "Form 1A", balance: 650000, dueDate: "01 Jul 2024", days: 5, urgency: "medium" },
-    { student: "Amos Tarimo", class: "Form 3C", balance: 890000, dueDate: "15 Jun 2024", days: 15, urgency: "high" },
-    { student: "Neema Grace", class: "Form 2C", balance: 420000, dueDate: "01 Jul 2024", days: 5, urgency: "medium" },
-    { student: "Rehema Paul", class: "Form 4C", balance: 200000, dueDate: "25 Jun 2024", days: 1, urgency: "low" },
+  const paymentChannels = [
+    { name: "Bank", value: 45, color: "hsl(var(--primary))" },
+    { name: "Mobile Money", value: 40, color: "hsl(var(--accent))" },
+    { name: "Cash", value: 15, color: "hsl(var(--warning))" },
   ];
 
-  const [payments, setPayments] = useState(initialPayments);
+  const expenses = [
+    { category: "Salaries", amount: 8500000, status: "paid" },
+    { category: "Maintenance", amount: 1200000, status: "pending" },
+    { category: "Utilities", amount: 850000, status: "paid" },
+    { category: "Stationery", amount: 450000, status: "paid" },
+  ];
+
   const [txnSearch, setTxnSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [newPayment, setNewPayment] = useState({
-    student: "", class: "Form 1A", amount: "", method: "M-Pesa", date: new Date().toLocaleDateString('en-GB')
-  });
-
-  const monthlyData = [
-    { month: "Jan", collected: 12500000, target: 14000000, outstanding: 1500000 },
-    { month: "Feb", collected: 13200000, target: 14000000, outstanding: 800000 },
-    { month: "Mar", collected: 14800000, target: 14000000, outstanding: 200000 },
-    { month: "Apr", collected: 11900000, target: 14000000, outstanding: 2100000 },
-    { month: language === 'sw' ? "Mei" : "May", collected: 15200000, target: 14000000, outstanding: 0 },
-    { month: "Jun", collected: 16100000, target: 14000000, outstanding: 0 },
-  ];
-
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const entry = {
-      id: `TXN-${Math.floor(Math.random() * 900) + 100}`,
-      ...newPayment,
-      amount: parseInt(newPayment.amount),
-      status: "confirmed" as const,
-      reference: Math.random().toString(36).substring(7).toUpperCase(),
-      isNew: true
-    };
-    setPayments([entry, ...payments as any]);
-    setIsAddOpen(false);
-    toast.success(`${t('paidStudents')} ${newPayment.student} ${t('paymentReceived')}`);
-    setNewPayment({ student: "", class: "Form 1A", amount: "", method: "M-Pesa", date: new Date().toLocaleDateString('en-GB') });
-
-    // Remove highlight after 3 seconds
-    setTimeout(() => {
-      setPayments(current => current.map(p => p.id === entry.id ? { ...p, isNew: false } : p));
-    }, 3000);
-  };
-
-  const filteredPayments = payments.filter(p =>
-    p.student.toLowerCase().includes(txnSearch.toLowerCase()) ||
-    p.id.toLowerCase().includes(txnSearch.toLowerCase())
-  );
 
   function fmtK(n: number) {
     return `TSh ${n.toLocaleString()}`;
   }
 
   return (
-    <div className="space-y-6 animate-fade-in pb-12">
-      {/* Stats Board */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="space-y-8 animate-fade-in pb-12">
+      {/* 1️⃣ Financial Summary (Top KPIs) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
         {[
-          { label: `${t('revenueMonth')} Jun`, value: "TSh 16.1M", sub: `+8.7% ${t('vsLastMonth')}`, gradient: "bg-gradient-card-blue", icon: DollarSign },
-          { label: t('paidStudents'), value: "1,181", sub: `94.6% ${t('ofStudents')}`, gradient: "bg-gradient-card-green", icon: CheckCircle2 },
-          { label: t('outstandingFees'), value: "TSh 4.2M", sub: t('outstandingFees'), gradient: "bg-gradient-card-rose", icon: AlertCircle },
-          { label: t('annualTarget'), value: "TSh 83.7M", sub: `93% ${language === 'sw' ? 'Ishatimia' : 'Completed'}`, gradient: "bg-gradient-card-amber", icon: TrendingUp },
-        ].map((s, i) => (
-          <div key={i} onClick={() => toast.info(`${t('loadingReport')} ${s.label.toLowerCase()}...`)} className="stat-card hover:shadow-xl transition-all cursor-pointer group">
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${s.gradient} mb-3 group-hover:scale-110 transition-transform`}>
-              <s.icon className="w-5 h-5 text-white" />
+          { label: "Fees Today", value: "TSh 1.2M", icon: Wallet, color: "bg-blue-500" },
+          { label: "Fees Term", value: "TSh 65.4M", icon: Landmark, color: "bg-indigo-500" },
+          { label: "Expected", value: "TSh 85.0M", icon: Target, color: "bg-emerald-500" },
+          { label: "Performance", value: "77%", icon: Activity, color: "bg-amber-500" },
+          { label: "Outstanding", value: "TSh 4.2M", icon: AlertCircle, color: "bg-rose-500" },
+          { label: "Expenses MTD", value: "TSh 11.5M", icon: TrendingDown, color: "bg-orange-500" },
+          { label: "Net Position", value: "TSh 53.9M", icon: DollarSign, color: "bg-primary" },
+        ].map((kpi, i) => (
+          <div key={i} className="bg-card border border-border p-6 rounded-[2rem] shadow-sm hover:shadow-md transition-all group">
+            <div className={`w-10 h-10 rounded-xl ${kpi.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-black/5`}>
+              <kpi.icon className="w-5 h-5 text-white" />
             </div>
-            <p className="text-2xl font-bold font-heading text-foreground">{s.value}</p>
-            <p className="text-xs text-muted-foreground mt-1">{s.label}</p>
+            <p className="text-xl font-black">{kpi.value}</p>
+            <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest mt-1">{kpi.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Analytics Card */}
-        <div className="lg:col-span-2 rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 2️⃣ Fee Collection Performance */}
+        <div className="lg:col-span-2 chart-wrapper rounded-[2.5rem] p-10">
+          <div className="flex items-center justify-between mb-10">
             <div>
-              <h3 className="text-lg font-bold font-heading text-foreground">{t('feeCollections')}</h3>
-              <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{t('monthlyRevenueTrend')}</p>
+              <h3 className="text-xl font-black font-heading">Fee Collection Performance</h3>
+              <p className="text-sm text-muted-foreground font-medium">Revenue by class vs Expected</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => toast.info(t('printingStats'))} className="p-2 rounded-lg bg-background border border-border hover:bg-muted text-muted-foreground transition-all">
-                <Printer className="w-4 h-4" />
-              </button>
-              <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                <DialogTrigger asChild>
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all">
-                    <Plus className="w-4 h-4" /> {t('recordPayment')}
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-md rounded-3xl p-8 text-foreground">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold font-heading">{t('newFeeRecord')}</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handlePaymentSubmit} className="space-y-4 mt-4">
-                    <div>
-                      <label className="text-xs font-bold uppercase text-muted-foreground mb-1 block">{t('studentName')}</label>
-                      <Input required value={newPayment.student} onChange={e => setNewPayment({ ...newPayment, student: e.target.value })} placeholder={t('fullName')} className="rounded-xl border-border bg-background" />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-xs font-bold uppercase text-muted-foreground mb-1 block">{t('amountTSh')}</label>
-                        <Input type="number" required value={newPayment.amount} onChange={e => setNewPayment({ ...newPayment, amount: e.target.value })} className="rounded-xl border-border bg-background" />
-                      </div>
-                      <div>
-                        <label className="text-xs font-bold uppercase text-muted-foreground mb-1 block">{t('paymentMethod')}</label>
-                        <select value={newPayment.method} onChange={e => setNewPayment({ ...newPayment, method: e.target.value })} className="w-full h-10 px-3 rounded-xl border border-input bg-background text-sm text-foreground">
-                          <option value="M-Pesa">{t('mpesa')}</option>
-                          <option value="Benki">{t('bank')}</option>
-                          <option value="Pesa Taslimu">{t('cash')}</option>
-                        </select>
-                      </div>
-                    </div>
-                    <DialogFooter className="mt-6">
-                      <button type="submit" className="w-full py-3 rounded-2xl bg-gradient-primary text-white font-bold shadow-md-blue hover:shadow-lg-blue transition-all">
-                        {t('addPayment')}
-                      </button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              <button className="p-2 rounded-xl bg-muted/40 hover:bg-muted/60 transition-colors"><Printer className="w-4 h-4" /></button>
+              <button className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-all">Export Data</button>
             </div>
           </div>
-
-          <div className="p-6 h-[320px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={monthlyData}>
-                <defs>
-                  <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
-                <XAxis dataKey="month" tick={{ fontSize: 11, fontWeight: 600, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} dy={10} />
-                <YAxis tick={{ fontSize: 11, fontWeight: 600, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000000).toFixed(0)}M`} dx={-10} />
-                <Tooltip
-                  contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }}
-                />
-                <Area type="monotone" dataKey="collected" stroke="hsl(var(--primary))" strokeWidth={3} fill="url(#areaGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={classRevenue} barGap={12}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
+              <XAxis dataKey="name" tick={{ fontSize: 11, fontWeight: 700 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fontWeight: 700 }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000000).toFixed(1)}M`} />
+              <Tooltip cursor={{ fill: 'hsl(var(--muted))', opacity: 0.4 }} contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: 'var(--shadow-lg)' }} />
+              <Legend verticalAlign="top" align="right" iconType="circle" />
+              <Bar dataKey="actual" name="Actual Collected" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="expected" name="Expected Goal" fill="hsl(var(--muted))" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
-        {/* Fee Structure */}
-        <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="px-6 py-4 border-b border-border bg-muted/20">
-            <h3 className="text-lg font-bold font-heading text-foreground">{t('feeStructure')}</h3>
-            <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">{t('academicYear')} 2024/2025</p>
+        {/* 4️⃣ Payment Channel Breakdown */}
+        <div className="chart-wrapper rounded-[2.5rem] p-10">
+          <div className="mb-10 text-center">
+            <h3 className="text-xl font-black font-heading">Payment Channels</h3>
+            <p className="text-sm text-muted-foreground font-medium">Distribution by method</p>
           </div>
-          <div className="p-4 space-y-3">
-            {feeStructure.map((f, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-border/50 hover:bg-muted/30 transition-colors">
-                <div>
-                  <p className="text-sm font-bold text-foreground">{language === 'sw' ? f.class.replace('Form', 'Darasa la') : f.class}</p>
-                  <p className="text-[10px] text-muted-foreground">{f.students} {t('studentsCountLabel')}</p>
+          <div className="h-[200px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={paymentChannels} cx="50%" cy="50%" innerRadius={60} outerRadius={85} paddingAngle={8} dataKey="value">
+                  {paymentChannels.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="space-y-3 mt-8">
+            {paymentChannels.map(c => (
+              <div key={c.name} className="flex items-center justify-between p-3 rounded-2xl bg-muted/30 border border-border/40">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: c.color }} />
+                  <span className="text-xs font-bold">{c.name}</span>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-primary">{fmtK(f.total)}</p>
-                  <p className="text-[9px] text-muted-foreground uppercase font-semibold">{t('perTerm')}</p>
-                </div>
+                <span className="text-xs font-black">{c.value}%</span>
               </div>
             ))}
-            <button className="w-full py-2.5 mt-2 rounded-xl border border-dashed border-border text-xs font-bold text-muted-foreground hover:bg-muted transition-colors">
-              {t('editStructure')}
-            </button>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Transactions Table */}
-        <div className="lg:col-span-2 rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20">
-            <h3 className="text-lg font-bold font-heading text-foreground">{t('recentTransactions')}</h3>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-background border border-border">
-              <Search className="w-3.5 h-3.5 text-muted-foreground" />
-              <input
-                value={txnSearch}
-                onChange={e => setTxnSearch(e.target.value)}
-                placeholder={t('search')}
-                className="bg-transparent outline-none text-xs w-32"
-              />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* 3️⃣ Outstanding Fees Monitoring */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-500">
+                <AlertCircle className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading">Defaulters List</h3>
             </div>
+            <span className="px-3 py-1 rounded-lg bg-rose-500/10 text-rose-500 text-[10px] font-black uppercase tracking-widest">
+              67 Students
+            </span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="sis-table">
-              <thead>
-                <tr>
-                  <th>{t('transactionID')}</th>
-                  <th>{t('studentName')}</th>
-                  <th>{t('amountLabel')}</th>
-                  <th>{t('method')}</th>
-                  <th>{t('date')}</th>
-                  <th>{t('status')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredPayments.map(p => (
-                  <tr key={p.id} className="hover:bg-muted/30">
-                    <td><span className="text-[10px] font-bold text-primary bg-primary-light px-2 py-1 rounded-lg">{p.id}</span></td>
-                    <td><span className="text-sm font-semibold">{p.student}</span></td>
-                    <td><span className="text-sm font-bold text-success">{fmtK(p.amount)}</span></td>
-                    <td><span className="text-xs text-muted-foreground">{p.method}</span></td>
-                    <td><span className="text-xs text-muted-foreground">{p.date}</span></td>
-                    <td>
-                      <span className={p.status === 'confirmed' ? 'badge-success' : 'badge-warning'}>
-                        {p.status === 'confirmed' ? t('confirmed') : t('pending')}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Debtors List */}
-        <div className="rounded-2xl border border-border bg-card shadow-card overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-muted/20">
-            <h3 className="text-lg font-bold font-heading text-rose-500 uppercase tracking-tight">{t('debtors')}</h3>
-            <button onClick={() => toast.success(t('remindersSent'))} className="text-[10px] font-bold bg-rose-500 text-white px-3 py-1.5 rounded-lg hover:bg-rose-600 transition-colors">
-              {t('remindAll')}
-            </button>
-          </div>
-          <div className="p-4 space-y-3">
-            {outstanding.map((o, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-xl border-l-4 border-l-rose-500 bg-muted/20 hover:bg-muted/30 transition-colors">
-                <div>
-                  <p className="text-sm font-bold text-foreground">{o.student}</p>
-                  <p className="text-[10px] text-muted-foreground uppercase">{o.class} • -{o.days} {t('days')}</p>
+          <div className="px-4 pb-4 space-y-1">
+            {[
+              { name: "Khalid Ibrahim", class: "Form 1A", balance: "TSh 650,000", status: "Overdue 15d" },
+              { name: "Amos Tarimo", class: "Form 3C", balance: "TSh 890,000", status: "Overdue 30d" },
+              { name: "Neema Grace", class: "Form 2C", balance: "TSh 420,000", status: "Overdue 5d" },
+            ].map((d, i) => (
+              <div key={i} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/40 transition-all rounded-[1.5rem] group">
+                <div className="flex-1">
+                  <p className="text-sm font-black">{d.name}</p>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase">{d.class} • {d.status}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-rose-600">{fmtK(o.balance)}</p>
-                  <button onClick={() => toast.info(`SMS inatumwa kwa ${o.student.split(" ")[0]}...`)} className="text-[9px] font-black text-white bg-foreground px-2 py-1 rounded-md mt-1">
-                    {t('remindSMS')}
-                  </button>
+                  <p className="text-sm font-black text-rose-500">{d.balance}</p>
+                  <button className="text-[9px] font-black uppercase text-primary underline">Remind</button>
                 </div>
               </div>
             ))}
-            <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white text-center">
-              <p className="text-[10px] font-bold uppercase opacity-80">{t('totalDebt')}</p>
-              <h4 className="text-xl font-bold">TSh 4.2M</h4>
+          </div>
+          <div className="mx-6 mb-6 p-6 rounded-[2rem] bg-rose-500 text-white flex justify-between items-center shadow-lg shadow-rose-500/20">
+            <div>
+              <p className="text-[10px] font-bold uppercase opacity-80">Total Outstanding</p>
+              <h4 className="text-xl font-black">TSh 4,218,500</h4>
+            </div>
+            <TrendingUp className="w-8 h-8 opacity-20" />
+          </div>
+        </div>
+
+        {/* 5️⃣ Expense Tracking */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                <Receipt className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading">Monthly Expenses</h3>
             </div>
           </div>
+          <div className="px-4 pb-4 space-y-3">
+            {expenses.map((e, i) => (
+              <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-muted/20 border border-border/40">
+                <div className="flex items-center gap-3">
+                  <div className={`w-2 h-2 rounded-full ${e.status === 'paid' ? 'bg-success' : 'bg-warning'}`} />
+                  <div>
+                    <p className="text-sm font-black">{e.category}</p>
+                    <p className="text-[10px] uppercase font-bold text-muted-foreground">{e.status}</p>
+                  </div>
+                </div>
+                <p className="text-sm font-black">{fmtK(e.amount)}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mx-6 mb-6 p-8 rounded-[2.5rem] bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-xl shadow-orange-500/20">
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-[11px] font-bold uppercase opacity-80 mb-1">Net Position</p>
+                <h4 className="text-2xl font-black">TSh 53.9M</h4>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] font-bold uppercase opacity-80">Budget vs Actual</p>
+                <p className="font-black text-sm">94.2%</p>
+              </div>
+            </div>
+            <div className="w-full h-1.5 bg-white/20 rounded-full mt-4">
+              <div className="h-full bg-white w-[94%] rounded-full" />
+            </div>
+          </div>
+        </div>
+
+        {/* 7️⃣ Alerts & Financial Risks */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center text-destructive">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading">Financial Risks</h3>
+            </div>
+          </div>
+          <div className="px-4 pb-4 space-y-4">
+            {[
+              { msg: "Unusual transaction detected (Ref: RF892JK)", type: "risk" },
+              { msg: "Reconciliation discrepancy in M-Pesa channel", type: "reconcile" },
+              { msg: "Collection below target in Form 2", type: "warning" },
+            ].map((alert, i) => (
+              <div key={i} className={`p-5 rounded-3xl flex items-start gap-4 ${alert.type === 'risk' ? 'bg-destructive/5 text-destructive border border-destructive/10' : 'bg-warning/5 text-warning border border-warning/10'}`}>
+                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${alert.type === 'risk' ? 'bg-destructive/10' : 'bg-warning/10'}`}>
+                  <AlertCircle className="w-5 h-5" />
+                </div>
+                <p className="text-xs font-bold leading-relaxed">{alert.msg}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* 2️⃣ Fee Collection Performance (Trends) */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <BarChart className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading">Revenue by Class</h3>
+            </div>
+          </div>
+          <div className="h-[300px] px-6 pb-6">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={[
+                { class: "F1", revenue: 12500000 },
+                { class: "F2", revenue: 14200000 },
+                { class: "F3", revenue: 15800000 },
+                { class: "F4", revenue: 22900000 },
+              ]}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
+                <XAxis dataKey="class" tick={{ fontSize: 10, fontWeight: 700 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fontWeight: 700 }} axisLine={false} tickLine={false} />
+                <Tooltip cursor={{ fill: 'hsl(var(--muted))', opacity: 0.1 }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }} />
+                <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={40} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* 3️⃣ Payment Channel Breakdown */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                <PieChartIcon className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading">Channel Distribution</h3>
+            </div>
+          </div>
+          <div className="h-[300px] px-6 pb-6 flex items-center">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={[
+                    { name: 'Bank Transfer', value: 45, color: "hsl(var(--primary))" },
+                    { name: 'M-Pesa', value: 35, color: "hsl(var(--accent))" },
+                    { name: 'Cash', value: 20, color: "hsl(var(--muted-foreground))" },
+                  ]}
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  <Cell fill="hsl(var(--primary))" />
+                  <Cell fill="hsl(var(--accent))" />
+                  <Cell fill="hsl(var(--muted-foreground))" />
+                </Pie>
+                <Tooltip />
+                <Legend iconType="circle" />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* 6️⃣ Recent Transactions */}
+      <div className="rounded-[3rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+        <div className="flex items-center justify-between px-10 py-10">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+              <FileText className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-heading">Recent Transactions</h3>
+              <p className="text-sm text-muted-foreground font-medium">Real-time payment recordings</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                value={txnSearch}
+                onChange={e => setTxnSearch(e.target.value)}
+                placeholder="Search payments..."
+                className="pl-12 pr-6 py-3 rounded-2xl border border-border bg-muted/20 text-sm focus:ring-4 ring-primary/5 outline-none transition-all w-64"
+              />
+            </div>
+            <button className="px-6 py-3 rounded-2xl bg-gradient-primary text-white text-sm font-black shadow-lg shadow-primary/20">New Record +</button>
+          </div>
+        </div>
+        <div className="overflow-x-auto px-6 pb-6">
+          <table className="sis-table w-full">
+            <thead>
+              <tr className="bg-muted/30">
+                <th className="rounded-l-2xl">TXN ID</th>
+                <th>STUDENT</th>
+                <th>AMOUNT</th>
+                <th>METHOD</th>
+                <th>RECORDED BY</th>
+                <th>DATE</th>
+                <th className="rounded-r-2xl">STATUS</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border/40">
+              {initialPayments.map(p => (
+                <tr key={p.id} className="hover:bg-muted/40 transition-colors group">
+                  <td className="py-6 px-4">
+                    <span className="text-[10px] font-black uppercase text-primary bg-primary/10 px-3 py-1.5 rounded-xl group-hover:bg-primary group-hover:text-white transition-all">
+                      {p.id}
+                    </span>
+                  </td>
+                  <td className="py-6 px-4">
+                    <div className="font-black text-sm">{p.student}</div>
+                    <div className="text-[10px] font-bold text-muted-foreground uppercase">{p.class}</div>
+                  </td>
+                  <td className="py-6 px-4 text-sm font-black text-emerald-600">{fmtK(p.amount)}</td>
+                  <td className="py-6 px-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-primary/40" />
+                      <span className="text-xs font-bold">{p.method}</span>
+                    </div>
+                  </td>
+                  <td className="py-6 px-4 text-xs font-bold text-muted-foreground">{p.recorder}</td>
+                  <td className="py-6 px-4 text-xs font-bold text-muted-foreground/60">{p.date}</td>
+                  <td className="py-6 px-4">
+                    <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${p.status === 'confirmed' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-warning/10 text-warning'}`}>
+                      {p.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

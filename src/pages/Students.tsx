@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Filter, Download, Eye, Edit, Trash2, ChevronLeft, ChevronRight, UserCheck, UserX, GraduationCap, X } from "lucide-react";
+import { Search, Plus, Filter, Download, Eye, Edit, Trash2, ChevronLeft, ChevronRight, UserCheck, UserX, GraduationCap, X, History, ShieldAlert, FileText, LayoutDashboard } from "lucide-react";
 import { useSisData, Student } from "@/hooks/use-sis-data";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,7 @@ export default function Students() {
   const [page, setPage] = useState(1);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [viewingStudent, setViewingStudent] = useState<Student | null>(null);
+  const [activeDetailTab, setActiveDetailTab] = useState('profile');
 
   const [newStudent, setNewStudent] = useState({
     name: "", gender: "M", class: "Form 1A", dob: "", guardian: "", phone: "", status: "new", fees: "unpaid", gpa: "N/A"
@@ -223,46 +224,133 @@ export default function Students() {
       </div>
 
       {/* View Student Dialog */}
-      <Dialog open={!!viewingStudent} onOpenChange={() => setViewingStudent(null)}>
-        <DialogContent className="max-w-md rounded-3xl p-8">
+      <Dialog open={!!viewingStudent} onOpenChange={() => { setViewingStudent(null); setActiveDetailTab('profile'); }}>
+        <DialogContent className="max-w-xl rounded-[2.5rem] p-0 border-none bg-card shadow-2xl overflow-hidden">
           {viewingStudent && (
-            <div className="space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center text-white text-2xl font-bold">
-                  {viewingStudent.name.split(" ").slice(0, 2).map(n => n[0]).join("")}
+            <div className="flex flex-col h-full">
+              {/* Header Banner */}
+              <div className="bg-gradient-primary p-8 text-white relative">
+                <div className="relative z-10 flex items-center gap-6">
+                  <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl font-black shadow-xl ring-4 ring-white/10">
+                    {viewingStudent.name.split(" ").slice(0, 2).map(n => n[0]).join("")}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black font-heading mb-1">{viewingStudent.name}</h3>
+                    <div className="flex items-center gap-2 opacity-80">
+                      <span className="text-[10px] font-black uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded-lg">{viewingStudent.id}</span>
+                      <span className="text-xs font-bold">{viewingStudent.class}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold font-heading">{viewingStudent.name}</h3>
-                  <p className="text-sm text-muted-foreground">{viewingStudent.id}</p>
+                {/* Tabs Navigation */}
+                <div className="flex items-center gap-1 mt-8 bg-black/10 p-1.5 rounded-2xl w-fit">
+                  {[
+                    { id: 'profile', icon: LayoutDashboard, label: 'Profile' },
+                    { id: 'history', icon: History, label: 'History' },
+                    { id: 'discipline', icon: ShieldAlert, label: 'Discipline' }
+                  ].map(t => (
+                    <button
+                      key={t.id}
+                      onClick={() => setActiveDetailTab(t.id)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all ${activeDetailTab === t.id ? 'bg-white text-primary shadow-lg' : 'hover:bg-white/10 text-white/70'}`}
+                    >
+                      <t.icon className="w-3.5 h-3.5" />
+                      {t.label}
+                    </button>
+                  ))}
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground">{t('class')}</p>
-                  <p className="text-sm font-semibold">{viewingStudent.class}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground">{t('gender')}</p>
-                  <p className="text-sm font-semibold">{viewingStudent.gender === 'M' ? t('male') : t('female')}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground">{t('guardian')}</p>
-                  <p className="text-sm font-semibold">{viewingStudent.guardian}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground">{t('phoneNumber')}</p>
-                  <p className="text-sm font-semibold">{viewingStudent.phone}</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground">{t('feesStatus')}</p>
-                  <span className={viewingStudent.fees === "paid" ? "badge-success" : viewingStudent.fees === "partial" ? "badge-warning" : "badge-danger"}>
-                    {viewingStudent.fees === "paid" ? t('paid') : viewingStudent.fees === "partial" ? t('partial') : t('unpaid')}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground">{t('gpaLabel')}</p>
-                  <p className="text-sm font-bold text-accent">{viewingStudent.gpa}</p>
-                </div>
+
+              {/* Tab Content */}
+              <div className="p-8 max-h-[400px] overflow-y-auto sis-scrollbar">
+                {activeDetailTab === 'profile' && (
+                  <div className="grid grid-cols-2 gap-6 animate-fade-in">
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">Guardian Name</p>
+                        <p className="text-sm font-bold text-foreground">{viewingStudent.guardian}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">Contact Phone</p>
+                        <p className="text-sm font-bold text-foreground">{viewingStudent.phone}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">Gender</p>
+                        <span className={`badge-primary px-3`}>{viewingStudent.gender === 'M' ? 'Male' : 'Female'}</span>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">Fee Status</p>
+                        <span className={viewingStudent.fees === "paid" ? "badge-success px-3" : viewingStudent.fees === "partial" ? "badge-warning px-3" : "badge-danger px-3"}>
+                          {viewingStudent.fees.toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">Current GPA</p>
+                        <p className="text-xl font-black text-primary">{viewingStudent.gpa}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-1">Status</p>
+                        <span className={`badge-info px-3`}>{viewingStudent.status.toUpperCase()}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeDetailTab === 'history' && (
+                  <div className="space-y-4 animate-fade-in">
+                    <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Academic Records History</p>
+                    <div className="space-y-2">
+                      {[
+                        { term: '2023 Term 3', gpa: '3.82', rank: '4/45', status: 'Promoted' },
+                        { term: '2023 Term 2', gpa: '3.75', rank: '7/45', status: 'Normal' },
+                        { term: '2023 Term 1', gpa: '3.90', rank: '2/48', status: 'Excellence' }
+                      ].map((h, i) => (
+                        <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-muted/30 border border-border/40">
+                          <div>
+                            <p className="text-sm font-black">{h.term}</p>
+                            <p className="text-[10px] font-black text-primary uppercase">GPA: {h.gpa} • Rank: {h.rank}</p>
+                          </div>
+                          <span className="text-[9px] font-black uppercase text-muted-foreground bg-white px-2 py-1 rounded-lg border border-border">{h.status}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {activeDetailTab === 'discipline' && (
+                  <div className="space-y-4 animate-fade-in">
+                    <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Discipline Incidents Log</p>
+                    <div className="space-y-2">
+                      {[
+                        { date: '12 May 2024', incident: 'Class Latency', action: 'Verbal Warning', severity: 'low' },
+                        { date: '04 Mar 2024', incident: 'Uniform Violation', action: 'Written Warning', severity: 'low' }
+                      ].map((d, i) => (
+                        <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-muted/30 border border-border/40">
+                          <div className={`w-2 h-10 rounded-full ${d.severity === 'high' ? 'bg-destructive' : 'bg-warning'}`} />
+                          <div className="flex-1">
+                            <p className="text-sm font-black">{d.incident}</p>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase">{d.date} • {d.action}</p>
+                          </div>
+                          <ShieldAlert className="w-4 h-4 text-warning opacity-40" />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-8 p-6 rounded-3xl bg-emerald-500/5 border border-dashed border-emerald-500/30 text-center">
+                      <p className="text-[10px] font-bold text-emerald-600 uppercase">Clear Records</p>
+                      <p className="text-xs font-medium text-emerald-600/70 mt-1">Excellent conduct maintained for the current term.</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="p-6 border-t border-border bg-muted/10 flex justify-end gap-3">
+                <button onClick={() => toast.info('Generating Result Slip...')} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted border border-border text-[10px] font-black uppercase hover:bg-muted/80 transition-all">
+                  <FileText className="w-4 h-4" /> Result Slip
+                </button>
+                <button onClick={() => setViewingStudent(null)} className="px-6 py-2 rounded-xl bg-foreground text-background text-[10px] font-black uppercase hover:opacity-90 transition-all">
+                  Close
+                </button>
               </div>
             </div>
           )}

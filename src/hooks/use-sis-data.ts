@@ -13,6 +13,7 @@ export interface Student {
     status: string;
     fees: string;
     gpa: string;
+    discipline?: { date: string; incident: string; action: string }[];
 }
 
 export interface Staff {
@@ -39,11 +40,11 @@ export interface Announcement {
 
 // Initial Data
 const initialStudents: Student[] = [
-    { id: "BS-2024-001", name: "Amina Hassan Mwangi", gender: "F", class: "Form 4A", dob: "15/03/2008", guardian: "Hassan Mwangi", phone: "+255 712 345 678", status: "active", fees: "paid", gpa: "3.8" },
-    { id: "BS-2024-002", name: "Juma Salim Kiprotich", gender: "M", class: "Form 3B", dob: "22/07/2009", guardian: "Salim Kiprotich", phone: "+255 754 987 654", status: "active", fees: "partial", gpa: "3.2" },
-    { id: "BS-2024-003", name: "Fatuma Ali Odhiambo", gender: "F", class: "Form 2A", dob: "08/11/2010", guardian: "Ali Odhiambo", phone: "+255 767 111 222", status: "active", fees: "paid", gpa: "3.9" },
-    { id: "BS-2024-004", name: "David Mwenda Kamau", gender: "M", class: "Form 1C", dob: "30/01/2011", guardian: "Mwenda Kamau", phone: "+255 745 333 444", status: "new", fees: "unpaid", gpa: "N/A" },
-    { id: "BS-2024-005", name: "Zainab Omar Njoroge", gender: "F", class: "Form 4B", dob: "14/05/2008", guardian: "Omar Njoroge", phone: "+255 786 555 666", status: "active", fees: "paid", gpa: "4.0" },
+    { id: "BS-2024-001", name: "Amina Hassan Mwangi", gender: "F", class: "Form 4A", dob: "15/03/2008", guardian: "Hassan Mwangi", phone: "+255 712 345 678", status: "active", fees: "paid", gpa: "3.8", discipline: [] },
+    { id: "BS-2024-002", name: "Juma Salim Kiprotich", gender: "M", class: "Form 3B", dob: "22/07/2009", guardian: "Salim Kiprotich", phone: "+255 754 987 654", status: "active", fees: "partial", gpa: "3.2", discipline: [{ date: "12/02/2024", incident: "Late to class", action: "Warning" }] },
+    { id: "BS-2024-003", name: "Fatuma Ali Odhiambo", gender: "F", class: "Form 2A", dob: "08/11/2010", guardian: "Ali Odhiambo", phone: "+255 767 111 222", status: "active", fees: "paid", gpa: "3.9", discipline: [] },
+    { id: "BS-2024-004", name: "David Mwenda Kamau", gender: "M", class: "Form 1C", dob: "30/01/2011", guardian: "Mwenda Kamau", phone: "+255 745 333 444", status: "new", fees: "unpaid", gpa: "N/A", discipline: [] },
+    { id: "BS-2024-005", name: "Zainab Omar Njoroge", gender: "F", class: "Form 4B", dob: "14/05/2008", guardian: "Omar Njoroge", phone: "+255 786 555 666", status: "active", fees: "paid", gpa: "4.0", discipline: [] },
 ];
 
 const initialStaff: Staff[] = [
@@ -61,7 +62,7 @@ export function useSisData() {
     const [announcements, setAnnouncements] = useState<Announcement[]>(initialAnnouncements);
 
     const addStudent = useCallback((student: Omit<Student, "id">) => {
-        const newStudent = { ...student, id: `BS-2024-${String(students.length + 1).padStart(3, '0')}` };
+        const newStudent = { ...student, id: `BS-2024-${String(students.length + 1).padStart(3, '0')}`, discipline: [] };
         setStudents(prev => [newStudent, ...prev]);
         toast.success("Mwanafunzi ameongezwa kikamilifu!");
     }, [students.length]);

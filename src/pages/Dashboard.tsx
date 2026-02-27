@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, GraduationCap, DollarSign, ClipboardCheck, TrendingUp, Briefcase, AlertTriangle, BookOpen, ArrowUpRight, ArrowDownRight, Search, Plus, Send, Download, ExternalLink, Calendar, Bell } from "lucide-react";
+import { Users, GraduationCap, DollarSign, ClipboardCheck, TrendingUp, Briefcase, AlertTriangle, BookOpen, ArrowUpRight, ArrowDownRight, Search, Plus, Send, Download, ExternalLink, Calendar, Bell, Clock } from "lucide-react";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, Legend } from "recharts";
 import { toast } from "sonner";
 
@@ -115,7 +115,7 @@ export default function Dashboard() {
 
             <div>
               <p className="text-white/80 font-bold mb-1 ml-1 text-lg">{t('greeting')}</p>
-              <h1 className="text-2xl md:text-3xl font-black font-heading tracking-tight leading-tight">Bendel Schools <span className="text-white/60 font-medium text-xl md:text-2xl">SIS</span></h1>
+              <h1 className="text-2xl md:text-3xl font-black font-heading tracking-tight leading-tight">Bendel Schools <span className="text-white/60 font-medium text-xl md:text-2xl">Management System</span></h1>
             </div>
 
             <p className="text-white/80 font-medium max-w-xl text-lg leading-relaxed">
@@ -176,73 +176,170 @@ export default function Dashboard() {
       </div>
 
       {/* Main Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard icon={GraduationCap} label={t('students')} value="1,248" sub={language === 'sw' ? "Sajili mpya 45 mwezi huu" : "45 new registrations this month"} gradient="bg-gradient-card-blue" change="+12" positive />
-        <StatCard icon={ClipboardCheck} label={t('attendance')} value="93.2%" sub={t('weeklyTrend')} gradient="bg-gradient-card-green" change="+2.1%" positive />
-        <StatCard icon={DollarSign} label={t('totalFees')} value="TSh 16.1M" sub={t('revenueThisMonth')} gradient="bg-gradient-card-amber" change="+8.7%" positive />
-        <StatCard icon={AlertTriangle} label={t('debt')} value="TSh 4.2M" sub={t('outstandingFees')} gradient="bg-gradient-card-rose" change="-3" positive={false} />
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
+        <StatCard icon={GraduationCap} label={t('totalStudents')} value="1,248" sub={language === 'sw' ? "Sajili mpya 45 mwezi huu" : "45 new registrations this month"} gradient="bg-gradient-card-blue" change="+12" positive />
+        <StatCard icon={Briefcase} label={t('staff')} value="156" sub={language === 'sw' ? "Waalimu 120, Watawala 36" : "120 Teachers, 36 Staff"} gradient="bg-gradient-card-purple" change="+2" positive />
+        <StatCard icon={DollarSign} label={language === 'sw' ? "Mapato ya Leo" : "Fee Collection Today"} value="TSh 1.2M" sub={language === 'sw' ? "Kupitia Njia 3" : "Across 3 channels"} gradient="bg-gradient-card-green" change="+15%" positive />
+        <StatCard icon={AlertTriangle} label={t('outstandingFees')} value="TSh 4.2M" sub={language === 'sw' ? "Wanafunzi 67" : "67 students"} gradient="bg-gradient-card-rose" change="-3" positive={false} />
+        <StatCard icon={ClipboardCheck} label={t('attendance')} value="93.2%" sub={language === 'sw' ? "Wanafunzi & Wafanyakazi" : "Students & Staff"} gradient="bg-gradient-card-amber" change="+2.1%" positive />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Attendance Main Chart */}
-        <div className="lg:col-span-2 chart-wrapper p-10 rounded-[2.5rem]">
+        {/* Teacher Performance */}
+        <div className="chart-wrapper p-10 rounded-[2.5rem]">
+          <div className="mb-10">
+            <h3 className="text-xl font-black font-heading text-foreground">{language === 'sw' ? 'Utendaji wa Walimu' : 'Teacher Performance'}</h3>
+            <p className="text-sm text-muted-foreground font-medium">{language === 'sw' ? 'Wastani wa ufundishaji' : 'Teaching effectiveness average'}</p>
+          </div>
+          <div className="space-y-6">
+            {[
+              { name: "Grace Mwamba", rating: 98, subject: "Mathematics" },
+              { name: "John Doe", rating: 92, subject: "Physics" },
+              { name: "Sarah Smith", rating: 85, subject: "Biology" },
+            ].map((teacher, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between text-xs font-bold">
+                  <span>{teacher.name} ({teacher.subject})</span>
+                  <span className="text-primary">{teacher.rating}%</span>
+                </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full bg-primary" style={{ width: `${teacher.rating}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Attendance Summary */}
+        <div className="chart-wrapper p-10 rounded-[2.5rem]">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h3 className="text-xl font-black font-heading text-foreground">{t('weeklyAttendance')}</h3>
-              <p className="text-sm text-muted-foreground font-medium">{t('weeklyAttendanceSub')}</p>
-            </div>
-            <div className="flex bg-muted/40 p-1 rounded-2xl">
-              <button className="px-5 py-2 rounded-xl bg-card shadow-sm text-[10px] font-black uppercase text-primary border border-border/40">{t('daily')}</button>
-              <button className="px-5 py-2 rounded-xl text-[10px] font-black uppercase text-muted-foreground">{t('weekly')}</button>
+              <h3 className="text-xl font-black font-heading text-foreground">{t('attendanceOverview')}</h3>
+              <p className="text-sm text-muted-foreground font-medium">{language === 'sw' ? 'Mahudhurio ya wanafunzi na walimu' : 'Student & Staff attendance summary'}</p>
             </div>
           </div>
-
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={attendanceData} barGap={8} margin={{ bottom: 10 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.4} />
-              <XAxis dataKey="day" tick={{ fontSize: 11, fontWeight: 700, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} dy={10} />
-              <YAxis tick={{ fontSize: 11, fontWeight: 700, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} dx={-10} />
-              <Tooltip
-                contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "20px", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.1)", padding: "16px" }}
-                cursor={{ fill: "hsl(var(--muted))", opacity: 0.4 }}
-              />
-              <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ paddingBottom: '30px', fontSize: '10px', fontWeight: 800, textTransform: 'uppercase' }} />
-              <Bar dataKey="present" name={language === 'sw' ? 'Waliofika' : 'Present'} fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
-              <Bar dataKey="absent" name={language === 'sw' ? 'Wasiofika' : 'Absent'} fill="hsl(var(--destructive))" radius={[8, 8, 0, 0]} />
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={attendanceData}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
+              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700 }} />
+              <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }} />
+              <Legend iconType="circle" />
+              <Bar dataKey="present" name="Students" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="absent" name="Staff" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        {/* Grade Distribution */}
+        {/* Academic Performance Trend */}
         <div className="chart-wrapper p-10 rounded-[2.5rem]">
-          <div className="mb-10">
-            <h3 className="text-xl font-black font-heading text-foreground">{t('academicPass')}</h3>
-            <p className="text-sm text-muted-foreground font-medium">{t('gradeDistribution')}, Term 2</p>
-          </div>
-          <div className="h-[200px] relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={gradeDistribution} cx="50%" cy="50%" innerRadius={60} outerRadius={85} paddingAngle={8} dataKey="value">
-                  {gradeDistribution.map((entry, index) => (
-                    <Cell key={index} fill={entry.color} strokeWidth={0} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ borderRadius: "16px", border: "none", boxShadow: "var(--shadow-lg)" }} />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-3xl font-black text-foreground">79.2%</span>
-              <span className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">{language === 'sw' ? 'Wastani' : 'Average'}</span>
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h3 className="text-xl font-black font-heading text-foreground">{language === 'sw' ? 'Mwenendo wa Kitaaluma' : 'Academic Performance Trend'}</h3>
+              <p className="text-sm text-muted-foreground font-medium">{language === 'sw' ? 'Mchanganuo wa ufaulu kwa mwaka' : 'Yearly performance trend analysis'}</p>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3 mt-10">
-            {gradeDistribution.map(g => (
-              <div key={g.name} className="flex items-center justify-between p-3 rounded-2xl bg-muted/30 border border-border/40">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: g.color }} />
-                  <span className="text-xs font-bold text-foreground">{g.name}</span>
+          <ResponsiveContainer width="100%" height={250}>
+            <AreaChart data={performanceTrend}>
+              <defs>
+                <linearGradient id="colorAvg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
+              <XAxis dataKey="term" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700 }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 700 }} />
+              <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }} />
+              <Area type="monotone" dataKey="avg" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorAvg)" strokeWidth={3} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Upcoming Exams */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                <Calendar className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading text-foreground">{language === 'sw' ? 'Mitihani Inayokuja' : 'Upcoming Exams'}</h3>
+            </div>
+            <span className="px-3 py-1 rounded-lg bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest">
+              Term 2
+            </span>
+          </div>
+          <div className="space-y-1">
+            {[
+              { name: "Midterm Assessment", date: "March 15, 2024", classes: "All Classes", type: "Internal" },
+              { name: "Mock Exam", date: "April 02, 2024", classes: "Form 4, Standard 7", type: "Standardized" },
+              { name: "End of Term", date: "May 20, 2024", classes: "All Classes", type: "Internal" },
+            ].map((exam, i) => (
+              <div key={i} className="flex items-center gap-4 px-8 py-4 hover:bg-muted/40 transition-all rounded-[1.5rem] group mx-2">
+                <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-foreground/40 font-bold text-xs">
+                  {exam.date.split(" ")[1].replace(",", "")}
                 </div>
-                <span className="text-xs font-black text-muted-foreground">{g.value}%</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black text-foreground truncate">{exam.name}</p>
+                  <p className="text-xs font-bold text-muted-foreground/60">{exam.classes}</p>
+                </div>
+                <div className="text-right">
+                  <span className="text-[9px] font-black uppercase text-accent tracking-tighter">{exam.type}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* System Alerts */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center text-destructive">
+                <Bell className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading text-foreground">{language === 'sw' ? 'Tahadhari za Mfumo' : 'System Alerts'}</h3>
+            </div>
+          </div>
+          <div className="px-4 pb-4 space-y-3">
+            {[
+              { msg: "High outstanding balance in Form 4A", type: "risk" },
+              { msg: "3 teachers haven't entered midterm marks", type: "warning" },
+              { msg: "System backup completed successfully", type: "info" },
+            ].map((alert, i) => (
+              <div key={i} className={`p-4 rounded-2xl flex items-center gap-3 ${alert.type === 'risk' ? 'bg-destructive/10 text-destructive' : alert.type === 'warning' ? 'bg-warning/10 text-warning' : 'bg-success/10 text-success'}`}>
+                <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
+                <p className="text-xs font-bold leading-tight">{alert.msg}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Activities */}
+        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
+          <div className="flex items-center justify-between px-8 py-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                <Clock className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black font-heading text-foreground">{t('recentActivity')}</h3>
+            </div>
+          </div>
+          <div className="space-y-1">
+            {[
+              { action: "Updated Form 4A timetable", user: "Admin", time: "2 hrs ago" },
+              { action: "Approved fees for 15 students", user: "Principal", time: "4 hrs ago" },
+              { action: "Sent meeting notice to parents", user: "Secretary", time: "Yesterday" },
+            ].map((act, i) => (
+              <div key={i} className="flex items-center gap-4 px-8 py-4 hover:bg-muted/40 transition-all rounded-[1.5rem] group mx-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-black text-foreground truncate">{act.action}</p>
+                  <p className="text-xs font-bold text-muted-foreground/60">{act.user} • {act.time}</p>
+                </div>
               </div>
             ))}
           </div>

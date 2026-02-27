@@ -5,6 +5,7 @@ export const translations = {
         // Sidebar & Navigation
         dashboard: "Dashboard",
         analytics: "Analytics",
+        teacherDashboard: "Teacher Dashboard",
         students: "Students",
         staff: "Staff",
         academics: "Academics",
@@ -13,6 +14,7 @@ export const translations = {
         library: "Library",
         inventory: "Inventory",
         announcements: "Announcements",
+        exams: "Examinations",
         usersRoles: "Users & Roles",
         settings: "Settings",
         profile: "Profile",
@@ -40,7 +42,7 @@ export const translations = {
 
         // Dashboard
         greeting: "Hello, Principal 👋",
-        schoolSlogan: "Bendel Schools SIS provides a comprehensive solution for managing academic data, student tracking, and financial reporting with an intuitive interface.",
+        schoolSlogan: "Bendel Schools provides a comprehensive solution for managing academic data, student tracking, and financial reporting with an intuitive interface.",
         totalStudents: "Total Students",
         averageAttendance: "Average Attendance",
         schoolGPA: "School GPA",
@@ -74,7 +76,7 @@ export const translations = {
 
         // Page Titles & Subtitles
         dashboardTitle: "Dashboard",
-        dashboardSubtitle: "Welcome to Bendel Schools Information System",
+        dashboardSubtitle: "Welcome to Bendel Schools Management System",
         analyticsTitle: "Analytics & Reports",
         analyticsSubtitle: "Detailed school reports and insights",
         studentsTitle: "Students",
@@ -191,6 +193,15 @@ export const translations = {
         loadingFullProfile: "Loading full profile...",
         year: "year",
         years: "years",
+        leaveManagement: "Leave Management",
+        payroll: "Payroll",
+        salary: "Salary",
+        lastPaid: "Last Paid",
+        daysRemaining: "Days Remaining",
+        leaveRequests: "Leave Requests",
+        approve: "Approve",
+        decline: "Decline",
+        staffAttendance: "Attendance",
 
         // Analytics
         performanceRate: "Performance Rate",
@@ -509,6 +520,20 @@ export const translations = {
         examTaken: "Exams taken",
         moreFilters: "More filters...",
 
+        // Examinations
+        examTitle: "Examinations",
+        examSubtitle: "Manage exams and results",
+        examSetup: "Exam Setup",
+        marksEntry: "Marks Entry",
+        midterm: "Midterm",
+        terminal: "Terminal",
+        mock: "Mock",
+        enterMarks: "Enter Marks",
+        rank: "Rank",
+        totalMarks: "Total Marks",
+        averageMarks: "Average",
+        division: "Division",
+
         // Communication
         simbulizi: "Conversations",
         searchChat: "Search chat...",
@@ -575,7 +600,9 @@ export const translations = {
         finance: "Fedha",
         library: "Maktaba",
         inventory: "Stoo",
+        teacherDashboard: "Dashibodi ya Mwalimu",
         announcements: "Matangazo",
+        exams: "Mitihani",
         usersRoles: "Watumiaji",
         settings: "Mipangilio",
         profile: "Wasifu",
@@ -603,7 +630,7 @@ export const translations = {
 
         // Dashboard
         greeting: "Hujambo, Mkuu wa Shule 👋",
-        schoolSlogan: "Bendel Schools SIS inatoa suluhisho kamili la kusimamia data za kitaaluma, ufuatiliaji wa wanafunzi, na ripoti za fedha kwa mfumo rahisi.",
+        schoolSlogan: "Bendel Schools inatoa suluhisho kamili la kusimamia data za kitaaluma, ufuatiliaji wa wanafunzi, na ripoti za fedha kwa mfumo rahisi.",
         totalStudents: "Jumla ya Wanafunzi",
         averageAttendance: "Wastani wa Mahudhurio",
         schoolGPA: "GPA ya Shule",
@@ -650,7 +677,7 @@ export const translations = {
 
         // Page Titles & Subtitles
         dashboardTitle: "Dashibodi",
-        dashboardSubtitle: "Karibu kwenye Bendel Schools Information System",
+        dashboardSubtitle: "Karibu kwenye Bendel Schools Management System",
         analyticsTitle: "Takwimu & Uchambuzi",
         analyticsSubtitle: "Ripoti za kina za shule",
         studentsTitle: "Wanafunzi",
@@ -767,6 +794,15 @@ export const translations = {
         loadingFullProfile: "Inapakia wasifu kamili...",
         year: "mwaka",
         years: "miaka",
+        leaveManagement: "Usimamizi wa Likizo",
+        payroll: "Mishahara",
+        salary: "Mshahara",
+        lastPaid: "Ililipwa Mwisho",
+        daysRemaining: "Siku Zilizobaki",
+        leaveRequests: "Maombi ya Likizo",
+        approve: "Idhinisha",
+        decline: "Kataa",
+        staffAttendance: "Mahudhurio",
 
         // Analytics
         performanceRate: "Kiwango cha Ufaulu",
@@ -1146,5 +1182,19 @@ export const translations = {
         secure: "Salama",
         me: "Mimi",
         loadingEmoji: "Inapakia emoji...",
+
+        // Examinations
+        examTitle: "Mitihani",
+        examSubtitle: "Simamia mitihani na matokeo",
+        examSetup: "Kuandaa Mtihani",
+        marksEntry: "Kuingiza Alama",
+        midterm: "Midterm",
+        terminal: "Terminal",
+        mock: "Mock",
+        enterMarks: "Ingiza Alama",
+        rank: "Nafasi",
+        totalMarks: "Jumla ya Alama",
+        averageMarks: "Wastani",
+        division: "Daraja",
     }
 };
