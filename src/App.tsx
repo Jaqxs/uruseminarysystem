@@ -14,7 +14,6 @@ import Timetable from "./pages/Timetable";
 import Communication from "./pages/Communication";
 import Announcements from "./pages/Announcements";
 import Inventory from "./pages/Inventory";
-import Library from "./pages/Library";
 import Grades from "./pages/Grades";
 import Examinations from "./pages/Examinations";
 import Analytics from "./pages/Analytics";
@@ -24,7 +23,9 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import AcademicMasterDashboard from "./pages/AcademicMasterDashboard";
 import { LanguageProvider } from "./context/LanguageContext";
+import { AuthProvider } from "./context/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -35,30 +36,32 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route element={<Layout />}>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/teacher" element={<TeacherDashboard />} />
-              <Route path="/students" element={<Students />} />
-              <Route path="/academics" element={<Academics />} />
-              <Route path="/attendance" element={<Attendance />} />
-              <Route path="/grades" element={<Grades />} />
-              <Route path="/exams" element={<Examinations />} />
-              <Route path="/timetable" element={<Timetable />} />
-              <Route path="/staff" element={<Staff />} />
-              <Route path="/finance" element={<Finance />} />
-              <Route path="/inventory" element={<Inventory />} />
-              <Route path="/library" element={<Library />} />
-              <Route path="/communication" element={<Communication />} />
-              <Route path="/announcements" element={<Announcements />} />
-              <Route path="/users" element={<UsersRoles />} />
-              <Route path="/settings" element={<SystemSettings />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route element={<Layout />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/teacher" element={<TeacherDashboard />} />
+                <Route path="/academic-master" element={<AcademicMasterDashboard />} />
+                <Route path="/students" element={<Students />} />
+                <Route path="/academics" element={<Academics />} />
+                <Route path="/attendance" element={<Attendance />} />
+                <Route path="/grades" element={<Grades />} />
+                <Route path="/exams" element={<Examinations />} />
+                <Route path="/timetable" element={<Timetable />} />
+                <Route path="/staff" element={<Staff />} />
+                <Route path="/finance" element={<Finance />} />
+                <Route path="/inventory" element={<Inventory />} />
+                <Route path="/communication" element={<Communication />} />
+                <Route path="/announcements" element={<Announcements />} />
+                <Route path="/users" element={<UsersRoles />} />
+                <Route path="/settings" element={<SystemSettings />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>

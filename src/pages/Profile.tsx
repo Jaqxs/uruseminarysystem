@@ -1,18 +1,21 @@
 import { User, Mail, Phone, MapPin, Briefcase, Calendar, Shield, Camera, Edit2 } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Profile() {
     const { t } = useLanguage();
+    const { user: authUser } = useAuth();
+
     const user = {
-        name: t('adminName'),
-        role: t('superAdmin'),
-        email: "admin@bendel.ac.tz",
-        phone: "+255 712 345 678",
-        location: "Dar es Salaam, Tanzania",
-        joined: `${t('january')} 2024`,
-        dept: t('itDept'),
-        bio: t('adminBio'),
+        name: authUser?.name || t('adminName'),
+        role: authUser?.role ? t(`role_${authUser.role}` as any) : t('superAdmin'),
+        email: authUser?.email || "user@bendel.ac.tz",
+        phone: authUser?.phone || "+255 000 000 000",
+        location: authUser?.location || "Tanzania",
+        joined: authUser?.joined || "2024",
+        dept: authUser?.dept || t('itDept'),
+        bio: authUser?.bio || "No biography provided.",
     };
 
     return (
@@ -24,7 +27,7 @@ export default function Profile() {
                     <div className="relative flex items-end justify-between -mt-12 mb-6">
                         <div className="relative">
                             <div className="w-32 h-32 rounded-3xl bg-gradient-primary border-4 border-card flex items-center justify-center text-white text-4xl font-bold shadow-md">
-                                AM
+                                {user.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                             </div>
                             <button onClick={() => toast.info(t('openingImageManager'))} className="absolute bottom-0 right-0 p-2 rounded-xl bg-background border border-border shadow-sm text-muted-foreground hover:text-primary transition-colors">
                                 <Camera className="w-4 h-4" />

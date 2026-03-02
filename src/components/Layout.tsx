@@ -3,12 +3,15 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 export function Layout() {
   const { t } = useLanguage();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   const pageTitles: Record<string, { title: string; subtitle: string }> = {
     "/": { title: t('dashboardTitle'), subtitle: t('dashboardSubtitle') },
@@ -21,7 +24,6 @@ export function Layout() {
     "/staff": { title: t('staffTitle'), subtitle: t('staffSubtitle') },
     "/finance": { title: t('financeTitle'), subtitle: t('financeSubtitle') },
     "/inventory": { title: t('inventoryTitle'), subtitle: t('inventorySubtitle') },
-    "/library": { title: t('libraryTitle'), subtitle: t('librarySubtitle') },
     "/communication": { title: t('communicationTitle'), subtitle: t('communicationSubtitle') },
     "/announcements": { title: t('announcementsTitle'), subtitle: t('announcementsSubtitle') },
     "/users": { title: t('usersTitle'), subtitle: t('usersSubtitle') },
@@ -29,7 +31,11 @@ export function Layout() {
     "/profile": { title: t('profile'), subtitle: t('viewProfile') },
   };
 
-  const page = pageTitles[location.pathname] || { title: "Bendel SIS", subtitle: "" };
+  const page = pageTitles[location.pathname] || { title: "Bendel Secondary Memorial School", subtitle: "" };
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">

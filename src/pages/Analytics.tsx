@@ -46,22 +46,21 @@ export default function Analytics() {
     ];
 
     const gradeAnalysis = [
-        { subject: t('hisabati'), avg: 72, target: 80, trend: "+4%" },
-        { subject: t('scienceLabel'), avg: 78, target: 85, trend: "+2%" },
-        { subject: t('kiswahiliSomo'), avg: 85, target: 90, trend: "+1%" },
-        { subject: t('kiingereza'), avg: 81, target: 85, trend: "+3%" },
-        { subject: t('historia'), avg: 68, target: 75, trend: "-1%" },
+        { subject: t('math'), avg: 72, trend: "+4%" },
+        { subject: t('scienceLabel'), avg: 78, trend: "+2%" },
+        { subject: t('kiswahili'), avg: 85, trend: "+1%" },
+        { subject: t('english'), avg: 81, trend: "+3%" },
+        { subject: t('history'), avg: 68, trend: "-1%" },
     ];
 
     return (
         <div className="space-y-6 animate-fade-in pb-12">
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
                     { icon: TrendingUp, label: t('performanceRate'), value: "88.2%", sub: `+3.1% ${t('thisSeason')}`, gradient: "bg-gradient-card-blue" },
                     { icon: Users, label: t('attendanceRate'), value: "94.5%", sub: t('present'), gradient: "bg-gradient-card-green" },
-                    { icon: GraduationCap, label: t('schoolGPA'), value: "3.81", sub: t('outOfFive'), gradient: "bg-gradient-card-rose" },
-                    { icon: Target, label: t('targetT1'), value: "92%", sub: t('termProgress'), gradient: "bg-gradient-card-purple" },
+                    { icon: GraduationCap, label: t('schoolGPA'), value: "Div I", sub: t('academicTrend'), gradient: "bg-gradient-card-rose" },
                 ].map((stat, i) => (
                     <div key={i} onClick={() => toast.info(`${t('loadingReport')} ${stat.label.toLowerCase()}...`)} className="stat-card hover:shadow-xl transition-all cursor-pointer group">
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${stat.gradient} mb-3 group-hover:scale-110 transition-transform`}>
@@ -95,7 +94,7 @@ export default function Analytics() {
                                     contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "12px" }}
                                 />
                                 <Legend verticalAlign="top" align="right" iconType="circle" wrapperStyle={{ paddingBottom: '20px', fontSize: '10px', fontWeight: 700 }} />
-                                <Line type="monotone" dataKey="math" name={t('hisabati')} stroke="hsl(var(--primary))" strokeWidth={3} dot={{ r: 0 }} />
+                                <Line type="monotone" dataKey="math" name={t('math')} stroke="hsl(var(--primary))" strokeWidth={3} dot={{ r: 0 }} />
                                 <Line type="monotone" dataKey="science" name={t('scienceLabel')} stroke="hsl(var(--accent))" strokeWidth={3} dot={{ r: 0 }} />
                             </LineChart>
                         </ResponsiveContainer>
@@ -197,7 +196,6 @@ export default function Analytics() {
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="text-xs font-bold text-primary">{item.avg}%</span>
-                                        <span className="text-[9px] font-bold text-muted-foreground uppercase">{t('targetLabel')}: {item.target}%</span>
                                     </div>
                                 </div>
                                 <div className="relative h-2 w-full bg-muted rounded-full overflow-hidden">

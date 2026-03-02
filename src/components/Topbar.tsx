@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
 
 interface TopbarProps {
   onMenuClick: () => void;
@@ -32,6 +33,7 @@ export function Topbar({ onMenuClick, title, subtitle }: TopbarProps) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const notifications = [
     { id: 1, text: t('notif1'), time: `5 ${t('minAgo')}`, type: "warning" },
@@ -111,14 +113,16 @@ export function Topbar({ onMenuClick, title, subtitle }: TopbarProps) {
       </div>
 
       {/* Search Trigger */}
-      <div
-        onClick={() => setSearchOpen(true)}
-        className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/60 border border-border/50 text-sm text-muted-foreground w-56 hover:bg-muted transition-colors cursor-pointer"
-      >
-        <Search className="w-4 h-4" />
-        <span>{t('search')}</span>
-        <kbd className="ml-auto text-[10px] px-1.5 py-0.5 rounded border border-border bg-background">⌘K</kbd>
-      </div>
+      {location.pathname !== "/" && (
+        <div
+          onClick={() => setSearchOpen(true)}
+          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/60 border border-border/50 text-sm text-muted-foreground w-56 hover:bg-muted transition-colors cursor-pointer"
+        >
+          <Search className="w-4 h-4" />
+          <span>{t('search')}</span>
+          <kbd className="ml-auto text-[10px] px-1.5 py-0.5 rounded border border-border bg-background">⌘K</kbd>
+        </div>
+      )}
 
       {/* Language Toggle */}
       <DropdownMenu>
@@ -189,38 +193,42 @@ export function Topbar({ onMenuClick, title, subtitle }: TopbarProps) {
       </div>
 
       {/* Quick add */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all hover:-translate-y-0.5">
-            <Plus className="w-4 h-4" />
-            <span>{t('addPlus')}</span>
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2 shadow-lg border-border">
-          <DropdownMenuLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">{t('addNew')}</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => navigate("/students")} className="rounded-xl cursor-pointer">{t('student')}</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate("/staff")} className="rounded-xl cursor-pointer">{t('staffMember')}</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate("/announcements")} className="rounded-xl cursor-pointer">{t('announcement')}</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate("/inventory")} className="rounded-xl cursor-pointer">{t('item')}</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {['admin', 'director', 'teacher', 'bursar'].includes(user?.role || '') && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all hover:-translate-y-0.5">
+              <Plus className="w-4 h-4" />
+              <span>{t('addPlus')}</span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2 shadow-lg border-border">
+            <DropdownMenuLabel className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">{t('addNew')}</DropdownMenuLabel>
+            {['admin', 'director', 'teacher'].includes(user?.role || '') && <DropdownMenuItem onClick={() => navigate("/students")} className="rounded-xl cursor-pointer">{t('student')}</DropdownMenuItem>}
+            {['admin', 'director'].includes(user?.role || '') && <DropdownMenuItem onClick={() => navigate("/staff")} className="rounded-xl cursor-pointer">{t('staffMember')}</DropdownMenuItem>}
+            {['admin', 'director', 'teacher', 'bursar'].includes(user?.role || '') && <DropdownMenuItem onClick={() => navigate("/announcements")} className="rounded-xl cursor-pointer">{t('announcement')}</DropdownMenuItem>}
+            {['admin', 'bursar'].includes(user?.role || '') && <DropdownMenuItem onClick={() => navigate("/inventory")} className="rounded-xl cursor-pointer">{t('item')}</DropdownMenuItem>}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
 
       {/* Avatar Dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-2 cursor-pointer group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center text-white text-sm font-bold shadow-md-blue group-hover:shadow-glow transition-all">
-              AM
+            <div className="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center text-white text-sm font-bold shadow-md-blue group-hover:shadow-glow transition-all uppercase">
+              {user ? user.name.split(" ").map(n => n[0]).join("").slice(0, 2) : "AM"}
             </div>
             <ChevronDown className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-colors hidden sm:block" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2 shadow-lg border-border">
           <div className="flex items-center gap-3 p-2 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold">AM</div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center text-white font-bold uppercase text-xs tracking-tighter">
+              {user?.name ? user.name.split(" ").filter(Boolean).map(n => n[0]).join("").slice(0, 2) : "AM"}
+            </div>
             <div className="min-w-0">
-              <p className="text-sm font-bold truncate">{t('adminName')}</p>
-              <p className="text-[10px] text-muted-foreground truncate">admin@bendel.ac.tz</p>
+              <p className="text-sm font-bold truncate leading-none mb-1">{user?.name || t('adminName')}</p>
+              <p className="text-[10px] text-muted-foreground truncate">{user?.email || "admin@bendel.ac.tz"}</p>
             </div>
           </div>
           <DropdownMenuSeparator className="bg-border/50" />
@@ -240,6 +248,7 @@ export function Topbar({ onMenuClick, title, subtitle }: TopbarProps) {
           <DropdownMenuItem
             onClick={() => {
               toast.info(t('loggedOutAll'));
+              logout();
               navigate("/login");
             }}
             className="rounded-xl cursor-pointer py-2 text-destructive focus:text-destructive focus:bg-destructive-light"

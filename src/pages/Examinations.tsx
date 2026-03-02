@@ -10,13 +10,16 @@ import {
 } from "recharts";
 import { toast } from "sonner";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
 export default function Examinations() {
     const { t } = useLanguage();
+    const { user } = useAuth();
     const [search, setSearch] = useState("");
     const [activeTab, setActiveTab] = useState("exams"); // exams, marks, analysis
+    const [nectaLevel, setNectaLevel] = useState<"psle" | "csee" | "acsee">("csee");
 
     const exams = [
         { id: "EX-2024-001", title: "Mid-Term Examination", term: "Term 1", date: "15 Mar 2024", status: "completed", students: 1240, type: "Midterm" },
@@ -103,12 +106,14 @@ export default function Examinations() {
                                 </div>
                             ))}
 
-                            <button className="flex flex-col items-center justify-center p-6 rounded-[2rem] border-2 border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-all text-muted-foreground group">
-                                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted mb-3 group-hover:bg-primary/10 group-hover:text-primary transition-all">
-                                    <Plus className="w-6 h-6" />
-                                </div>
-                                <p className="text-sm font-black uppercase tracking-widest">{t('examSetup')}</p>
-                            </button>
+                            {['admin', 'director', 'teacher'].includes(user?.role || '') && (
+                                <button className="flex flex-col items-center justify-center p-6 rounded-[2rem] border-2 border-dashed border-border hover:border-primary/50 hover:bg-primary/5 transition-all text-muted-foreground group">
+                                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-muted mb-3 group-hover:bg-primary/10 group-hover:text-primary transition-all">
+                                        <Plus className="w-6 h-6" />
+                                    </div>
+                                    <p className="text-sm font-black uppercase tracking-widest">{t('examSetup')}</p>
+                                </button>
+                            )}
                         </div>
                     </div>
 
@@ -159,97 +164,116 @@ export default function Examinations() {
                                 <h3 className="text-lg font-black font-heading text-foreground">{t('marksEntry')}</h3>
                                 <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Grading Scale: A (80+), B (70+), C (60+), D (50+), F (Below 50)</p>
                             </div>
-                            <div className="flex flex-wrap gap-4">
-                                <select className="bg-background border border-border rounded-xl px-4 py-2 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none min-w-[140px]">
-                                    <option>Mathematics</option>
-                                    <option>English</option>
-                                    <option>Science</option>
-                                </select>
-                                <select className="bg-background border border-border rounded-xl px-4 py-2 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none min-w-[140px]">
-                                    <option>Form 4A</option>
-                                    <option>Form 4B</option>
-                                </select>
-                                <button className="px-6 py-2 rounded-xl bg-primary text-white text-[10px] font-black uppercase shadow-lg shadow-primary/20 hover:scale-105 transition-all">
-                                    Load Students
-                                </button>
-                            </div>
-                        </div>
-                        <div className="p-0 overflow-x-auto">
-                            <table className="w-full border-collapse">
-                                <thead>
-                                    <tr className="bg-muted/10 border-b border-border">
-                                        <th className="px-8 py-4 text-left text-[10px] font-black uppercase text-muted-foreground tracking-widest">Student Name</th>
-                                        <th className="px-6 py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">Score (100)</th>
-                                        <th className="px-6 py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">Grade</th>
-                                        <th className="px-6 py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">Remarks</th>
-                                        <th className="px-8 py-4 text-right text-[10px] font-black uppercase text-muted-foreground tracking-widest">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {[
-                                        { id: 1, name: "Amina Hassan", score: 85 },
-                                        { id: 2, name: "Juma Salim", score: 62 },
-                                        { id: 3, name: "Fatuma Ali", score: 45 },
-                                        { id: 4, name: "David Mwenda", score: 74 },
-                                        { id: 5, name: "Zainab Omar", score: 91 },
-                                    ].map((s) => {
-                                        const getGrade = (score: number) => {
-                                            if (score >= 80) return { grade: 'A', color: 'text-emerald-500', remark: 'Excellent' };
-                                            if (score >= 70) return { grade: 'B', color: 'text-blue-500', remark: 'Very Good' };
-                                            if (score >= 60) return { grade: 'C', color: 'text-amber-500', remark: 'Credit' };
-                                            if (score >= 50) return { grade: 'D', color: 'text-orange-500', remark: 'Pass' };
-                                            return { grade: 'F', color: 'text-destructive', remark: 'Fail' };
-                                        };
-                                        const { grade, color, remark } = getGrade(s.score);
-                                        return (
-                                            <tr key={s.id} className="border-b border-border/40 hover:bg-muted/5 transition-colors group">
-                                                <td className="px-8 py-4">
-                                                    <p className="text-sm font-black text-foreground">{s.name}</p>
-                                                    <p className="text-[10px] font-bold text-muted-foreground">BS-2024-00{s.id}</p>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex justify-center">
-                                                        <input
-                                                            type="number"
-                                                            defaultValue={s.score}
-                                                            max="100"
-                                                            className="w-16 h-10 rounded-xl bg-muted/40 border border-border/50 text-center text-sm font-black focus:ring-2 focus:ring-primary/20 outline-none"
-                                                            onChange={(e) => {
-                                                                const val = parseInt(e.target.value);
-                                                                if (val > 100) toast.error("Score cannot exceed 100");
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 text-center">
-                                                    <span className={`text-lg font-black ${color}`}>{grade}</span>
-                                                </td>
-                                                <td className="px-6 py-4 text-center">
-                                                    <span className="text-[10px] font-black uppercase text-muted-foreground bg-muted/30 px-3 py-1 rounded-full">{remark}</span>
-                                                </td>
-                                                <td className="px-8 py-4 text-right">
-                                                    <button
-                                                        onClick={() => toast.success(`Report Card generated for ${s.name}`)}
-                                                        className="p-2.5 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-white transition-all shadow-sm"
-                                                        title="Preview Report Card"
-                                                    >
-                                                        <Printer className="w-4 h-4" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div className="p-8 border-t border-border bg-muted/5 flex justify-between items-center">
-                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider italic">
-                                * All marks are auto-saved to temporary cache. Click "Commit Results" to finalize.
-                            </p>
-                            <button className="px-8 py-3 rounded-2xl bg-gradient-primary text-white font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all uppercase text-[10px] tracking-widest flex items-center gap-2">
-                                <CheckCircle2 className="w-4 h-4" /> Commit Results
+                            <select
+                                className="bg-background border border-border rounded-xl px-4 py-2 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none min-w-[140px]"
+                                value={nectaLevel}
+                                onChange={(e) => setNectaLevel(e.target.value as any)}
+                            >
+                                <option value="psle">PSLE (Std 7)</option>
+                                <option value="csee">FTNA/CSEE (F2/F4)</option>
+                                <option value="acsee">ACSEE (F6)</option>
+                            </select>
+                            <select className="bg-background border border-border rounded-xl px-4 py-2 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none min-w-[140px]">
+                                <option>Form 4A</option>
+                                <option>Form 4B</option>
+                            </select>
+                            <button className="px-6 py-2 rounded-xl bg-primary text-white text-[10px] font-black uppercase shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                                Load Students
                             </button>
                         </div>
+                    </div>
+                    <div className="p-0 overflow-x-auto">
+                        <table className="w-full border-collapse">
+                            <thead>
+                                <tr className="bg-muted/10 border-b border-border">
+                                    <th className="px-8 py-4 text-left text-[10px] font-black uppercase text-muted-foreground tracking-widest">Student Name</th>
+                                    <th className="px-6 py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">Score (100)</th>
+                                    <th className="px-6 py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">Grade</th>
+                                    <th className="px-6 py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest">Remarks</th>
+                                    <th className="px-8 py-4 text-right text-[10px] font-black uppercase text-muted-foreground tracking-widest">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[
+                                    { id: 1, name: "Amina Hassan", score: 85 },
+                                    { id: 2, name: "Juma Salim", score: 62 },
+                                    { id: 3, name: "Fatuma Ali", score: 45 },
+                                    { id: 4, name: "David Mwenda", score: 74 },
+                                    { id: 5, name: "Zainab Omar", score: 91 },
+                                ].map((s) => {
+                                    const getGrade = (score: number, level: string) => {
+                                        if (level === 'psle') {
+                                            if (score >= 81) return { grade: 'A', color: 'text-emerald-500', remark: 'Excellent' };
+                                            if (score >= 61) return { grade: 'B', color: 'text-blue-500', remark: 'Very Good' };
+                                            if (score >= 41) return { grade: 'C', color: 'text-amber-500', remark: 'Good' };
+                                            if (score >= 21) return { grade: 'D', color: 'text-orange-500', remark: 'Satisfactory' };
+                                            return { grade: 'E', color: 'text-destructive', remark: 'Fail' };
+                                        }
+                                        if (level === 'acsee') {
+                                            if (score >= 80) return { grade: 'A', color: 'text-emerald-500', remark: 'Excellent' };
+                                            if (score >= 70) return { grade: 'B', color: 'text-blue-500', remark: 'Very Good' };
+                                            if (score >= 60) return { grade: 'C', color: 'text-blue-400', remark: 'Good' };
+                                            if (score >= 50) return { grade: 'D', color: 'text-amber-500', remark: 'Average' };
+                                            if (score >= 40) return { grade: 'E', color: 'text-orange-500', remark: 'Satisfactory' };
+                                            if (score >= 35) return { grade: 'S', color: 'text-orange-400', remark: 'Subsidiary' };
+                                            return { grade: 'F', color: 'text-destructive', remark: 'Fail' };
+                                        }
+                                        // Default: FTNA/CSEE
+                                        if (score >= 75) return { grade: 'A', color: 'text-emerald-500', remark: 'Excellent' };
+                                        if (score >= 65) return { grade: 'B', color: 'text-blue-500', remark: 'Very Good' };
+                                        if (score >= 45) return { grade: 'C', color: 'text-amber-500', remark: 'Good' };
+                                        if (score >= 30) return { grade: 'D', color: 'text-orange-500', remark: 'Satisfactory' };
+                                        return { grade: 'F', color: 'text-destructive', remark: 'Fail' };
+                                    };
+                                    const { grade, color, remark } = getGrade(s.score, nectaLevel);
+                                    return (
+                                        <tr key={s.id} className="border-b border-border/40 hover:bg-muted/5 transition-colors group">
+                                            <td className="px-8 py-4">
+                                                <p className="text-sm font-black text-foreground">{s.name}</p>
+                                                <p className="text-[10px] font-bold text-muted-foreground">BS-2024-00{s.id}</p>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex justify-center">
+                                                    <input
+                                                        type="number"
+                                                        defaultValue={s.score}
+                                                        max="100"
+                                                        className="w-16 h-10 rounded-xl bg-muted/40 border border-border/50 text-center text-sm font-black focus:ring-2 focus:ring-primary/20 outline-none"
+                                                        onChange={(e) => {
+                                                            const val = parseInt(e.target.value);
+                                                            if (val > 100) toast.error("Score cannot exceed 100");
+                                                        }}
+                                                    />
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <span className={`text-lg font-black ${color}`}>{grade}</span>
+                                            </td>
+                                            <td className="px-6 py-4 text-center">
+                                                <span className="text-[10px] font-black uppercase text-muted-foreground bg-muted/30 px-3 py-1 rounded-full">{remark}</span>
+                                            </td>
+                                            <td className="px-8 py-4 text-right">
+                                                <button
+                                                    onClick={() => toast.success(`Report Card generated for ${s.name}`)}
+                                                    className="p-2.5 rounded-xl bg-muted text-foreground hover:bg-primary hover:text-white transition-all shadow-sm"
+                                                    title="Preview Report Card"
+                                                >
+                                                    <Printer className="w-4 h-4" />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="p-8 border-t border-border bg-muted/5 flex justify-between items-center">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider italic">
+                            * All marks are auto-saved to temporary cache. Click "Commit Results" to finalize.
+                        </p>
+                        <button className="px-8 py-3 rounded-2xl bg-gradient-primary text-white font-black shadow-lg shadow-primary/20 hover:scale-105 transition-all uppercase text-[10px] tracking-widest flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4" /> Commit Results
+                        </button>
                     </div>
                 </div>
             )}
@@ -307,7 +331,8 @@ export default function Examinations() {
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }

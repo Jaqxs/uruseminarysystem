@@ -1,35 +1,37 @@
 import { useLanguage } from "../context/LanguageContext";
 import { Clock, Plus, Download } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
 
 export default function Timetable() {
   const { t } = useLanguage();
+  const { user } = useAuth();
 
   const days = [t('Monday'), t('Tuesday'), t('Wednesday'), t('Thursday'), t('Friday')];
   const periods = ["7:30 - 8:30", "8:30 - 9:30", "9:30 - 10:30", "10:30 - 11:30", "11:30 - 12:30", "13:00 - 14:00", "14:00 - 15:00", "15:00 - 16:00"];
 
   const colors: Record<string, string> = {
-    [t('hisabati')]: "bg-primary-light text-primary border-primary/20",
-    [t('kiingereza')]: "bg-accent-light text-accent border-accent/20",
-    [t('scienceLabel')]: "bg-info-light text-info border-info/20",
-    [t('kiswahiliSomo')]: "bg-warning-light text-warning border-warning/20",
-    [t('historia')]: "bg-destructive-light text-destructive border-destructive/20",
-    [t('geography')]: "bg-purple-50 text-purple-600 border-purple-200",
+    [t('mathAca')]: "bg-primary-light text-primary border-primary/20",
+    [t('englishAca')]: "bg-accent-light text-accent border-accent/20",
+    [t('biologyAca')]: "bg-info-light text-info border-info/20",
+    [t('kiswahiliAca')]: "bg-warning-light text-warning border-warning/20",
+    [t('historyAca')]: "bg-destructive-light text-destructive border-destructive/20",
+    [t('geographyAca')]: "bg-purple-50 text-purple-600 border-purple-200",
     [t('ict')]: "bg-teal-50 text-teal-600 border-teal-200",
-    [t('fizikia')]: "bg-orange-50 text-orange-600 border-orange-200",
+    [t('physicsAca')]: "bg-orange-50 text-orange-600 border-orange-200",
     [t('breakLabel')]: "bg-muted text-muted-foreground border-border",
     [t('lunchLabel')]: "bg-muted text-muted-foreground border-border",
   };
 
   const schedule: Record<string, Record<string, { subject: string; teacher: string }>> = {
-    "7:30 - 8:30": { [t('Monday')]: { subject: t('hisabati'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Tuesday')]: { subject: t('kiingereza'), teacher: `${t('teacherAbbr')} Grace` }, [t('Wednesday')]: { subject: t('scienceLabel'), teacher: `${t('teacherAbbr')} David` }, [t('Thursday')]: { subject: t('historia'), teacher: `${t('teacherAbbr')} Fatuma` }, [t('Friday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` } },
-    "8:30 - 9:30": { [t('Monday')]: { subject: t('kiswahiliSomo'), teacher: `${t('teacherAbbr')} Amina` }, [t('Tuesday')]: { subject: t('hisabati'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Wednesday')]: { subject: t('kiingereza'), teacher: `${t('teacherAbbr')} Grace` }, [t('Thursday')]: { subject: t('geography'), teacher: `${t('teacherAbbr')} Baraka` }, [t('Friday')]: { subject: t('scienceLabel'), teacher: `${t('teacherAbbr')} David` } },
-    "9:30 - 10:30": { [t('Monday')]: { subject: t('scienceLabel'), teacher: `${t('teacherAbbr')} David` }, [t('Tuesday')]: { subject: t('historia'), teacher: `${t('teacherAbbr')} Fatuma` }, [t('Wednesday')]: { subject: t('hisabati'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Thursday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` }, [t('Friday')]: { subject: t('kiswahiliSomo'), teacher: `${t('teacherAbbr')} Amina` } },
+    "7:30 - 8:30": { [t('Monday')]: { subject: t('mathAca'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Tuesday')]: { subject: t('englishAca'), teacher: `${t('teacherAbbr')} Grace` }, [t('Wednesday')]: { subject: t('biologyAca'), teacher: `${t('teacherAbbr')} David` }, [t('Thursday')]: { subject: t('historyAca'), teacher: `${t('teacherAbbr')} Fatuma` }, [t('Friday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` } },
+    "8:30 - 9:30": { [t('Monday')]: { subject: t('kiswahiliAca'), teacher: `${t('teacherAbbr')} Amina` }, [t('Tuesday')]: { subject: t('mathAca'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Wednesday')]: { subject: t('englishAca'), teacher: `${t('teacherAbbr')} Grace` }, [t('Thursday')]: { subject: t('geographyAca'), teacher: `${t('teacherAbbr')} Baraka` }, [t('Friday')]: { subject: t('biologyAca'), teacher: `${t('teacherAbbr')} David` } },
+    "9:30 - 10:30": { [t('Monday')]: { subject: t('biologyAca'), teacher: `${t('teacherAbbr')} David` }, [t('Tuesday')]: { subject: t('historyAca'), teacher: `${t('teacherAbbr')} Fatuma` }, [t('Wednesday')]: { subject: t('mathAca'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Thursday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` }, [t('Friday')]: { subject: t('kiswahiliAca'), teacher: `${t('teacherAbbr')} Amina` } },
     "10:30 - 11:30": { [t('Monday')]: { subject: t('breakLabel'), teacher: "" }, [t('Tuesday')]: { subject: t('breakLabel'), teacher: "" }, [t('Wednesday')]: { subject: t('breakLabel'), teacher: "" }, [t('Thursday')]: { subject: t('breakLabel'), teacher: "" }, [t('Friday')]: { subject: t('breakLabel'), teacher: "" } },
-    "11:30 - 12:30": { [t('Monday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` }, [t('Tuesday')]: { subject: t('fizikia'), teacher: `${t('teacherAbbr')} Hassan` }, [t('Wednesday')]: { subject: t('geography'), teacher: `${t('teacherAbbr')} Baraka` }, [t('Thursday')]: { subject: t('hisabati'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Friday')]: { subject: t('historia'), teacher: `${t('teacherAbbr')} Fatuma` } },
+    "11:30 - 12:30": { [t('Monday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` }, [t('Tuesday')]: { subject: t('physicsAca'), teacher: `${t('teacherAbbr')} Hassan` }, [t('Wednesday')]: { subject: t('geographyAca'), teacher: `${t('teacherAbbr')} Baraka` }, [t('Thursday')]: { subject: t('mathAca'), teacher: `${t('teacherAbbr')} Kamau` }, [t('Friday')]: { subject: t('historyAca'), teacher: `${t('teacherAbbr')} Fatuma` } },
     "13:00 - 14:00": { [t('Monday')]: { subject: t('lunchLabel'), teacher: "" }, [t('Tuesday')]: { subject: t('lunchLabel'), teacher: "" }, [t('Wednesday')]: { subject: t('lunchLabel'), teacher: "" }, [t('Thursday')]: { subject: t('lunchLabel'), teacher: "" }, [t('Friday')]: { subject: t('lunchLabel'), teacher: "" } },
-    "14:00 - 15:00": { [t('Monday')]: { subject: t('fizikia'), teacher: `${t('teacherAbbr')} Hassan` }, [t('Tuesday')]: { subject: t('kiswahiliSomo'), teacher: `${t('teacherAbbr')} Amina` }, [t('Wednesday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` }, [t('Thursday')]: { subject: t('scienceLabel'), teacher: `${t('teacherAbbr')} David` }, [t('Friday')]: { subject: t('geography'), teacher: `${t('teacherAbbr')} Baraka` } },
-    "15:00 - 16:00": { [t('Monday')]: { subject: t('historia'), teacher: `${t('teacherAbbr')} Fatuma` }, [t('Tuesday')]: { subject: t('geography'), teacher: `${t('teacherAbbr')} Baraka` }, [t('Wednesday')]: { subject: t('fizikia'), teacher: `${t('teacherAbbr')} Hassan` }, [t('Thursday')]: { subject: t('kiingereza'), teacher: `${t('teacherAbbr')} Grace` }, [t('Friday')]: { subject: t('hisabati'), teacher: `${t('teacherAbbr')} Kamau` } },
+    "14:00 - 15:00": { [t('Monday')]: { subject: t('physicsAca'), teacher: `${t('teacherAbbr')} Hassan` }, [t('Tuesday')]: { subject: t('kiswahiliAca'), teacher: `${t('teacherAbbr')} Amina` }, [t('Wednesday')]: { subject: t('ict'), teacher: `${t('teacherAbbr')} Amos` }, [t('Thursday')]: { subject: t('biologyAca'), teacher: `${t('teacherAbbr')} David` }, [t('Friday')]: { subject: t('geographyAca'), teacher: `${t('teacherAbbr')} Baraka` } },
+    "15:00 - 16:00": { [t('Monday')]: { subject: t('historyAca'), teacher: `${t('teacherAbbr')} Fatuma` }, [t('Tuesday')]: { subject: t('geographyAca'), teacher: `${t('teacherAbbr')} Baraka` }, [t('Wednesday')]: { subject: t('physicsAca'), teacher: `${t('teacherAbbr')} Hassan` }, [t('Thursday')]: { subject: t('englishAca'), teacher: `${t('teacherAbbr')} Grace` }, [t('Friday')]: { subject: t('mathAca'), teacher: `${t('teacherAbbr')} Kamau` } },
   };
 
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
@@ -55,9 +57,11 @@ export default function Timetable() {
           <button onClick={() => toast.promise(new Promise(r => setTimeout(r, 1500)), { loading: t('preparingTimetable'), success: t('timetableDownloaded'), error: "Error" })} className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border bg-background text-sm font-medium hover:bg-muted transition-all active:scale-95">
             <Download className="w-4 h-4" /> {t('printTimetable')}
           </button>
-          <button onClick={() => toast.info(t('addSubjectForm'))} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all active:scale-95 leading-none">
-            <Plus className="w-4 h-4" /> {t('addSubject')}
-          </button>
+          {['admin', 'director'].includes(user?.role || '') && (
+            <button onClick={() => toast.info(t('addSubjectForm'))} className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all active:scale-95 leading-none">
+              <Plus className="w-4 h-4" /> {t('addSubject')}
+            </button>
+          )}
         </div>
       </div>
 

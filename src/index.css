@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* === BENDEL SCHOOLS SIS DESIGN TOKENS === */
+    /* === BENDEL MEMORIAL SCHOOL SIS DESIGN TOKENS === */
 
     /* Backgrounds */
     --background: 220 25% 97%;
@@ -96,12 +96,18 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Space Grotesk', sans-serif;
   }
 }
 
 @layer components {
+
   /* Glass Card */
   .glass-card {
     background: rgba(255, 255, 255, 0.85);
@@ -119,6 +125,7 @@
     border: 1px solid hsl(var(--border));
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
   .stat-card:hover {
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
@@ -128,10 +135,12 @@
   .page-header {
     @apply mb-8;
   }
+
   .page-header h1 {
     @apply text-2xl font-bold tracking-tight;
     color: hsl(var(--foreground));
   }
+
   .page-header p {
     @apply text-sm mt-1;
     color: hsl(var(--muted-foreground));
@@ -142,10 +151,12 @@
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer;
     color: hsl(var(--sidebar-foreground));
   }
+
   .sidebar-item:hover {
     background: hsl(var(--sidebar-accent));
     color: hsl(var(--sidebar-accent-foreground));
   }
+
   .sidebar-item.active {
     background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
@@ -158,21 +169,25 @@
     background: hsl(var(--accent-light));
     color: hsl(var(--accent));
   }
+
   .badge-warning {
     @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
     background: hsl(var(--warning-light));
     color: hsl(var(--warning));
   }
+
   .badge-danger {
     @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
     background: hsl(var(--destructive-light));
     color: hsl(var(--destructive));
   }
+
   .badge-info {
     @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
     background: hsl(var(--info-light));
     color: hsl(var(--info));
   }
+
   .badge-primary {
     @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold;
     background: hsl(var(--primary-light));
@@ -183,16 +198,19 @@
   .sis-table {
     @apply w-full text-sm;
   }
+
   .sis-table th {
     @apply text-left py-3 px-4 font-semibold text-xs uppercase tracking-wider;
     color: hsl(var(--muted-foreground));
     background: hsl(var(--muted));
     border-bottom: 1px solid hsl(var(--border));
   }
+
   .sis-table td {
     @apply py-3.5 px-4;
     border-bottom: 1px solid hsl(var(--border) / 0.5);
   }
+
   .sis-table tr:hover td {
     background: hsl(var(--primary-light));
   }
@@ -206,10 +224,23 @@
   }
 
   /* Scrollbar */
-  ::-webkit-scrollbar { width: 5px; height: 5px; }
-  ::-webkit-scrollbar-track { background: hsl(var(--muted)); }
-  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
-  ::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 99px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
+  }
 
   /* Animated pulse dot */
   .pulse-dot {
@@ -219,8 +250,19 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4); }
-    50% { opacity: 0.8; transform: scale(1.1); box-shadow: 0 0 0 6px hsl(var(--accent) / 0); }
+
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4);
+    }
+
+    50% {
+      opacity: 0.8;
+      transform: scale(1.1);
+      box-shadow: 0 0 0 6px hsl(var(--accent) / 0);
+    }
   }
 
   /* Chart container */
@@ -229,5 +271,10 @@
     background: hsl(var(--card));
     border: 1px solid hsl(var(--border));
     box-shadow: var(--shadow-card);
+  }
+
+  /* Form label utility */
+  .label-xs {
+    @apply text-[10px] font-black uppercase tracking-widest text-muted-foreground block mb-1.5;
   }
 }

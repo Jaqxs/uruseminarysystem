@@ -2,11 +2,13 @@ import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Users, BookOpen, ClipboardCheck, TrendingUp,
-  DollarSign, Briefcase, Package, Clock, Library, MessageSquare,
+  DollarSign, Briefcase, Package, Clock, MessageSquare,
   Settings, ChevronDown, GraduationCap, Bell, Search, Menu, X,
-  LogOut, User, Shield, BarChart3, FileText, Star
+  LogOut, User, Shield, BarChart3, FileText, Star, Library
 } from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
+import { UserRole } from "@/lib/auth";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -18,51 +20,58 @@ interface SidebarProps {
 export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {
   const { t } = useLanguage();
   const location = useLocation();
+  const { user } = useAuth();
+
+  // Define Role Base Access Control for Nav
+  const hasAccess = (allowedRoles: string[]) => {
+    if (!user) return false;
+    return allowedRoles.includes(user.role);
+  };
 
   const navGroups = [
     {
       label: t('overview'),
       items: [
-        { icon: LayoutDashboard, label: t('dashboard'), path: "/" },
-        { icon: Star, label: t('teacherDashboard'), path: "/teacher" },
-        { icon: BarChart3, label: t('analytics'), path: "/analytics" },
-      ]
+        { icon: LayoutDashboard, label: t('dashboard'), path: "/", roles: ['admin', 'director'] },
+        { icon: LayoutDashboard, label: t('academicDashboard'), path: "/academic-master", roles: ['academic_master'] },
+        { icon: Star, label: t('teacherDashboard'), path: "/teacher", roles: ['teacher'] },
+        { icon: BarChart3, label: t('analytics'), path: "/analytics", roles: ['admin', 'director'] },
+      ].filter(item => hasAccess(item.roles))
     },
     {
       label: t('academic'),
       items: [
-        { icon: Users, label: t('students'), path: "/students" },
-        { icon: BookOpen, label: t('academics'), path: "/academics" },
-        { icon: ClipboardCheck, label: t('attendance'), path: "/attendance" },
-        { icon: FileText, label: t('exams'), path: "/exams" },
-        { icon: TrendingUp, label: t('gradesReports'), path: "/grades" },
-        { icon: Clock, label: t('timetable'), path: "/timetable" },
-      ]
+        { icon: Users, label: t('students'), path: "/students", roles: ['admin', 'director', 'teacher', 'academic_master'] },
+        { icon: BookOpen, label: t('academics'), path: "/academics", roles: ['admin', 'director', 'teacher', 'academic_master'] },
+        { icon: ClipboardCheck, label: t('attendance'), path: "/attendance", roles: ['admin', 'teacher', 'academic_master'] },
+        { icon: FileText, label: t('exams'), path: "/exams", roles: ['admin', 'teacher', 'academic_master'] },
+        { icon: TrendingUp, label: t('gradesReports'), path: "/grades", roles: ['admin', 'teacher', 'academic_master'] },
+        { icon: Clock, label: t('timetable'), path: "/timetable", roles: ['admin', 'teacher', 'academic_master'] },
+      ].filter(item => hasAccess(item.roles))
     },
     {
       label: t('administration'),
       items: [
-        { icon: Briefcase, label: t('staff'), path: "/staff" },
-        { icon: DollarSign, label: t('finance'), path: "/finance" },
-        { icon: Package, label: t('inventory'), path: "/inventory" },
-        { icon: Library, label: t('library'), path: "/library" },
-      ]
+        { icon: Briefcase, label: t('staff'), path: "/staff", roles: ['admin', 'director', 'academic_master'] },
+        { icon: DollarSign, label: t('finance'), path: "/finance", roles: ['admin', 'bursar', 'director'] },
+        { icon: Package, label: t('inventory'), path: "/inventory", roles: ['admin', 'bursar'] },
+      ].filter(item => hasAccess(item.roles))
     },
     {
       label: t('communication'),
       items: [
-        { icon: MessageSquare, label: t('messages'), path: "/communication" },
-        { icon: Bell, label: t('announcements'), path: "/announcements" },
-      ]
+        { icon: MessageSquare, label: t('messages'), path: "/communication", roles: ['admin', 'teacher', 'director', 'bursar', 'academic_master'] },
+        { icon: Bell, label: t('announcements'), path: "/announcements", roles: ['admin', 'teacher', 'director', 'bursar', 'academic_master'] },
+      ].filter(item => hasAccess(item.roles))
     },
     {
       label: t('system'),
       items: [
-        { icon: Shield, label: t('usersRoles'), path: "/users" },
-        { icon: Settings, label: t('settings'), path: "/settings" },
-      ]
+        { icon: Shield, label: t('usersRoles'), path: "/users", roles: ['admin'] },
+        { icon: Settings, label: t('settings'), path: "/settings", roles: ['admin', 'director'] },
+      ].filter(item => hasAccess(item.roles))
     }
-  ];
+  ].filter(group => group.items.length > 0);
 
   const [expandedGroups, setExpandedGroups] = useState<string[]>(navGroups.map(g => g.label));
 
@@ -75,13 +84,13 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
   const sidebarContent = (
     <div className="flex flex-col h-full" style={{ background: "var(--gradient-sidebar)" }}>
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border">
-        <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto mb-6 shadow-glow overflow-hidden p-2">
+      <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border h-[88px]">
+        <div className={`rounded-xl bg-white flex items-center justify-center shadow-glow overflow-hidden p-1 transition-all flex-shrink-0 ${collapsed ? 'w-10 h-10' : 'w-12 h-12'}`}>
           <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
-            <p className="font-bold text-sm text-white leading-tight">Bendel Schools</p>
+            <p className="font-bold text-sm text-white leading-tight">Bendel Secondary Memorial School</p>
             <p className="text-[10px] font-medium" style={{ color: "hsl(var(--sidebar-muted))" }}>Management System</p>
           </div>
         )}
@@ -158,26 +167,18 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
           to="/profile"
           className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""} hover:bg-sidebar-accent p-2 rounded-xl transition-colors group ${location.pathname === "/profile" ? "bg-sidebar-accent" : ""}`}
         >
-          <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-all">
-            <User className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 group-hover:shadow-glow transition-all text-white text-[10px] font-black tracking-tighter uppercase">
+            {user?.name ? user.name.split(' ').map(n => n[0]).join('').substring(0, 2) : <User className="w-4 h-4" />}
           </div>
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-white truncate">{t('adminName')}</p>
-              <p className="text-[10px] truncate" style={{ color: "hsl(var(--sidebar-muted))" }}>{t('superAdmin')}</p>
+              <p className="text-xs font-bold text-white truncate leading-none mb-0.5">{user?.name || t('adminName')}</p>
+              <p className="text-[9px] truncate opacity-50 uppercase font-black tracking-wider" style={{ color: "hsl(var(--sidebar-muted))" }}>
+                {user?.role ? t(`role_${user.role}` as any) : t('superAdmin')}
+              </p>
             </div>
           )}
         </NavLink>
-        {!collapsed && (
-          <NavLink
-            to="/login"
-            style={{ color: "hsl(var(--sidebar-muted))" }}
-            className="flex items-center gap-2 mt-4 px-2 hover:text-white transition-colors text-xs font-medium"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>{t('logout')}</span>
-          </NavLink>
-        )}
       </div>
     </div>
   );

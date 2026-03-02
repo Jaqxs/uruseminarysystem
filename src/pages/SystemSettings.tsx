@@ -6,20 +6,18 @@ export default function Settings() {
   const { t } = useLanguage();
 
   const schoolDetails = [
-    { label: t('schoolNameLabel'), value: "Bendel Schools" },
-    { label: t('locationLabel'), value: "Dar es Salaam, Tanzania" },
-    { label: t('emailLabelSetting'), value: "info@bendelschools.ac.tz" },
+    { label: t('schoolNameLabel'), value: "Bendel Secondary Memorial School" },
+    { label: t('addressLabel'), value: "Kinondoni, Dar es Salaam, Tanzania" },
+    { label: t('emailLabelSetting'), value: "info@bendelmemorial.ac.tz" },
     { label: t('phoneLabel'), value: "+255 22 123 4567" },
     { label: t('academicYearLabel'), value: "2024/2025" },
     { label: t('currentTermLabel'), value: t('term2') },
   ];
 
   const gradingSystem = [
-    { grade: "A", range: "80 – 100", points: "4.0", color: "text-accent" },
-    { grade: "B", range: "65 – 79", points: "3.0", color: "text-primary" },
-    { grade: "C", range: "50 – 64", points: "2.0", color: "text-info" },
-    { grade: "D", range: "40 – 49", points: "1.0", color: "text-warning" },
-    { grade: "F", range: "0 – 39", points: "0.0", color: "text-destructive" },
+    { level: "CSEE (F4)", a: "75-100", b: "65-74", c: "45-64", d: "30-44", f: "0-29" },
+    { level: "ACSEE (F6)", a: "80-100", b: "70-79", c: "60-69", d: "50-59", f: "0-34" },
+    { level: "PSLE (Std 7)", a: "81-100", b: "61-80", c: "41-60", d: "21-40", f: "0-20" },
   ];
 
   const notificationSettings = [
@@ -63,12 +61,27 @@ export default function Settings() {
               <Globe className="w-5 h-5 text-accent" />
               <h3 className="font-bold text-foreground font-heading">{t('gradingSystem')}</h3>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
               {gradingSystem.map(g => (
-                <div key={g.grade} className="flex items-center gap-3 p-3 rounded-xl bg-muted/40 hover:bg-muted/60 transition-colors cursor-pointer group">
-                  <span className={`text-lg font-bold font-heading w-6 ${g.color} group-hover:scale-110 transition-transform`}>{g.grade}</span>
-                  <span className="text-sm text-foreground flex-1">{g.range}%</span>
-                  <span className="badge-primary text-xs font-bold">{g.points} GPA</span>
+                <div key={g.level} className="p-4 rounded-2xl bg-muted/40 border border-border/50">
+                  <div className="flex items-center justify-between mb-3 border-b border-border/40 pb-2">
+                    <span className="text-sm font-black text-primary uppercase tracking-widest">{g.level}</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase">NECTA Scale</span>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[
+                      { l: 'A', r: g.a, c: 'text-emerald-500' },
+                      { l: 'B', r: g.b, c: 'text-blue-500' },
+                      { l: 'C', r: g.c, c: 'text-amber-500' },
+                      { l: 'D', r: g.d, c: 'text-orange-500' },
+                      { l: 'F', r: g.f, c: 'text-destructive' },
+                    ].map(grade => (
+                      <div key={grade.l} className="text-center">
+                        <p className={`text-xs font-black ${grade.c}`}>{grade.l}</p>
+                        <p className="text-[9px] font-bold text-muted-foreground mt-0.5">{grade.r}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

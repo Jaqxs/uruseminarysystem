@@ -13,9 +13,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Finance() {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
 
   const initialPayments = [
     { id: "TXN-001", student: "Amina Hassan", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Bursar Jane" },
@@ -56,13 +58,13 @@ export default function Finance() {
       {/* 1️⃣ Financial Summary (Top KPIs) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
         {[
-          { label: "Fees Today", value: "TSh 1.2M", icon: Wallet, color: "bg-blue-500" },
-          { label: "Fees Term", value: "TSh 65.4M", icon: Landmark, color: "bg-indigo-500" },
-          { label: "Expected", value: "TSh 85.0M", icon: Target, color: "bg-emerald-500" },
-          { label: "Performance", value: "77%", icon: Activity, color: "bg-amber-500" },
-          { label: "Outstanding", value: "TSh 4.2M", icon: AlertCircle, color: "bg-rose-500" },
-          { label: "Expenses MTD", value: "TSh 11.5M", icon: TrendingDown, color: "bg-orange-500" },
-          { label: "Net Position", value: "TSh 53.9M", icon: DollarSign, color: "bg-primary" },
+          { label: t('feesToday'), value: "TSh 1,200,000", icon: Wallet, color: "bg-blue-500" },
+          { label: t('feesTerm'), value: "TSh 65,400,000", icon: Landmark, color: "bg-indigo-500" },
+          { label: t('expectedRevenue'), value: "TSh 85,000,000", icon: Target, color: "bg-emerald-500" },
+          { label: t('performance'), value: "77%", icon: Activity, color: "bg-amber-500" },
+          { label: t('outstanding'), value: "TSh 4,200,000", icon: AlertCircle, color: "bg-rose-500" },
+          { label: t('expensesMTD'), value: "TSh 11,500,000", icon: TrendingDown, color: "bg-orange-500" },
+          { label: t('netPosition'), value: "TSh 53,900,000", icon: DollarSign, color: "bg-primary" },
         ].map((kpi, i) => (
           <div key={i} className="bg-card border border-border p-6 rounded-[2rem] shadow-sm hover:shadow-md transition-all group">
             <div className={`w-10 h-10 rounded-xl ${kpi.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-black/5`}>
@@ -79,12 +81,12 @@ export default function Finance() {
         <div className="lg:col-span-2 chart-wrapper rounded-[2.5rem] p-10">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <h3 className="text-xl font-black font-heading">Fee Collection Performance</h3>
-              <p className="text-sm text-muted-foreground font-medium">Revenue by class vs Expected</p>
+              <h3 className="text-xl font-black font-heading">{t('feeCollectionPerformance')}</h3>
+              <p className="text-sm text-muted-foreground font-medium">{t('revenueByClassVsExpected')}</p>
             </div>
             <div className="flex gap-2">
               <button className="p-2 rounded-xl bg-muted/40 hover:bg-muted/60 transition-colors"><Printer className="w-4 h-4" /></button>
-              <button className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-all">Export Data</button>
+              <button className="px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-all">{t('exportData')}</button>
             </div>
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -103,8 +105,8 @@ export default function Finance() {
         {/* 4️⃣ Payment Channel Breakdown */}
         <div className="chart-wrapper rounded-[2.5rem] p-10">
           <div className="mb-10 text-center">
-            <h3 className="text-xl font-black font-heading">Payment Channels</h3>
-            <p className="text-sm text-muted-foreground font-medium">Distribution by method</p>
+            <h3 className="text-xl font-black font-heading">{t('paymentChannels')}</h3>
+            <p className="text-sm text-muted-foreground font-medium">{t('distributionByMethod')}</p>
           </div>
           <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -140,10 +142,10 @@ export default function Finance() {
               <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-500">
                 <AlertCircle className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-black font-heading">Defaulters List</h3>
+              <h3 className="text-lg font-black font-heading">{t('defaultersList')}</h3>
             </div>
             <span className="px-3 py-1 rounded-lg bg-rose-500/10 text-rose-500 text-[10px] font-black uppercase tracking-widest">
-              67 Students
+              67 {t('students')}
             </span>
           </div>
           <div className="px-4 pb-4 space-y-1">
@@ -166,7 +168,7 @@ export default function Finance() {
           </div>
           <div className="mx-6 mb-6 p-6 rounded-[2rem] bg-rose-500 text-white flex justify-between items-center shadow-lg shadow-rose-500/20">
             <div>
-              <p className="text-[10px] font-bold uppercase opacity-80">Total Outstanding</p>
+              <p className="text-[10px] font-bold uppercase opacity-80">{t('totalOutstanding')}</p>
               <h4 className="text-xl font-black">TSh 4,218,500</h4>
             </div>
             <TrendingUp className="w-8 h-8 opacity-20" />
@@ -180,7 +182,7 @@ export default function Finance() {
               <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-500">
                 <Receipt className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-black font-heading">Monthly Expenses</h3>
+              <h3 className="text-lg font-black font-heading">{t('monthlyExpenses')}</h3>
             </div>
           </div>
           <div className="px-4 pb-4 space-y-3">
@@ -221,14 +223,14 @@ export default function Finance() {
               <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center text-destructive">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-black font-heading">Financial Risks</h3>
+              <h3 className="text-lg font-black font-heading">{t('financialRisks')}</h3>
             </div>
           </div>
           <div className="px-4 pb-4 space-y-4">
             {[
               { msg: "Unusual transaction detected (Ref: RF892JK)", type: "risk" },
               { msg: "Reconciliation discrepancy in M-Pesa channel", type: "reconcile" },
-              { msg: "Collection below target in Form 2", type: "warning" },
+              { msg: "Collection below target in Form 2 (TZS)", type: "warning" },
             ].map((alert, i) => (
               <div key={i} className={`p-5 rounded-3xl flex items-start gap-4 ${alert.type === 'risk' ? 'bg-destructive/5 text-destructive border border-destructive/10' : 'bg-warning/5 text-warning border border-warning/10'}`}>
                 <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${alert.type === 'risk' ? 'bg-destructive/10' : 'bg-warning/10'}`}>
@@ -241,70 +243,7 @@ export default function Finance() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* 2️⃣ Fee Collection Performance (Trends) */}
-        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
-          <div className="flex items-center justify-between px-8 py-8">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                <BarChart className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-black font-heading">Revenue by Class</h3>
-            </div>
-          </div>
-          <div className="h-[300px] px-6 pb-6">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={[
-                { class: "F1", revenue: 12500000 },
-                { class: "F2", revenue: 14200000 },
-                { class: "F3", revenue: 15800000 },
-                { class: "F4", revenue: 22900000 },
-              ]}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.4} />
-                <XAxis dataKey="class" tick={{ fontSize: 10, fontWeight: 700 }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 10, fontWeight: 700 }} axisLine={false} tickLine={false} />
-                <Tooltip cursor={{ fill: 'hsl(var(--muted))', opacity: 0.1 }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-lg)' }} />
-                <Bar dataKey="revenue" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={40} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
 
-        {/* 3️⃣ Payment Channel Breakdown */}
-        <div className="rounded-[2.5rem] border border-border bg-card shadow-sm overflow-hidden p-2">
-          <div className="flex items-center justify-between px-8 py-8">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
-                <PieChartIcon className="w-5 h-5" />
-              </div>
-              <h3 className="text-lg font-black font-heading">Channel Distribution</h3>
-            </div>
-          </div>
-          <div className="h-[300px] px-6 pb-6 flex items-center">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={[
-                    { name: 'Bank Transfer', value: 45, color: "hsl(var(--primary))" },
-                    { name: 'M-Pesa', value: 35, color: "hsl(var(--accent))" },
-                    { name: 'Cash', value: 20, color: "hsl(var(--muted-foreground))" },
-                  ]}
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  <Cell fill="hsl(var(--primary))" />
-                  <Cell fill="hsl(var(--accent))" />
-                  <Cell fill="hsl(var(--muted-foreground))" />
-                </Pie>
-                <Tooltip />
-                <Legend iconType="circle" />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
 
       {/* 6️⃣ Recent Transactions */}
       <div className="rounded-[3rem] border border-border bg-card shadow-sm overflow-hidden p-2">
@@ -314,8 +253,8 @@ export default function Finance() {
               <FileText className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-black font-heading">Recent Transactions</h3>
-              <p className="text-sm text-muted-foreground font-medium">Real-time payment recordings</p>
+              <h3 className="text-xl font-black font-heading">{t('recentTransactions')}</h3>
+              <p className="text-sm text-muted-foreground font-medium">{t('realTimePaymentRecordings')}</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -324,24 +263,26 @@ export default function Finance() {
               <input
                 value={txnSearch}
                 onChange={e => setTxnSearch(e.target.value)}
-                placeholder="Search payments..."
+                placeholder={t('searchPayments')}
                 className="pl-12 pr-6 py-3 rounded-2xl border border-border bg-muted/20 text-sm focus:ring-4 ring-primary/5 outline-none transition-all w-64"
               />
             </div>
-            <button className="px-6 py-3 rounded-2xl bg-gradient-primary text-white text-sm font-black shadow-lg shadow-primary/20">New Record +</button>
+            {['admin', 'director', 'bursar'].includes(user?.role || '') && (
+              <button className="px-6 py-3 rounded-2xl bg-gradient-primary text-white text-sm font-black shadow-lg shadow-primary/20">{t('newRecord')} +</button>
+            )}
           </div>
         </div>
         <div className="overflow-x-auto px-6 pb-6">
           <table className="sis-table w-full">
             <thead>
               <tr className="bg-muted/30">
-                <th className="rounded-l-2xl">TXN ID</th>
-                <th>STUDENT</th>
-                <th>AMOUNT</th>
-                <th>METHOD</th>
-                <th>RECORDED BY</th>
-                <th>DATE</th>
-                <th className="rounded-r-2xl">STATUS</th>
+                <th className="rounded-l-2xl">{t('txnID')}</th>
+                <th>{t('student')}</th>
+                <th>{t('amount')}</th>
+                <th>{t('method')}</th>
+                <th>{t('recordedBy')}</th>
+                <th>{t('date')}</th>
+                <th className="rounded-r-2xl">{t('status')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/40">

@@ -2,16 +2,17 @@ import { MessageSquare, Send, Search, Plus, MoreHorizontal, Paperclip, Smile, Ph
 import { useState } from "react";
 import { toast } from "sonner";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Communication() {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
 
   const conversations = [
-    { id: 1, name: t('parentGroup4A'), type: "group", lastMsg: t('meetingMsg'), time: "2h", unread: 3, avatar: "4A", members: 42, color: "bg-purple-500" },
-    { id: 2, name: t('parentName'), type: "direct", lastMsg: t('reportThanks'), time: "5h", unread: 0, avatar: "HM", status: "online", color: "bg-primary" },
-    { id: 3, name: t('allTeachersMsg'), type: "group", lastMsg: t('labMeeting'), time: t('yesterday'), unread: 1, avatar: "WW", members: 18, color: "bg-accent" },
+    { id: 1, name: t('allTeachersMsg'), type: "group", lastMsg: t('meetingMsg'), time: "2h", unread: 3, avatar: "AT", members: 18, color: "bg-indigo-500" },
+    { id: 2, name: "Dr. Amos Tarimo", type: "direct", lastMsg: t('reportThanks'), time: "5h", unread: 0, avatar: "AT", status: "online", color: "bg-primary" },
+    { id: 3, name: t('schoolBoard'), type: "group", lastMsg: t('q2Report'), time: t('yesterday'), unread: 1, avatar: "BS", members: 8, color: "bg-warning" },
     { id: 4, name: t('teacherNameMsg'), type: "direct", lastMsg: t('marksComplete'), time: t('yesterday'), unread: 0, avatar: "GM", status: "offline", color: "bg-primary" },
-    { id: 5, name: t('schoolBoard'), type: "group", lastMsg: t('q2Report'), time: t('twoDaysAgo'), unread: 0, avatar: "BS", members: 8, color: "bg-warning" },
   ];
 
   const initialMessages = [
@@ -61,9 +62,11 @@ export default function Communication() {
           <div className="p-6 space-y-6">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-black font-heading text-foreground">{t('simbulizi')}</h1>
-              <button onClick={() => toast.info(t('startChat'))} className="p-2.5 rounded-2xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
-                <Plus className="w-5 h-5" />
-              </button>
+              {['admin', 'director', 'teacher', 'bursar'].includes(user?.role || '') && (
+                <button onClick={() => toast.info(t('startChat'))} className="p-2.5 rounded-2xl bg-primary/10 text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+                  <Plus className="w-5 h-5" />
+                </button>
+              )}
             </div>
 
             <div className="relative group">

@@ -6,6 +6,7 @@ import {
   UserCheck, UserMinus, FileText, LayoutDashboard, History, ShieldAlert, UserCog, BadgeCheck
 } from "lucide-react";
 import { useSisData, Staff as StaffType } from "@/hooks/use-sis-data";
+import { useAuth } from "../context/AuthContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ import { useLanguage } from "../context/LanguageContext";
 
 export default function Staff() {
   const { t } = useLanguage();
+  const { user } = useAuth();
   const { staff, addStaff } = useSisData();
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -108,43 +110,45 @@ export default function Staff() {
                 />
               </div>
 
-              <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                <DialogTrigger asChild>
-                  <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-xs font-bold shadow-md-blue hover:shadow-lg-blue transition-all active:scale-95 leading-none">
-                    <Plus className="w-4 h-4" /> {t('newStaff')}
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-lg rounded-[2rem] p-8 border-border/50 shadow-2xl">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold font-heading">{t('registerNewStaff')}</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleAddSubmit} className="space-y-4 mt-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="col-span-2">
-                        <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('fullName')}</label>
-                        <Input required value={newMember.name} onChange={e => setNewMember({ ...newMember, name: e.target.value })} className="rounded-xl border-border bg-background focus:ring-primary/20" />
+              {['admin', 'director'].includes(user?.role || '') && (
+                <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                  <DialogTrigger asChild>
+                    <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-xs font-bold shadow-md-blue hover:shadow-lg-blue transition-all active:scale-95 leading-none">
+                      <Plus className="w-4 h-4" /> {t('newStaff')}
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-lg rounded-[2rem] p-8 border-border/50 shadow-2xl">
+                    <DialogHeader>
+                      <DialogTitle className="text-2xl font-bold font-heading">{t('registerNewStaff')}</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleAddSubmit} className="space-y-4 mt-6">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="col-span-2">
+                          <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('fullName')}</label>
+                          <Input required value={newMember.name} onChange={e => setNewMember({ ...newMember, name: e.target.value })} className="rounded-xl border-border bg-background focus:ring-primary/20" />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('role')}</label>
+                          <Input required value={newMember.role} onChange={e => setNewMember({ ...newMember, role: e.target.value })} className="rounded-xl border-border bg-background focus:ring-primary/20" />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('department')}</label>
+                          <Input required value={newMember.dept} onChange={e => setNewMember({ ...newMember, dept: e.target.value })} className="rounded-xl border-border bg-background focus:ring-primary/20" />
+                        </div>
+                        <div className="col-span-2">
+                          <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('email')}</label>
+                          <Input type="email" required value={newMember.email} onChange={e => setNewMember({ ...newMember, email: e.target.value })} placeholder="name@bendel.ac.tz" className="rounded-xl border-border bg-background focus:ring-primary/20" />
+                        </div>
                       </div>
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('role')}</label>
-                        <Input required value={newMember.role} onChange={e => setNewMember({ ...newMember, role: e.target.value })} className="rounded-xl border-border bg-background focus:ring-primary/20" />
-                      </div>
-                      <div>
-                        <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('department')}</label>
-                        <Input required value={newMember.dept} onChange={e => setNewMember({ ...newMember, dept: e.target.value })} className="rounded-xl border-border bg-background focus:ring-primary/20" />
-                      </div>
-                      <div className="col-span-2">
-                        <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('email')}</label>
-                        <Input type="email" required value={newMember.email} onChange={e => setNewMember({ ...newMember, email: e.target.value })} placeholder="name@bendel.ac.tz" className="rounded-xl border-border bg-background focus:ring-primary/20" />
-                      </div>
-                    </div>
-                    <DialogFooter className="mt-8">
-                      <button type="submit" className="w-full py-3 rounded-2xl bg-gradient-primary text-white font-bold shadow-md hover:shadow-lg transition-all active:scale-95">
-                        {t('addStaff')}
-                      </button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
+                      <DialogFooter className="mt-8">
+                        <button type="submit" className="w-full py-3 rounded-2xl bg-gradient-primary text-white font-bold shadow-md hover:shadow-lg transition-all active:scale-95">
+                          {t('addStaff')}
+                        </button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">

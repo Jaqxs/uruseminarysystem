@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 const initialItems = [
   { id: "INV-001", name: "Desktop Computers", category: "Technology", qty: 45, condition: "Good", location: "ICT Lab", lastCheck: "15 Jun 2024", status: "good" },
@@ -19,6 +20,7 @@ const initialItems = [
 
 export default function Inventory() {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const [items, setItems] = useState(initialItems);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -100,28 +102,30 @@ export default function Inventory() {
             {categories.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
 
-          <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-            <DialogTrigger asChild>
-              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all">
-                <Plus className="w-4 h-4" /> {t('add')}
-              </button>
-            </DialogTrigger>
-            <DialogContent className="max-w-md rounded-3xl p-8 text-foreground">
-              <DialogHeader>
-                <DialogTitle className="text-xl font-bold font-heading">{t('newItem')}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleAddSubmit} className="space-y-4 mt-4">
-                <Input required value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} placeholder={t('itemName')} className="rounded-xl border-border bg-background" />
-                <div className="grid grid-cols-2 gap-4">
-                  <Input type="number" required value={newItem.qty} onChange={e => setNewItem({ ...newItem, qty: parseInt(e.target.value) })} placeholder={t('quantity')} className="rounded-xl border-border bg-background" />
-                  <Input required value={newItem.location} onChange={e => setNewItem({ ...newItem, location: e.target.value })} placeholder={t('location')} className="rounded-xl border-border bg-background" />
-                </div>
-                <DialogFooter className="mt-6">
-                  <button type="submit" className="w-full py-3 rounded-2xl bg-gradient-primary text-white font-bold shadow-md transition-all">{t('save')}</button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
+          {['admin', 'bursar'].includes(user?.role || '') && (
+            <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+              <DialogTrigger asChild>
+                <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-primary text-white text-sm font-semibold shadow-md-blue hover:shadow-lg-blue transition-all">
+                  <Plus className="w-4 h-4" /> {t('add')}
+                </button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md rounded-3xl p-8 text-foreground">
+                <DialogHeader>
+                  <DialogTitle className="text-xl font-bold font-heading">{t('newItem')}</DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleAddSubmit} className="space-y-4 mt-4">
+                  <Input required value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} placeholder={t('itemName')} className="rounded-xl border-border bg-background" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <Input type="number" required value={newItem.qty} onChange={e => setNewItem({ ...newItem, qty: parseInt(e.target.value) })} placeholder={t('quantity')} className="rounded-xl border-border bg-background" />
+                    <Input required value={newItem.location} onChange={e => setNewItem({ ...newItem, location: e.target.value })} placeholder={t('location')} className="rounded-xl border-border bg-background" />
+                  </div>
+                  <DialogFooter className="mt-6">
+                    <button type="submit" className="w-full py-3 rounded-2xl bg-gradient-primary text-white font-bold shadow-md transition-all">{t('save')}</button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         <div className="overflow-x-auto">

@@ -5,9 +5,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function Announcements() {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const { announcements, addAnnouncement } = useSisData();
   const [search, setSearch] = useState("");
   const [isAddOpen, setIsAddOpen] = useState(false);
@@ -82,55 +84,57 @@ export default function Announcements() {
               />
             </div>
 
-            <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-              <DialogTrigger asChild>
-                <button className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-gradient-primary text-white text-sm font-bold shadow-md-blue hover:shadow-lg-blue transition-all active:scale-95 leading-none">
-                  <Plus className="w-4 h-4" /> {t('postAnnouncement')}
-                </button>
-              </DialogTrigger>
-              <DialogContent className="max-w-xl rounded-[2rem] p-10 text-foreground">
-                <DialogHeader className="mb-6">
-                  <DialogTitle className="text-3xl font-bold font-heading">{t('createAnnouncement')}</DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handlePost} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('headline')}</label>
-                    <Input required value={newAnn.title} onChange={e => setNewAnn({ ...newAnn, title: e.target.value })} placeholder={t('placeholderHeadline')} className="rounded-2xl h-12 border-border bg-background" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-6">
+            {['admin', 'director', 'teacher', 'bursar'].includes(user?.role || '') && (
+              <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                <DialogTrigger asChild>
+                  <button className="flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-gradient-primary text-white text-sm font-bold shadow-md-blue hover:shadow-lg-blue transition-all active:scale-95 leading-none">
+                    <Plus className="w-4 h-4" /> {t('postAnnouncement')}
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-xl rounded-[2rem] p-10 text-foreground">
+                  <DialogHeader className="mb-6">
+                    <DialogTitle className="text-3xl font-bold font-heading">{t('createAnnouncement')}</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handlePost} className="space-y-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('group')}</label>
-                      <select value={newAnn.category} onChange={e => setNewAnn({ ...newAnn, category: e.target.value })} className="w-full h-12 px-4 rounded-2xl border border-border bg-background text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer text-foreground">
-                        {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                      </select>
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('headline')}</label>
+                      <Input required value={newAnn.title} onChange={e => setNewAnn({ ...newAnn, title: e.target.value })} placeholder={t('placeholderHeadline')} className="rounded-2xl h-12 border-border bg-background" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('group')}</label>
+                        <select value={newAnn.category} onChange={e => setNewAnn({ ...newAnn, category: e.target.value })} className="w-full h-12 px-4 rounded-2xl border border-border bg-background text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer text-foreground">
+                          {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('priority')}</label>
+                        <select value={newAnn.priority} onChange={e => setNewAnn({ ...newAnn, priority: e.target.value })} className="w-full h-12 px-4 rounded-2xl border border-border bg-background text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer text-foreground">
+                          <option value="low">{t('lowPriority')}</option>
+                          <option value="medium">{t('mediumPriority')}</option>
+                          <option value="high">{t('highPriority')}</option>
+                        </select>
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('priority')}</label>
-                      <select value={newAnn.priority} onChange={e => setNewAnn({ ...newAnn, priority: e.target.value })} className="w-full h-12 px-4 rounded-2xl border border-border bg-background text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer text-foreground">
-                        <option value="low">{t('lowPriority')}</option>
-                        <option value="medium">{t('mediumPriority')}</option>
-                        <option value="high">{t('highPriority')}</option>
-                      </select>
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('fullDetails')}</label>
+                      <textarea
+                        required
+                        value={newAnn.content}
+                        onChange={e => setNewAnn({ ...newAnn, content: e.target.value })}
+                        placeholder={t('placeholderMessage')}
+                        className="w-full h-32 px-4 py-3 rounded-2xl border border-border bg-background text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none text-foreground"
+                      />
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">{t('fullDetails')}</label>
-                    <textarea
-                      required
-                      value={newAnn.content}
-                      onChange={e => setNewAnn({ ...newAnn, content: e.target.value })}
-                      placeholder={t('placeholderMessage')}
-                      className="w-full h-32 px-4 py-3 rounded-2xl border border-border bg-background text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none text-foreground"
-                    />
-                  </div>
-                  <DialogFooter>
-                    <button type="submit" className="w-full py-4 rounded-2xl bg-gradient-primary text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all flex items-center justify-center gap-2">
-                      <Send className="w-4 h-4" /> {t('postToAll')}
-                    </button>
-                  </DialogFooter>
-                </form>
-              </DialogContent>
-            </Dialog>
+                    <DialogFooter>
+                      <button type="submit" className="w-full py-4 rounded-2xl bg-gradient-primary text-white font-bold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all flex items-center justify-center gap-2">
+                        <Send className="w-4 h-4" /> {t('postToAll')}
+                      </button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            )}
           </div>
         </div>
 
