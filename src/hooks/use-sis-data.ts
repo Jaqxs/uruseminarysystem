@@ -65,9 +65,9 @@ export interface Announcement {
 // Initial Data
 const initialStudents: Student[] = [
     {
-        id: "BS-2024-001", name: "Amina Hassan Mwangi", gender: "F", class: "Form 4", stream: "A",
+        id: "BS-2024-001", name: "Stephen Peter Mbwambo", gender: "M", class: "Form 4", stream: "A",
         dob: "15/03/2008", nationalId: "20080315-00001-00001-1", address: "Kinondoni, Dar es Salaam",
-        guardian: "Hassan Mwangi", phone: "+255 712 345 678", guardianEmail: "h.mwangi@gmail.com",
+        guardian: "Peter Mbwambo", phone: "+255 712 345 678", guardianEmail: "p.mbwambo@gmail.com",
         joinedYear: "2021", status: "active", fees: "paid", gpa: "Div I", attendanceRate: "97%",
         discipline: [],
         academicHistory: [
@@ -78,9 +78,9 @@ const initialStudents: Student[] = [
         documents: ["Birth Certificate", "PSLE Result", "Transfer Letter"]
     },
     {
-        id: "BS-2024-002", name: "Juma Salim Kiprotich", gender: "M", class: "Form 3", stream: "B",
+        id: "BS-2024-002", name: "John Simon Peter", gender: "M", class: "Form 3", stream: "B",
         dob: "22/07/2009", nationalId: "20090722-00002-00001-0", address: "Temeke, Dar es Salaam",
-        guardian: "Salim Kiprotich", phone: "+255 754 987 654", guardianEmail: "",
+        guardian: "Simon Peter", phone: "+255 754 987 654", guardianEmail: "",
         joinedYear: "2022", status: "active", fees: "partial", gpa: "Div II", attendanceRate: "88%",
         discipline: [{ date: "12/02/2024", incident: "Late to class", action: "Verbal Warning", severity: "low", reportedBy: "Mr. Kamau" }],
         academicHistory: [
@@ -90,9 +90,9 @@ const initialStudents: Student[] = [
         documents: ["Birth Certificate", "PSLE Result"]
     },
     {
-        id: "BS-2024-003", name: "Fatuma Ali Odhiambo", gender: "F", class: "Form 2", stream: "A",
+        id: "BS-2024-003", name: "Francis Andrew Shao", gender: "M", class: "Form 2", stream: "A",
         dob: "08/11/2010", nationalId: "20101108-00003-00001-1", address: "Ilala, Dar es Salaam",
-        guardian: "Ali Odhiambo", phone: "+255 767 111 222", guardianEmail: "a.odhiambo@gmail.com",
+        guardian: "Andrew Shao", phone: "+255 767 111 222", guardianEmail: "a.shao@gmail.com",
         joinedYear: "2023", status: "active", fees: "paid", gpa: "Div I", attendanceRate: "99%",
         discipline: [],
         academicHistory: [
@@ -111,9 +111,9 @@ const initialStudents: Student[] = [
         documents: ["Birth Certificate", "KCPE Result"]
     },
     {
-        id: "BS-2024-005", name: "Zainab Omar Njoroge", gender: "F", class: "Form 4", stream: "B",
+        id: "BS-2024-005", name: "Zacharia Oscar Njoroge", gender: "M", class: "Form 4", stream: "B",
         dob: "14/05/2008", nationalId: "20080514-00005-00001-1", address: "Msasani, Dar es Salaam",
-        guardian: "Omar Njoroge", phone: "+255 786 555 666", guardianEmail: "o.njoroge@gmail.com",
+        guardian: "Oscar Njoroge", phone: "+255 786 555 666", guardianEmail: "o.njoroge@gmail.com",
         joinedYear: "2021", status: "active", fees: "paid", gpa: "Div I", attendanceRate: "100%",
         discipline: [],
         academicHistory: [
@@ -129,7 +129,7 @@ const initialStudents: Student[] = [
         guardian: "Osei Bonsu", phone: "+255 712 888 999", guardianEmail: "",
         joinedYear: "2023", status: "active", fees: "partial", gpa: "Div III", attendanceRate: "90%",
         discipline: [
-            { date: "04/03/2024", incident: "Uniform Violation", action: "Written Warning", severity: "low", reportedBy: "Mrs. Grace" },
+            { date: "04/03/2024", incident: "Uniform Violation", action: "Written Warning", severity: "low", reportedBy: "Mr. Gabriel" },
             { date: "20/01/2024", incident: "Fighting", action: "Suspension (3 days)", severity: "high", reportedBy: "HOD Office" },
         ],
         academicHistory: [
@@ -138,7 +138,7 @@ const initialStudents: Student[] = [
         documents: ["Birth Certificate", "PSLE Result"]
     },
     {
-        id: "BS-2024-007", name: "Rahel Tesfaye Abebe", gender: "F", class: "Form 3", stream: "A",
+        id: "BS-2024-007", name: "Raphael Tesfaye Abebe", gender: "M", class: "Form 3", stream: "A",
         dob: "19/12/2009", nationalId: "20091219-00007-00001-1", address: "Kigamboni, Dar es Salaam",
         guardian: "Tesfaye Abebe", phone: "+255 754 222 111", guardianEmail: "t.abebe@gmail.com",
         joinedYear: "2022", status: "active", fees: "paid", gpa: "Div II", attendanceRate: "94%",
@@ -150,9 +150,9 @@ const initialStudents: Student[] = [
         documents: ["Birth Certificate", "PSLE Result", "Medical Certificate"]
     },
     {
-        id: "BS-2023-008", name: "Ibrahim Yusuf Banda", gender: "M", class: "Form 1", stream: "A",
+        id: "BS-2023-008", name: "Isaac Joseph Banda", gender: "M", class: "Form 1", stream: "A",
         dob: "11/06/2011", nationalId: "20110611-00008-00001-0", address: "Mwenge, Dar es Salaam",
-        guardian: "Yusuf Banda", phone: "+255 786 777 333", guardianEmail: "",
+        guardian: "Joseph Banda", phone: "+255 786 777 333", guardianEmail: "",
         joinedYear: "2024", status: "suspended", fees: "unpaid", gpa: "Div IV", attendanceRate: "61%",
         discipline: [
             { date: "15/04/2024", incident: "Repeated Truancy", action: "Suspension (1 week)", severity: "high", reportedBy: "Class Teacher" },
@@ -165,12 +165,12 @@ const initialStudents: Student[] = [
 ];
 
 const initialStaff: Staff[] = [
-    { id: "ST-001", name: "John Kamau", role: "Mwalimu", dept: "Mathematics", phone: "+255 712 111 222", email: "j.kamau@bendel.ac.tz", status: "active", exp: "8 miaka", rating: 4.8 },
-    { id: "ST-002", name: "Grace Mwamba", role: "Mwalimu", dept: "English", phone: "+255 754 333 444", email: "g.mwamba@bendel.ac.tz", status: "active", exp: "5 miaka", rating: 4.6 },
+    { id: "ST-001", name: "John Kamau", role: "Staff", dept: "Mathematics", phone: "+255 712 111 222", email: "j.kamau@uruseminary.ac.tz", status: "active", exp: "8 years", rating: 4.8 },
+    { id: "ST-002", name: "Gabriel Mwamba", role: "Staff", dept: "English", phone: "+255 754 333 444", email: "g.mwamba@uruseminary.ac.tz", status: "active", exp: "5 years", rating: 4.6 },
 ];
 
 const initialAnnouncements: Announcement[] = [
-    { id: 1, title: "Mtihani wa Mwisho wa Term 2", content: "Mtihani wa mwisho wa Term 2 utaanza tarehe 15 Julai 2024. Wanafunzi wote wanahitajika kuwa tayari.", date: "25 Jun 2024", category: "Mtihani", priority: "high", author: "Mkurugenzi Hassan" },
+    { id: 1, title: "Final Term 2 Exams", content: "The final Term 2 exams will begin on July 15, 2024. All students are required to be well prepared.", date: "25 Jun 2024", category: "Examination", priority: "high", author: "Rector Peter" },
 ];
 
 export function useSisData() {

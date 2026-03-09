@@ -20,10 +20,10 @@ export default function Finance() {
   const { user } = useAuth();
 
   const initialPayments = [
-    { id: "TXN-001", student: "Amina Hassan", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Bursar Jane" },
-    { id: "TXN-002", student: "Baraka Juma", class: "Form 3B", amount: 450000, date: "24 Jun 2024", method: "Bank", status: "confirmed", recorder: "Bursar Jane" },
-    { id: "TXN-003", student: "Fatuma Ali", class: "Form 2A", amount: 850000, date: "24 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Admin Ali" },
-    { id: "TXN-004", student: "David Kamau", class: "Form 1C", amount: 200000, date: "23 Jun 2024", method: "Cash", status: "pending", recorder: "Bursar Jane" },
+    { id: "TXN-001", student: "Stephen Peter", class: "Form 4A", amount: 850000, date: "25 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Bursar John" },
+    { id: "TXN-002", student: "Baraka John", class: "Form 3B", amount: 450000, date: "24 Jun 2024", method: "Bank", status: "confirmed", recorder: "Bursar James" },
+    { id: "TXN-003", student: "Francis Mark", class: "Form 2A", amount: 850000, date: "24 Jun 2024", method: "M-Pesa", status: "confirmed", recorder: "Mr. Mark" },
+    { id: "TXN-004", student: "David Kamau", class: "Form 1C", amount: 200000, date: "23 Jun 2024", method: "Cash", status: "pending", recorder: "Bursar James" },
   ];
 
   const classRevenue = [
@@ -150,9 +150,9 @@ export default function Finance() {
           </div>
           <div className="px-4 pb-4 space-y-1">
             {[
-              { name: "Khalid Ibrahim", class: "Form 1A", balance: "TSh 650,000", status: "Overdue 15d" },
+              { name: "Khalid Andrew", class: "Form 1A", balance: "TSh 650,000", status: "Overdue 15d" },
               { name: "Amos Tarimo", class: "Form 3C", balance: "TSh 890,000", status: "Overdue 30d" },
-              { name: "Neema Grace", class: "Form 2C", balance: "TSh 420,000", status: "Overdue 5d" },
+              { name: "Neville Gabriel", class: "Form 2C", balance: "TSh 420,000", status: "Overdue 5d" },
             ].map((d, i) => (
               <div key={i} className="flex items-center gap-4 px-6 py-4 hover:bg-muted/40 transition-all rounded-[1.5rem] group">
                 <div className="flex-1">

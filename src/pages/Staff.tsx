@@ -35,14 +35,14 @@ export default function Staff() {
 
   const leaveRequests = [
     { name: "John Kamau", reason: "Sick Leave", duration: "3 Days", start: "12 Jul", status: "pending" },
-    { name: "Grace Mwamba", reason: "Personal Matters", duration: "1 Day", start: "15 Jul", status: "pending" },
+    { name: "Gabriel Mwamba", reason: "Personal Matters", duration: "1 Day", start: "15 Jul", status: "pending" },
     { name: "Amos Tarimo", reason: "Paternity Leave", duration: "7 Days", start: "01 Aug", status: "approved" },
   ];
 
   const payrollData = [
     { name: "John Kamau", salary: "1,200,000", lastPaid: "28 Jun 2024", status: "paid" },
-    { name: "Grace Mwamba", salary: "1,150,000", lastPaid: "28 Jun 2024", status: "paid" },
-    { name: "Fatuma Ali", salary: "950,000", lastPaid: "28 Jun 2024", status: "paid" },
+    { name: "Gabriel Mwamba", salary: "1,150,000", lastPaid: "28 Jun 2024", status: "paid" },
+    { name: "Francis Ali", salary: "950,000", lastPaid: "28 Jun 2024", status: "paid" },
     { name: "Baraka Shayo", salary: "950,000", lastPaid: "25 May 2024", status: "pending" },
   ];
 
@@ -137,7 +137,7 @@ export default function Staff() {
                         </div>
                         <div className="col-span-2">
                           <label className="text-[10px] font-bold uppercase text-muted-foreground mb-1 block tracking-wider">{t('email')}</label>
-                          <Input type="email" required value={newMember.email} onChange={e => setNewMember({ ...newMember, email: e.target.value })} placeholder="name@bendel.ac.tz" className="rounded-xl border-border bg-background focus:ring-primary/20" />
+                          <Input type="email" required value={newMember.email} onChange={e => setNewMember({ ...newMember, email: e.target.value })} placeholder="name@uruseminary.ac.tz" className="rounded-xl border-border bg-background focus:ring-primary/20" />
                         </div>
                       </div>
                       <DialogFooter className="mt-8">

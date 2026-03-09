@@ -11,7 +11,7 @@ import Attendance from "./pages/Attendance";
 import Finance from "./pages/Finance";
 import Staff from "./pages/Staff";
 import Timetable from "./pages/Timetable";
-import Communication from "./pages/Communication";
+
 import Announcements from "./pages/Announcements";
 import Inventory from "./pages/Inventory";
 import Grades from "./pages/Grades";
@@ -52,7 +52,7 @@ const App = () => (
                 <Route path="/staff" element={<Staff />} />
                 <Route path="/finance" element={<Finance />} />
                 <Route path="/inventory" element={<Inventory />} />
-                <Route path="/communication" element={<Communication />} />
+
                 <Route path="/announcements" element={<Announcements />} />
                 <Route path="/users" element={<UsersRoles />} />
                 <Route path="/settings" element={<SystemSettings />} />

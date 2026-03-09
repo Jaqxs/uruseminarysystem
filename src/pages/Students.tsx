@@ -337,7 +337,7 @@ export default function Students() {
               <div className="col-span-2">
                 <label className="label-xs">Full Name *</label>
                 <Input required value={newStudent.name} onChange={e => setNewStudent({ ...newStudent, name: e.target.value })}
-                  placeholder="e.g. Amina Hassan Mwangi" className="rounded-xl" />
+                  placeholder="e.g. Amin Hassan Mwangi" className="rounded-xl" />
               </div>
 
               <div>

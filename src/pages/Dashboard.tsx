@@ -89,8 +89,8 @@ export default function Dashboard() {
   ];
 
   const studentData = [
-    { name: t('maleStudents'), value: 640, color: 'hsl(var(--sky-500))' },
-    { name: t('femaleStudents'), value: 608, color: 'hsl(var(--rose-400))' }
+    { name: t('boarders'), value: 840, color: 'hsl(var(--sky-500))' },
+    { name: t('dayScholars'), value: 408, color: 'hsl(var(--rose-400))' }
   ];
 
   const performanceSpark = [
@@ -104,8 +104,8 @@ export default function Dashboard() {
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
           <div className="space-y-2">
             <h1 className="text-2xl md:text-3xl font-black font-heading tracking-tight leading-tight flex flex-col md:flex-row md:items-baseline md:gap-3">
-              Bendel Memorial
-              <span className="text-white/40 font-medium text-lg md:border-l md:border-white/20 md:pl-3">Secondary School</span>
+              Uru
+              <span className="text-white/40 font-medium text-lg md:border-l md:border-white/20 md:pl-3">Seminary</span>
             </h1>
             <p className="text-white/70 font-bold text-sm">{t('greeting')}</p>
           </div>

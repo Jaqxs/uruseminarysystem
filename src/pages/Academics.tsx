@@ -20,19 +20,19 @@ export default function Academics() {
   const [activeLevel, setActiveLevel] = useState<"O-Level" | "A-Level">("O-Level");
 
   const initialSubjects = [
-    { id: 1, name: t('civics'), teacher: "Mwl. Amina Juma", students: 485, avgGrade: 78, pass: 85, icon: "🏛️", dept: t('artsDept'), level: "O-Level" },
-    { id: 2, name: t('history'), teacher: "Mwl. Fatuma Ali", students: 485, avgGrade: 74, pass: 82, icon: "⏳", dept: t('artsDept'), level: "O-Level" },
+    { id: 1, name: t('civics'), teacher: "Mwl. Stephen John", students: 485, avgGrade: 78, pass: 85, icon: "🏛️", dept: t('artsDept'), level: "O-Level" },
+    { id: 2, name: t('history'), teacher: "Mwl. Francis Mark", students: 485, avgGrade: 74, pass: 82, icon: "⏳", dept: t('artsDept'), level: "O-Level" },
     { id: 3, name: t('geography'), teacher: "Mwl. Baraka Shayo", students: 485, avgGrade: 76, pass: 88, icon: "🌍", dept: t('artsDept'), level: "O-Level" },
-    { id: 4, name: t('kiswahili'), teacher: "Mwl. Amina Juma", students: 485, avgGrade: 85, pass: 95, icon: "✍️", dept: t('languagesDept'), level: "O-Level" },
-    { id: 5, name: t('english'), teacher: "Mwl. Grace Mwamba", students: 485, avgGrade: 82, pass: 92, icon: "📖", dept: t('languagesDept'), level: "O-Level" },
-    { id: 6, name: t('biology'), teacher: "Mwl. Neema Grace", students: 485, avgGrade: 75, pass: 86, icon: "🧬", dept: t('scienceDept'), level: "O-Level" },
+    { id: 4, name: t('kiswahili'), teacher: "Mwl. Stephen John", students: 485, avgGrade: 85, pass: 95, icon: "✍️", dept: t('languagesDept'), level: "O-Level" },
+    { id: 5, name: t('english'), teacher: "Mwl. Gabriel Mwamba", students: 485, avgGrade: 82, pass: 92, icon: "📖", dept: t('languagesDept'), level: "O-Level" },
+    { id: 6, name: t('biology'), teacher: "Mwl. Neville Gabriel", students: 485, avgGrade: 75, pass: 86, icon: "🧬", dept: t('scienceDept'), level: "O-Level" },
     { id: 7, name: t('math'), teacher: "Mwl. John Kamau", students: 485, avgGrade: 68, pass: 75, icon: "📐", dept: t('scienceDept'), level: "O-Level" },
-    { id: 8, name: t('physics'), teacher: "Mwl. Hassan Mrisho", students: 240, avgGrade: 65, pass: 70, icon: "⚛️", dept: t('scienceDept'), level: "O-Level" },
+    { id: 8, name: t('physics'), teacher: "Mwl. Peter Macha", students: 240, avgGrade: 65, pass: 70, icon: "⚛️", dept: t('scienceDept'), level: "O-Level" },
     { id: 9, name: t('chemistry'), teacher: "Mwl. Rehema Paul", students: 240, avgGrade: 67, pass: 72, icon: "🧪", dept: t('scienceDept'), level: "O-Level" },
 
     { id: 10, name: t('advancedMath'), teacher: "Mwl. John Kamau", students: 45, avgGrade: 65, pass: 75, icon: "📐", dept: t('scienceDept'), level: "A-Level" },
-    { id: 11, name: t('physics'), teacher: "Mwl. Hassan Mrisho", students: 40, avgGrade: 62, pass: 70, icon: "⚛️", dept: t('scienceDept'), level: "A-Level" },
-    { id: 12, name: t('generalStudies'), teacher: "Mwl. Grace Mwamba", students: 120, avgGrade: 85, pass: 98, icon: "🌍", dept: t('languagesDept'), level: "A-Level" },
+    { id: 11, name: t('physics'), teacher: "Mwl. Peter Macha", students: 40, avgGrade: 62, pass: 70, icon: "⚛️", dept: t('scienceDept'), level: "A-Level" },
+    { id: 12, name: t('generalStudies'), teacher: "Mwl. Gabriel Mwamba", students: 120, avgGrade: 85, pass: 98, icon: "🌍", dept: t('languagesDept'), level: "A-Level" },
   ];
 
   const examPerformanceData = activeLevel === "O-Level"
@@ -85,7 +85,7 @@ export default function Academics() {
   const timetableSnapshot = [
     { period: "08:00 - 08:40", subject: t('math'), teacher: "J. Kamau", room: "F4A" },
     { period: "08:40 - 09:20", subject: t('english'), teacher: "G. Mwamba", room: "F4A" },
-    { period: "09:20 - 10:00", subject: t('physics'), teacher: "H. Mrisho", room: "Lab 1" },
+    { period: "09:20 - 10:00", subject: t('physics'), teacher: "P. Macha", room: "Lab 1" },
   ];
 
   const [subjects, setSubjects] = useState(initialSubjects);

@@ -24,14 +24,14 @@ export function Layout() {
     "/staff": { title: t('staffTitle'), subtitle: t('staffSubtitle') },
     "/finance": { title: t('financeTitle'), subtitle: t('financeSubtitle') },
     "/inventory": { title: t('inventoryTitle'), subtitle: t('inventorySubtitle') },
-    "/communication": { title: t('communicationTitle'), subtitle: t('communicationSubtitle') },
+
     "/announcements": { title: t('announcementsTitle'), subtitle: t('announcementsSubtitle') },
     "/users": { title: t('usersTitle'), subtitle: t('usersSubtitle') },
     "/settings": { title: t('settingsTitle'), subtitle: t('settingsSubtitle') },
     "/profile": { title: t('profile'), subtitle: t('viewProfile') },
   };
 
-  const page = pageTitles[location.pathname] || { title: "Bendel Secondary Memorial School", subtitle: "" };
+  const page = pageTitles[location.pathname] || { title: "Uru Seminary", subtitle: "" };
 
   if (!user) {
     return <Navigate to="/login" replace />;

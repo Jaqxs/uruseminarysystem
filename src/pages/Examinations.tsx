@@ -195,11 +195,11 @@ export default function Examinations() {
                             </thead>
                             <tbody>
                                 {[
-                                    { id: 1, name: "Amina Hassan", score: 85 },
-                                    { id: 2, name: "Juma Salim", score: 62 },
-                                    { id: 3, name: "Fatuma Ali", score: 45 },
+                                    { id: 1, name: "Stephen Peter", score: 85 },
+                                    { id: 2, name: "John Paul", score: 62 },
+                                    { id: 3, name: "Francis Mark", score: 45 },
                                     { id: 4, name: "David Mwenda", score: 74 },
-                                    { id: 5, name: "Zainab Omar", score: 91 },
+                                    { id: 5, name: "Zacharia Thomas", score: 91 },
                                 ].map((s) => {
                                     const getGrade = (score: number, level: string) => {
                                         if (level === 'psle') {

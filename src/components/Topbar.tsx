@@ -228,7 +228,7 @@ export function Topbar({ onMenuClick, title, subtitle }: TopbarProps) {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-bold truncate leading-none mb-1">{user?.name || t('adminName')}</p>
-              <p className="text-[10px] text-muted-foreground truncate">{user?.email || "admin@bendel.ac.tz"}</p>
+              <p className="text-[10px] text-muted-foreground truncate">{user?.email || "admin@uruseminary.ac.tz"}</p>
             </div>
           </div>
           <DropdownMenuSeparator className="bg-border/50" />

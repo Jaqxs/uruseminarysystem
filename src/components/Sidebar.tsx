@@ -60,7 +60,6 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
     {
       label: t('communication'),
       items: [
-        { icon: MessageSquare, label: t('messages'), path: "/communication", roles: ['admin', 'teacher', 'director', 'bursar', 'academic_master'] },
         { icon: Bell, label: t('announcements'), path: "/announcements", roles: ['admin', 'teacher', 'director', 'bursar', 'academic_master'] },
       ].filter(item => hasAccess(item.roles))
     },
@@ -90,7 +89,7 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
-            <p className="font-bold text-sm text-white leading-tight">Bendel Secondary Memorial School</p>
+            <p className="font-bold text-sm text-white leading-tight">Uru Seminary</p>
             <p className="text-[10px] font-medium" style={{ color: "hsl(var(--sidebar-muted))" }}>Management System</p>
           </div>
         )}

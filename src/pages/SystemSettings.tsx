@@ -6,9 +6,9 @@ export default function Settings() {
   const { t } = useLanguage();
 
   const schoolDetails = [
-    { label: t('schoolNameLabel'), value: "Bendel Secondary Memorial School" },
+    { label: t('schoolNameLabel'), value: "Uru Seminary" },
     { label: t('addressLabel'), value: "Kinondoni, Dar es Salaam, Tanzania" },
-    { label: t('emailLabelSetting'), value: "info@bendelmemorial.ac.tz" },
+    { label: t('emailLabelSetting'), value: "info@uruseminary.ac.tz" },
     { label: t('phoneLabel'), value: "+255 22 123 4567" },
     { label: t('academicYearLabel'), value: "2024/2025" },
     { label: t('currentTermLabel'), value: t('term2') },

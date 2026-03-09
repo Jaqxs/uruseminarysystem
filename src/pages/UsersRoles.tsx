@@ -8,18 +8,18 @@ export default function Users() {
   const { user } = useAuth();
 
   const users = [
-    { name: t('adminMkuu'), email: "admin@bendel.ac.tz", role: t('superAdmin'), lastLogin: `${t('today')}, 8:32 AM`, status: "active" },
-    { name: "Hassan Mrisho", email: "h.mrisho@bendel.ac.tz", role: t('director'), lastLogin: `${t('today')}, 9:15 AM`, status: "active" },
-    { name: "Fatuma Ally", email: "f.ally@bendel.ac.tz", role: t('bursar'), lastLogin: `${t('yesterday')}, 3:22 PM`, status: "active" },
-    { name: "John Kamau", email: "j.kamau@bendel.ac.tz", role: t('teacherRole'), lastLogin: `${t('today')}, 7:58 AM`, status: "active" },
-    { name: "Ahmed Omar", email: "a.omar@bendel.ac.tz", role: t('itAdminRole'), lastLogin: `${t('twoDaysAgo')}, 6:32 PM`, status: "active" },
-    { name: "Dr. Amos Tarimo", email: "a.tarimo@bendel.ac.tz", role: t('academicMaster'), lastLogin: `${t('today')}, 10:45 AM`, status: "active" },
+    { name: "Rev. Fr. Rector", email: "admin@uruseminary.ac.tz", role: t('superAdmin'), lastLogin: `${t('today')}, 8:32 AM`, status: "active" },
+    { name: "Rev. Fr. Peter Macha", email: "p.macha@uruseminary.ac.tz", role: t('director'), lastLogin: `${t('today')}, 9:15 AM`, status: "active" },
+    { name: "Br. Francis Ally", email: "f.ally@uruseminary.ac.tz", role: t('bursar'), lastLogin: `${t('yesterday')}, 3:22 PM`, status: "active" },
+    { name: "Dr. Amos Tarimo", email: "a.tarimo@uruseminary.ac.tz", role: t('academicMaster'), lastLogin: `${t('today')}, 10:45 AM`, status: "active" },
+    { name: "Mr. John Kamau", email: "j.kamau@uruseminary.ac.tz", role: t('teacherRole'), lastLogin: `${t('today')}, 7:58 AM`, status: "active" },
+    { name: "Andrew Thomas", email: "a.thomas@uruseminary.ac.tz", role: t('itAdminRole'), lastLogin: `${t('twoDaysAgo')}, 6:32 PM`, status: "active" },
   ];
 
   const roles = [
     {
       name: t('superAdmin'),
-      count: 2,
+      count: 1,
       permissions: t('fullSystemControl'),
       color: "bg-destructive/10 text-destructive",
       icon: Shield,
@@ -32,6 +32,13 @@ export default function Users() {
       icon: User,
     },
     {
+      name: t('bursar'),
+      count: 2,
+      permissions: t('financePermissions'),
+      color: "bg-emerald-500/10 text-emerald-600",
+      icon: User,
+    },
+    {
       name: t('academicMaster'),
       count: 1,
       permissions: t("wholeSchoolManagement"),
@@ -40,21 +47,14 @@ export default function Users() {
     },
     {
       name: t('teacherRole'),
-      count: 52,
+      count: 48,
       permissions: t('teacherPermissions'),
       color: "bg-primary/10 text-primary",
       icon: User,
     },
     {
-      name: t('bursar'),
-      count: 3,
-      permissions: t('financePermissions'),
-      color: "bg-emerald-500/10 text-emerald-600",
-      icon: User,
-    },
-    {
       name: t('itAdminRole'),
-      count: 3,
+      count: 2,
       permissions: t('itAdminPermissions'),
       color: "bg-sky-500/10 text-sky-600",
       icon: Monitor,
@@ -159,9 +159,9 @@ export default function Users() {
         <div className="divide-y divide-border/30">
           {[
             { user: t('adminMkuu'), action: "Changed Academic Year to 2024/25", time: 10, module: "Admin" },
-            { user: "Hassan Mrisho", action: "Approved staff payroll (June 2024)", time: 300, module: "Finance" },
-            { user: "Fatuma Ally", action: "Generated TZS Financial Statement", time: 1440, module: "Finance" },
-            { user: "Ahmed Omar", action: "Updated system backup configuration", time: 2880, module: "IT" },
+            { user: "Rev. Fr. Peter Macha", action: "Approved staff payroll (June 2024)", time: 300, module: "Finance" },
+            { user: "Br. Francis Ally", action: "Generated TZS Financial Statement", time: 1440, module: "Finance" },
+            { user: "Andrew Thomas", action: "Updated system backup configuration", time: 2880, module: "IT" },
           ].map((log, i) => (
             <div key={i} className="flex items-center gap-6 px-10 py-5 hover:bg-muted/10 transition-colors group">
               <div className="w-2 h-2 rounded-full bg-primary/40 group-hover:scale-150 transition-transform" />

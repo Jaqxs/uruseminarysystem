@@ -10,7 +10,7 @@ export default function Profile() {
     const user = {
         name: authUser?.name || t('adminName'),
         role: authUser?.role ? t(`role_${authUser.role}` as any) : t('superAdmin'),
-        email: authUser?.email || "user@bendel.ac.tz",
+        email: authUser?.email || "user@uruseminary.ac.tz",
         phone: authUser?.phone || "+255 000 000 000",
         location: authUser?.location || "Tanzania",
         joined: authUser?.joined || "2024",

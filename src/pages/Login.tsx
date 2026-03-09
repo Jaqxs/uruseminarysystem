@@ -5,6 +5,8 @@ import { useLanguage } from "../context/LanguageContext";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
 import { UserRole } from "../lib/auth";
+import uruBg from "../assets/uru 2.jpeg";
+import uruLogo from "../assets/uru.jfif";
 
 export default function Login() {
     const { t } = useLanguage();
@@ -16,8 +18,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const backgroundImages = [
-        "/login_bg_1.jpg",
-        "/login_bg_2.jpg"
+        uruBg
     ];
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export default function Login() {
     };
 
     const handleDemoLogin = (role: UserRole) => {
-        setEmail(`${role}@bendel.ac.tz`);
+        setEmail(`${role}@uruseminary.ac.tz`);
         setPassword("password123");
     };
 
@@ -80,13 +81,13 @@ export default function Login() {
                 {/* Branding */}
                 <div className="text-center mb-8">
                     <div className="w-24 h-24 rounded-[2rem] bg-white shadow-2xl flex items-center justify-center mx-auto mb-6 p-4 border border-white/20 hover:scale-105 transition-transform duration-500 shadow-primary/20 bg-clip-padding backdrop-blur-3xl">
-                        <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+                        <img src={uruLogo} alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     <h1 className="text-4xl font-black font-heading text-white mb-2 tracking-tight drop-shadow-md">
-                        Smart <span className="text-accent underline decoration-4 underline-offset-4 decoration-accent/50">Bendel</span>
+                        Smart <span className="text-accent underline decoration-4 underline-offset-4 decoration-accent/50">Uru</span>
                     </h1>
                     <p className="text-white/80 font-bold tracking-[0.2em] text-[10px] uppercase drop-shadow-sm">
-                        Bendel Memorial Secondary School Management System
+                        Uru Seminary Management System
                     </p>
                 </div>
 
@@ -107,7 +108,7 @@ export default function Login() {
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@bendel.ac.tz"
+                                placeholder="name@uruseminary.ac.tz"
                                 className="w-full px-6 py-4 rounded-2xl border border-border/80 bg-white/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-sm font-semibold placeholder:text-muted-foreground/30 shadow-sm"
                             />
                         </div>
@@ -177,14 +178,20 @@ export default function Login() {
                     <div className="mt-6 pt-4 border-t border-border/40">
                         <p className="text-xs text-center font-bold text-muted-foreground mb-3 uppercase tracking-wider">Demo Accounts</p>
                         <div className="flex flex-wrap items-center justify-center gap-2">
-                            {['admin', 'director', 'academic_master', 'bursar', 'teacher'].map((role) => (
+                            {[
+                                { id: 'admin', label: 'Rector' },
+                                { id: 'director', label: 'Vice Rector' },
+                                { id: 'bursar', label: 'Bursar' },
+                                { id: 'academic_master', label: 'Academic Master' },
+                                { id: 'teacher', label: 'Staff' }
+                            ].map((role) => (
                                 <button
-                                    key={role}
+                                    key={role.id}
                                     type="button"
-                                    onClick={() => handleDemoLogin(role as UserRole)}
+                                    onClick={() => handleDemoLogin(role.id as UserRole)}
                                     className="px-3 py-2 rounded-xl bg-muted/40 hover:bg-muted text-[10px] font-bold text-muted-foreground hover:text-foreground transition-all uppercase border border-border/50 text-center"
                                 >
-                                    {role.replace('_', ' ')}
+                                    {role.label}
                                 </button>
                             ))}
                         </div>
@@ -192,7 +199,7 @@ export default function Login() {
 
                     <div className="mt-8 pt-6 border-t border-border/40 text-center">
                         <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em]">
-                            © {new Date().getFullYear()} Bendel Secondary Memorial School
+                            © {new Date().getFullYear()} Uru Seminary
                         </p>
                     </div>
                 </div>

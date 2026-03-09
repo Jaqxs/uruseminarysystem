@@ -6,18 +6,18 @@ import { useLanguage } from "../context/LanguageContext";
 const classes = ["Form 1A", "Form 1B", "Form 2A", "Form 2B", "Form 3A", "Form 3B", "Form 4A", "Form 4B"];
 
 const initialStudents = [
-  { id: 1, name: "Amina Hassan", avatar: "AH" },
-  { id: 2, name: "Baraka Juma", avatar: "BJ" },
-  { id: 3, name: "Catherine Mwamba", avatar: "CM" },
+  { id: 1, name: "Stephen Peter", avatar: "SP" },
+  { id: 2, name: "Baraka John", avatar: "BJ" },
+  { id: 3, name: "Clement Mwamba", avatar: "CM" },
   { id: 4, name: "Daniel Osei", avatar: "DO" },
-  { id: 5, name: "Esther Kimani", avatar: "EK" },
-  { id: 6, name: "Farouk Ally", avatar: "FA" },
-  { id: 7, name: "Grace Ndugu", avatar: "GN" },
-  { id: 8, name: "Hassan Mrisho", avatar: "HM" },
-  { id: 9, name: "Irene Tarehe", avatar: "IT" },
+  { id: 5, name: "Emmanuel Kimani", avatar: "EK" },
+  { id: 6, name: "Fabian Mark", avatar: "FM" },
+  { id: 7, name: "Gabriel Ndugu", avatar: "GN" },
+  { id: 8, name: "Peter Macha", avatar: "PM" },
+  { id: 9, name: "Isaac Tarehe", avatar: "IT" },
   { id: 10, name: "John Mwenda", avatar: "JM" },
-  { id: 11, name: "Kalila Pendo", avatar: "KP" },
-  { id: 12, name: "Lavinia Sokoine", avatar: "LS" },
+  { id: 11, name: "Keneth Pendo", avatar: "KP" },
+  { id: 12, name: "Lazarus Sokoine", avatar: "LS" },
 ];
 
 type AttStatus = "present" | "absent" | "late" | null;
