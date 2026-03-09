@@ -5,7 +5,7 @@ import { useLanguage } from "../context/LanguageContext";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
 import { UserRole } from "../lib/auth";
-import uruBg from "../assets/uru 2.jpeg";
+import uruBg from "../assets/uru_2.jpeg";
 import uruLogo from "../assets/uru.jfif";
 
 export default function Login() {
