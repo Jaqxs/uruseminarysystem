@@ -89,8 +89,8 @@ export default function Dashboard() {
   ];
 
   const studentData = [
-    { name: t('boarders'), value: 840, color: 'hsl(var(--sky-500))' },
-    { name: t('dayScholars'), value: 408, color: 'hsl(var(--rose-400))' }
+    { name: t('boarders'), value: 840, color: 'hsl(var(--primary))' },
+    { name: t('dayScholars'), value: 408, color: 'hsl(var(--accent))' }
   ];
 
   const performanceSpark = [

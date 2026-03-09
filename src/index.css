@@ -9,82 +9,79 @@
     /* === URU SEMINARY SIS DESIGN TOKENS === */
 
     /* Backgrounds */
-    --background: 220 25% 97%;
-    --foreground: 222 47% 11%;
+    --background: 215 25% 98%;
+    --foreground: 224 45% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 224 45% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    /* Primary: Deep Blue */
-    --primary: 225 73% 45%;
+    /* Primary: Deep Royal Indigo */
+    --primary: 231 65% 25%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 225 73% 95%;
-    --primary-glow: 225 73% 60%;
+    --primary-light: 231 65% 96%;
+    --primary-glow: 231 65% 45%;
 
-    /* Secondary: Cool Grey */
-    --secondary: 220 20% 94%;
-    --secondary-foreground: 222 47% 20%;
-
-    /* Accent: Emerald */
-    --accent: 160 84% 39%;
+    /* Accent: Golden Amber */
+    --accent: 35 92% 48%;
     --accent-foreground: 0 0% 100%;
-    --accent-light: 160 60% 93%;
+    --accent-light: 35 92% 94%;
 
-    /* Warning: Amber */
-    --warning: 38 92% 50%;
+    /* Secondary: Warm Grey */
+    --secondary: 215 15% 93%;
+    --secondary-foreground: 224 45% 20%;
+
+    /* Warning */
+    --warning: 28 92% 50%;
     --warning-foreground: 0 0% 100%;
-    --warning-light: 38 92% 93%;
+    --warning-light: 28 92% 93%;
 
     /* Danger */
-    --destructive: 0 84% 60%;
+    --destructive: 355 84% 55%;
     --destructive-foreground: 0 0% 100%;
-    --destructive-light: 0 84% 95%;
+    --destructive-light: 355 84% 95%;
 
     /* Info */
-    --info: 199 89% 48%;
+    --info: 210 89% 48%;
     --info-foreground: 0 0% 100%;
-    --info-light: 199 89% 93%;
+    --info-light: 210 89% 93%;
 
     /* Muted */
-    --muted: 220 20% 94%;
-    --muted-foreground: 220 15% 55%;
+    --muted: 215 15% 93%;
+    --muted-foreground: 215 15% 55%;
 
     /* Border & Input */
-    --border: 220 20% 88%;
-    --input: 220 20% 90%;
-    --ring: 225 73% 45%;
+    --border: 215 15% 88%;
+    --input: 215 15% 90%;
+    --ring: 231 65% 25%;
 
     --radius: 0.75rem;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(225 73% 45%), hsl(250 73% 55%));
-    --gradient-accent: linear-gradient(135deg, hsl(160 84% 39%), hsl(180 70% 42%));
-    --gradient-warm: linear-gradient(135deg, hsl(38 92% 50%), hsl(25 90% 55%));
-    --gradient-hero: linear-gradient(135deg, hsl(225 73% 40%) 0%, hsl(240 70% 50%) 50%, hsl(250 65% 55%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 25% 98%));
-    --gradient-sidebar: linear-gradient(180deg, hsl(225 73% 18%) 0%, hsl(235 60% 14%) 100%);
+    /* Gradients: Refined for Uru Seminary */
+    --gradient-primary: linear-gradient(135deg, hsl(231 65% 25%), hsl(245 55% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(35 92% 48%), hsl(20 90% 45%));
+    --gradient-warm: linear-gradient(135deg, hsl(35 92% 48%), hsl(45 90% 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(231 65% 20%) 0%, hsl(231 65% 35%) 50%, hsl(245 50% 45%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(215 25% 99%));
+    --gradient-sidebar: linear-gradient(180deg, hsl(231 70% 12%) 0%, hsl(231 60% 8%) 100%);
 
     /* Shadows */
-    --shadow-sm: 0 1px 3px 0 hsl(225 73% 45% / 0.08), 0 1px 2px -1px hsl(225 73% 45% / 0.08);
-    --shadow-md: 0 4px 16px -4px hsl(225 73% 45% / 0.15), 0 2px 8px -2px hsl(225 73% 45% / 0.08);
-    --shadow-lg: 0 10px 40px -8px hsl(225 73% 45% / 0.2), 0 4px 16px -4px hsl(225 73% 45% / 0.1);
-    --shadow-glow: 0 0 30px hsl(225 73% 45% / 0.3);
-    --shadow-accent: 0 8px 24px -4px hsl(160 84% 39% / 0.3);
-    --shadow-card: 0 2px 20px 0 hsl(220 25% 20% / 0.06);
+    --shadow-sm: 0 1px 3px 0 hsl(231 65% 25% / 0.08);
+    --shadow-md: 0 4px 16px -4px hsl(231 65% 25% / 0.15);
+    --shadow-lg: 0 10px 40px -8px hsl(231 65% 25% / 0.2);
+    --shadow-glow: 0 0 30px hsl(35 92% 48% / 0.25);
+    --shadow-accent: 0 8px 24px -4px hsl(35 92% 48% / 0.3);
+    --shadow-card: 0 2px 20px 0 hsl(231 25% 20% / 0.05);
 
-    /* Sidebar */
-    --sidebar-background: 225 73% 15%;
-    --sidebar-foreground: 220 30% 92%;
-    --sidebar-primary: 225 73% 45%;
+    /* Sidebar Themes */
+    --sidebar-background: 231 70% 10%;
+    --sidebar-foreground: 215 30% 92%;
+    --sidebar-primary: 35 92% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 225 40% 25%;
-    --sidebar-accent-foreground: 220 30% 95%;
-    --sidebar-border: 225 40% 22%;
-    --sidebar-ring: 225 73% 60%;
-    --sidebar-muted: 225 30% 70%;
+    --sidebar-accent: 231 40% 20%;
+    --sidebar-accent-foreground: 35 92% 90%;
+    --sidebar-border: 231 40% 18%;
+    --sidebar-ring: 35 92% 60%;
+    --sidebar-muted: 231 25% 65%;
   }
 
   * {
