@@ -77,31 +77,31 @@ export default function Login() {
             <div className="fixed inset-0 backdrop-blur-[1px] z-10" />
 
             {/* Content Container */}
-            <div className="relative z-20 w-full max-w-[480px] animate-fade-in">
+            <div className="relative z-20 w-full max-w-[480px] animate-fade-in py-8">
                 {/* Branding */}
-                <div className="text-center mb-8">
-                    <div className="w-28 h-28 rounded-3xl bg-white shadow-[0_0_50px_rgba(255,215,0,0.2)] flex items-center justify-center mx-auto mb-6 p-2 border border-white/50 hover:scale-105 transition-all duration-500 bg-clip-padding backdrop-blur-3xl ring-4 ring-white/10">
-                        <img src={uruLogo} alt="Logo" className="w-full h-full object-contain" />
+                <div className="text-center mb-10">
+                    <div className="w-32 h-32 rounded-3xl bg-black shadow-[0_0_60px_rgba(255,215,0,0.3)] flex items-center justify-center mx-auto mb-6 p-1 border-2 border-white/20 hover:scale-105 transition-all duration-500 ring-4 ring-white/5 overflow-hidden">
+                        <img src={uruLogo} alt="Logo" className="w-full h-full object-contain scale-[1.02]" />
                     </div>
-                    <h1 className="text-4xl font-black font-heading text-white mb-2 tracking-tight drop-shadow-lg">
-                        Smart <span className="text-accent underline decoration-4 underline-offset-4 decoration-accent/50">Uru</span>
+                    <h1 className="text-5xl font-black font-heading text-white mb-2 tracking-tighter drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                        Smart <span className="text-accent underline decoration-[6px] underline-offset-[8px] decoration-accent/40">Uru</span>
                     </h1>
-                    <p className="text-white/90 font-bold tracking-[0.3em] text-[10px] uppercase drop-shadow-md">
-                        Uru Seminary Management System
+                    <p className="text-white font-bold tracking-[0.4em] text-xs uppercase drop-shadow-md mt-4 opacity-90">
+                        Uru Seminary System
                     </p>
                 </div>
 
                 {/* Login Card */}
-                <div className="glass-card p-10 rounded-[2.5rem] border border-white/20 shadow-2xl bg-white/90 backdrop-blur-2xl">
-                    <div className="mb-8 overflow-hidden">
-                        <h2 className="text-2xl font-black font-heading text-foreground mb-1 leading-tight">Administrative Access</h2>
-                        <p className="text-muted-foreground text-sm font-medium">Verify your identity to proceed.</p>
+                <div className="glass-card p-6 sm:p-12 rounded-[3.5rem] border border-white/30 shadow-2xl bg-white/95 backdrop-blur-3xl overflow-visible">
+                    <div className="mb-10 text-center sm:text-left">
+                        <h2 className="text-3xl font-black font-heading text-slate-900 mb-2 leading-tight">Admin Login</h2>
+                        <p className="text-slate-500 text-sm font-semibold tracking-wide">Enter your credentials to manage the seminary.</p>
                     </div>
 
-                    <form className="space-y-6" onSubmit={handleLogin}>
-                        <div className="space-y-1.5 group">
-                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 flex items-center gap-2 mb-1 ml-1 group-focus-within:text-primary transition-colors">
-                                <Mail className="w-3.5 h-3.5" /> Email Address
+                    <form className="space-y-8" onSubmit={handleLogin}>
+                        <div className="space-y-2 group">
+                            <label className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 mb-1 ml-1 group-focus-within:text-primary transition-colors">
+                                <Mail className="w-4 h-4" /> Email Address
                             </label>
                             <input
                                 type="email"
@@ -109,16 +109,16 @@ export default function Login() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="name@uruseminary.ac.tz"
-                                className="w-full px-6 py-4 rounded-2xl border border-border/80 bg-white/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-sm font-semibold placeholder:text-muted-foreground/30 shadow-sm"
+                                className="w-full px-6 py-5 rounded-[1.25rem] border-2 border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-base font-bold placeholder:text-slate-300 shadow-inner"
                             />
                         </div>
 
-                        <div className="space-y-1.5 group">
+                        <div className="space-y-2 group">
                             <div className="flex items-center justify-between mb-1 ml-1 mr-1">
-                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 flex items-center gap-2 group-focus-within:text-primary transition-colors">
-                                    <Lock className="w-3.5 h-3.5" /> Password
+                                <label className="text-[11px] font-black uppercase tracking-[0.25em] text-slate-400 flex items-center gap-2 group-focus-within:text-primary transition-colors">
+                                    <Lock className="w-4 h-4" /> Password
                                 </label>
-                                <a href="#" className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline decoration-2 underline-offset-4 transition-all">Forgot?</a>
+                                <a href="#" className="text-[11px] font-black text-primary uppercase tracking-[0.15em] hover:underline decoration-2 underline-offset-4 transition-all">Forgot?</a>
                             </div>
                             <div className="relative">
                                 <input
@@ -127,57 +127,54 @@ export default function Login() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="••••••••••••"
-                                    className="w-full px-6 py-4 pr-14 rounded-2xl border border-border/80 bg-white/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-sm font-semibold placeholder:text-muted-foreground/30 shadow-sm"
+                                    className="w-full px-6 py-5 pr-16 rounded-[1.25rem] border-2 border-slate-100 bg-slate-50/50 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all text-base font-bold placeholder:text-slate-300 shadow-inner"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute inset-y-0 right-0 pr-6 flex items-center text-muted-foreground/40 hover:text-primary transition-colors"
+                                    className="absolute inset-y-0 right-0 pr-6 flex items-center text-slate-300 hover:text-primary transition-colors"
                                 >
-                                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    {showPassword ? <EyeOff className="w-6 h-6" /> : <Eye className="w-6 h-6" />}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3 px-1">
+                        <div className="flex items-center gap-3 px-2">
                             <input
                                 type="checkbox"
                                 id="remember_me"
-                                className="w-4 h-4 rounded-md border-2 border-border text-primary focus:ring-offset-2 focus:ring-primary cursor-pointer transition-all"
+                                className="w-5 h-5 rounded-lg border-2 border-slate-200 text-primary focus:ring-offset-2 focus:ring-primary cursor-pointer transition-all appearance-none checked:bg-primary checked:border-primary relative checked:after:content-['✓'] checked:after:absolute checked:after:inset-0 checked:after:flex checked:after:items-center checked:after:justify-center checked:after:text-white checked:after:text-xs checked:after:font-bold"
                             />
-                            <label htmlFor="remember_me" className="text-xs text-muted-foreground font-bold cursor-pointer hover:text-foreground transition-colors select-none">Remember this device</label>
+                            <label htmlFor="remember_me" className="text-sm text-slate-500 font-bold cursor-pointer hover:text-slate-900 transition-colors select-none">Remember this device</label>
                         </div>
 
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full h-[58px] rounded-2xl bg-gradient-to-r from-primary via-primary to-[#4f46e5] text-white font-black text-xs uppercase tracking-[0.25em] shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/50 transition-all duration-500 hover:-translate-y-1.5 active:scale-[0.97] disabled:opacity-70 group relative overflow-hidden flex items-center justify-center m-0"
+                            className="w-full h-[64px] rounded-[1.25rem] bg-slate-950 text-white font-black text-sm uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-500 hover:-translate-y-2 active:scale-[0.98] disabled:opacity-70 group relative overflow-hidden flex items-center justify-center m-0"
                         >
                             {/* Modern Shimmer Effect */}
-                            <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer-fast" />
+                            <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer-fast" />
 
-                            {/* Inner Glow Border */}
-                            <div className="absolute inset-0 rounded-2xl border border-white/20 pointer-events-none" />
-
-                            <span className="relative z-10 flex items-center gap-2 drop-shadow-sm">
+                            <span className="relative z-10 flex items-center gap-3 drop-shadow-md">
                                 {isLoading ? (
-                                    <span className="flex items-center gap-2">
-                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    <span className="flex items-center gap-3">
+                                        <div className="w-5 h-5 border-[3px] border-white/20 border-t-white rounded-full animate-spin" />
                                         Verifying
                                     </span>
                                 ) : (
                                     <>
-                                        Enter System
-                                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-500 cubic-bezier(0.34, 1.56, 0.64, 1)" />
+                                        Sign In
+                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500 cubic-bezier(0.34, 1.56, 0.64, 1)" />
                                     </>
                                 )}
                             </span>
                         </button>
                     </form>
 
-                    <div className="mt-6 pt-4 border-t border-border/40">
-                        <p className="text-xs text-center font-bold text-muted-foreground mb-3 uppercase tracking-wider">Demo Accounts</p>
-                        <div className="flex flex-wrap items-center justify-center gap-2">
+                    <div className="mt-10 pt-8 border-t border-slate-100">
+                        <p className="text-[11px] text-center font-black text-slate-400 mb-4 uppercase tracking-[0.25em]">Quick Access Roles</p>
+                        <div className="grid grid-cols-2 xs:grid-cols-3 sm:flex sm:flex-wrap items-center justify-center gap-3">
                             {[
                                 { id: 'admin', label: 'Rector' },
                                 { id: 'director', label: 'Vice Rector' },
@@ -189,7 +186,7 @@ export default function Login() {
                                     key={role.id}
                                     type="button"
                                     onClick={() => handleDemoLogin(role.id as UserRole)}
-                                    className="px-3 py-2 rounded-xl bg-muted/40 hover:bg-muted text-[10px] font-bold text-muted-foreground hover:text-foreground transition-all uppercase border border-border/50 text-center"
+                                    className="px-4 py-3 rounded-2xl bg-slate-50 hover:bg-slate-100 text-[10px] font-black text-slate-500 hover:text-slate-900 transition-all uppercase border-2 border-transparent hover:border-slate-200 text-center whitespace-nowrap"
                                 >
                                     {role.label}
                                 </button>
@@ -197,9 +194,9 @@ export default function Login() {
                         </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-border/40 text-center">
-                        <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-[0.2em]">
-                            © {new Date().getFullYear()} Uru Seminary
+                    <div className="mt-10 pt-8 border-t border-slate-100 text-center">
+                        <p className="text-[11px] font-black text-slate-300 uppercase tracking-[0.4em]">
+                            © {new Date().getFullYear()} Uru Seminary System
                         </p>
                     </div>
                 </div>
