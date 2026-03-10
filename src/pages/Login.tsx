@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
 import { UserRole } from "../lib/auth";
 import uruBg from "../assets/uru_2.jpeg";
-import uruLogo from "../assets/uru.jfif";
+import uruLogo from "../assets/uru_logo.jpg";
 
 export default function Login() {
     const { t } = useLanguage();

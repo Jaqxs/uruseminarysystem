@@ -9,6 +9,7 @@ import {
 import { useLanguage } from "../context/LanguageContext";
 import { useAuth } from "../context/AuthContext";
 import { UserRole } from "@/lib/auth";
+import uruLogo from "../assets/uru_logo.jpg";
 
 interface SidebarProps {
   collapsed: boolean;
