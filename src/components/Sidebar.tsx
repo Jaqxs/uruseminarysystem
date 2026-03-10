@@ -85,8 +85,8 @@ export function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: Side
     <div className="flex flex-col h-full" style={{ background: "var(--gradient-sidebar)" }}>
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-sidebar-border h-[88px]">
-        <div className={`rounded-xl bg-white flex items-center justify-center shadow-glow overflow-hidden p-1 transition-all flex-shrink-0 ${collapsed ? 'w-10 h-10' : 'w-12 h-12'}`}>
-          <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+        <div className={`rounded-xl bg-black flex items-center justify-center shadow-glow overflow-hidden p-0.5 transition-all flex-shrink-0 ${collapsed ? 'w-10 h-10' : 'w-12 h-12'}`}>
+          <img src={uruLogo} alt="Logo" className="w-full h-full object-contain" />
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
