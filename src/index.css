@@ -9,79 +9,84 @@
     /* === URU SEMINARY SIS DESIGN TOKENS === */
 
     /* Backgrounds */
-    --background: 215 25% 98%;
-    --foreground: 224 45% 12%;
+    --background: 210 20% 98%;
+    --foreground: 0 0% 5%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 45% 12%;
+    --card-foreground: 0 0% 5%;
 
-    /* Primary: Deep Royal Indigo */
-    --primary: 231 65% 25%;
-    --primary-foreground: 0 0% 100%;
-    --primary-light: 231 65% 96%;
-    --primary-glow: 231 65% 45%;
+    /* Primary: Official Uru Seminary Yellow/Gold */
+    --primary: 48 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --primary-light: 48 100% 95%;
+    --primary-glow: 48 100% 60%;
 
-    /* Accent: Golden Amber */
-    --accent: 35 92% 48%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 35 92% 94%;
+    /* Accent: Deep Black (from logo background) */
+    --accent: 0 0% 0%;
+    --accent-foreground: 48 100% 50%;
+    --accent-light: 0 0% 15%;
 
-    /* Secondary: Warm Grey */
-    --secondary: 215 15% 93%;
-    --secondary-foreground: 224 45% 20%;
+    /* Secondary: Professional Silver/Grey */
+    --secondary: 210 10% 92%;
+    --secondary-foreground: 0 0% 10%;
 
-    /* Warning */
-    --warning: 28 92% 50%;
-    --warning-foreground: 0 0% 100%;
-    --warning-light: 28 92% 93%;
+    /* Warning: Logo Orange */
+    --warning: 35 100% 50%;
+    --warning-foreground: 0 0% 0%;
+    --warning-light: 35 100% 95%;
 
-    /* Danger */
-    --destructive: 355 84% 55%;
+    /* Danger: Logo Red (from heart) */
+    --destructive: 0 85% 55%;
     --destructive-foreground: 0 0% 100%;
-    --destructive-light: 355 84% 95%;
+    --destructive-light: 0 85% 96%;
 
-    /* Info */
-    --info: 210 89% 48%;
+    /* Info: Logo Blue (from shield) */
+    --info: 210 100% 45%;
     --info-foreground: 0 0% 100%;
-    --info-light: 210 89% 93%;
+    --info-light: 210 100% 96%;
+
+    /* Success: Logo Green (from leaves) */
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 142 70% 96%;
 
     /* Muted */
-    --muted: 215 15% 93%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 210 10% 94%;
+    --muted-foreground: 210 10% 50%;
 
     /* Border & Input */
-    --border: 215 15% 88%;
-    --input: 215 15% 90%;
-    --ring: 231 65% 25%;
+    --border: 0 0% 90%;
+    --input: 0 0% 92%;
+    --ring: 48 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    /* Gradients: Refined for Uru Seminary */
-    --gradient-primary: linear-gradient(135deg, hsl(231 65% 25%), hsl(245 55% 35%));
-    --gradient-accent: linear-gradient(135deg, hsl(35 92% 48%), hsl(20 90% 45%));
-    --gradient-warm: linear-gradient(135deg, hsl(35 92% 48%), hsl(45 90% 55%));
-    --gradient-hero: linear-gradient(135deg, hsl(231 65% 20%) 0%, hsl(231 65% 35%) 50%, hsl(245 50% 45%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(215 25% 99%));
-    --gradient-sidebar: linear-gradient(180deg, hsl(231 70% 12%) 0%, hsl(231 60% 8%) 100%);
+    /* Gradients: Inspired by Logo */
+    --gradient-primary: linear-gradient(135deg, hsl(48 100% 50%), hsl(42 100% 45%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 15%));
+    --gradient-warm: linear-gradient(135deg, hsl(48 100% 50%), hsl(35 100% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(0 0% 10%) 50%, hsl(0 0% 20%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 20% 99%));
+    --gradient-sidebar: linear-gradient(180deg, hsl(0 0% 0%) 0%, hsl(0 0% 10%) 100%);
 
     /* Shadows */
-    --shadow-sm: 0 1px 3px 0 hsl(231 65% 25% / 0.08);
-    --shadow-md: 0 4px 16px -4px hsl(231 65% 25% / 0.15);
-    --shadow-lg: 0 10px 40px -8px hsl(231 65% 25% / 0.2);
-    --shadow-glow: 0 0 30px hsl(35 92% 48% / 0.25);
-    --shadow-accent: 0 8px 24px -4px hsl(35 92% 48% / 0.3);
-    --shadow-card: 0 2px 20px 0 hsl(231 25% 20% / 0.05);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 20px -4px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 50px -10px rgb(0 0 0 / 0.15);
+    --shadow-glow: 0 0 30px hsl(48 100% 50% / 0.3);
+    --shadow-accent: 0 8px 32px -6px rgb(0 0 0 / 0.4);
+    --shadow-card: 0 4px 30px -5px rgb(0 0 0 / 0.03);
 
-    /* Sidebar Themes */
-    --sidebar-background: 231 70% 10%;
-    --sidebar-foreground: 215 30% 92%;
-    --sidebar-primary: 35 92% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 231 40% 20%;
-    --sidebar-accent-foreground: 35 92% 90%;
-    --sidebar-border: 231 40% 18%;
-    --sidebar-ring: 35 92% 60%;
-    --sidebar-muted: 231 25% 65%;
+    /* Sidebar Themes: High Impact Black & Yellow */
+    --sidebar-background: 0 0% 0%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 48 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 48 100% 55%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 48 100% 50%;
+    --sidebar-muted: 0 0% 60%;
   }
 
   * {

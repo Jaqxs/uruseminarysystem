@@ -60,11 +60,11 @@ export default function Finance() {
         {[
           { label: t('feesToday'), value: "TSh 1,200,000", icon: Wallet, color: "bg-primary" },
           { label: t('feesTerm'), value: "TSh 65,400,000", icon: Landmark, color: "bg-accent" },
-          { label: t('expectedRevenue'), value: "TSh 85,000,000", icon: Target, color: "bg-indigo-600" },
-          { label: t('performance'), value: "77%", icon: Activity, color: "bg-amber-600" },
+          { label: t('expectedRevenue'), value: "TSh 85,000,000", icon: Target, color: "bg-info" },
+          { label: t('performance'), value: "77%", icon: Activity, color: "bg-warning" },
           { label: t('outstanding'), value: "TSh 4,200,000", icon: AlertCircle, color: "bg-destructive" },
-          { label: t('expensesMTD'), value: "TSh 11,500,000", icon: TrendingDown, color: "bg-orange-500" },
-          { label: t('netPosition'), value: "TSh 53,900,000", icon: DollarSign, color: "bg-primary" },
+          { label: t('expensesMTD'), value: "TSh 11,500,000", icon: TrendingDown, color: "bg-warning" },
+          { label: t('netPosition'), value: "TSh 53,900,000", icon: DollarSign, color: "bg-success" },
         ].map((kpi, i) => (
           <div key={i} className="bg-card border border-border p-6 rounded-[2rem] shadow-sm hover:shadow-md transition-all group">
             <div className={`w-10 h-10 rounded-xl ${kpi.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-black/5`}>

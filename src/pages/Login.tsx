@@ -84,7 +84,7 @@ export default function Login() {
                         <img src={uruLogo} alt="Logo" className="w-full h-full object-contain scale-[1.02]" />
                     </div>
                     <h1 className="text-5xl font-black font-heading text-white mb-2 tracking-tighter drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
-                        Smart <span className="text-accent underline decoration-[6px] underline-offset-[8px] decoration-accent/40">Uru</span>
+                        Smart <span className="text-primary underline decoration-[6px] underline-offset-[8px] decoration-primary/40">Uru</span>
                     </h1>
                     <p className="text-white font-bold tracking-[0.4em] text-xs uppercase drop-shadow-md mt-4 opacity-90">
                         Uru Seminary System
@@ -151,7 +151,7 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full h-[64px] rounded-[1.25rem] bg-slate-950 text-white font-black text-sm uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-500 hover:-translate-y-2 active:scale-[0.98] disabled:opacity-70 group relative overflow-hidden flex items-center justify-center m-0"
+                            className="w-full h-[64px] rounded-[1.25rem] bg-primary text-primary-foreground font-black text-sm uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(255,215,0,0.2)] hover:shadow-[0_20px_40px_rgba(255,215,0,0.3)] transition-all duration-500 hover:-translate-y-2 active:scale-[0.98] disabled:opacity-70 group relative overflow-hidden flex items-center justify-center m-0"
                         >
                             {/* Modern Shimmer Effect */}
                             <div className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer-fast" />
