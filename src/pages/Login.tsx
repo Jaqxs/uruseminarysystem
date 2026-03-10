@@ -60,33 +60,33 @@ export default function Login() {
     };
 
     return (
-        <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-slate-900">
+        <div className="min-h-screen w-full flex items-center justify-center relative overflow-y-auto bg-slate-900 py-12 px-4 selection:bg-primary selection:text-white">
             {/* Shifting Background Images */}
             {backgroundImages.map((src, index) => (
                 <img
                     key={src}
                     src={src}
                     alt={`Background ${index + 1}`}
-                    className={`absolute inset-0 w-full h-full object-cover scale-105 transition-opacity duration-[3000ms] ease-in-out ${index === currentImageIndex ? "opacity-40 animate-slow-zoom" : "opacity-0"
+                    className={`fixed inset-0 w-full h-full object-cover scale-105 transition-opacity duration-[3000ms] ease-in-out ${index === currentImageIndex ? "opacity-30 animate-slow-zoom" : "opacity-0"
                         }`}
                 />
             ))}
 
             {/* Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/60 via-background/20 to-accent/40 z-10" />
-            <div className="absolute inset-0 backdrop-blur-[2px] z-10" />
+            <div className="fixed inset-0 bg-gradient-to-br from-primary/70 via-background/40 to-slate-900/80 z-10" />
+            <div className="fixed inset-0 backdrop-blur-[1px] z-10" />
 
             {/* Content Container */}
-            <div className="relative z-20 w-full max-w-[480px] px-6 animate-fade-in">
+            <div className="relative z-20 w-full max-w-[480px] animate-fade-in">
                 {/* Branding */}
                 <div className="text-center mb-8">
-                    <div className="w-24 h-24 rounded-[2rem] bg-white shadow-2xl flex items-center justify-center mx-auto mb-6 p-4 border border-white/20 hover:scale-105 transition-transform duration-500 shadow-primary/20 bg-clip-padding backdrop-blur-3xl">
+                    <div className="w-28 h-28 rounded-3xl bg-white shadow-[0_0_50px_rgba(255,215,0,0.2)] flex items-center justify-center mx-auto mb-6 p-2 border border-white/50 hover:scale-105 transition-all duration-500 bg-clip-padding backdrop-blur-3xl ring-4 ring-white/10">
                         <img src={uruLogo} alt="Logo" className="w-full h-full object-contain" />
                     </div>
-                    <h1 className="text-4xl font-black font-heading text-white mb-2 tracking-tight drop-shadow-md">
+                    <h1 className="text-4xl font-black font-heading text-white mb-2 tracking-tight drop-shadow-lg">
                         Smart <span className="text-accent underline decoration-4 underline-offset-4 decoration-accent/50">Uru</span>
                     </h1>
-                    <p className="text-white/80 font-bold tracking-[0.2em] text-[10px] uppercase drop-shadow-sm">
+                    <p className="text-white/90 font-bold tracking-[0.3em] text-[10px] uppercase drop-shadow-md">
                         Uru Seminary Management System
                     </p>
                 </div>
